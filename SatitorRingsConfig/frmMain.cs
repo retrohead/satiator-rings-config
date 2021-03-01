@@ -148,6 +148,7 @@ namespace SatiatorRingsConfig
                     string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd", "BOX");
                     path = Path.Combine(path, id + "S.TGA");
                     T.Save(path);
+                    File.Delete("tmp.png");
                     pictureBox1.Image = (Bitmap)T;
                     pictureBox1.Visible = true;
 
