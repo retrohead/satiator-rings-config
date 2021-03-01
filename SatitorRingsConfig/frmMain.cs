@@ -56,12 +56,17 @@ namespace SatiatorRingsConfig
                         node.Tag = data;
                         treeView1.Nodes.Add(node);
                     }
+                    btnBuild.Enabled = true;
+                } else
+                {
+                    btnBuild.Enabled = false;
                 }
             }
         }
 
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            btnApply.Enabled = true;
             nodeData data = (nodeData)e.Node.Tag;
             txtImageID.Text = data.imageId.ToString();
 
@@ -77,7 +82,6 @@ namespace SatiatorRingsConfig
             T = new TGA(path);
             pictureBox1.Image =(Bitmap)T;
             pictureBox1.Visible = true;
-            btnApply.Enabled = true;
         }
 
         private void BtnBuild_Click(object sender, EventArgs e)
