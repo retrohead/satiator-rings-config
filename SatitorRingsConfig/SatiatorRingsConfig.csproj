@@ -71,6 +71,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="iso\cd\0.bin" />
+    <None Include="iso\cd\BOX\0S.TGA" />
+    <None Include="iso\cd\BOX\1S.TGA" />
+    <None Include="iso\cd\BOX\2S.TGA" />
+    <None Include="iso\cd\FONT.TGA" />
+    <None Include="iso\cd\TEX\LOGO.TGA" />
+    <None Include="iso\cd\TEX\S.TGA" />
+    <None Include="iso\cd\TEX\S1.TGA" />
+    <None Include="iso\cd\TEX\S2.TGA" />
+    <None Include="iso\IP.BIN" />
+    <None Include="iso\mkiso.bat" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -89,6 +100,12 @@
     <None Include="Resources\satiator-logo.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="iso\cd\ABS.TXT" />
+    <None Include="iso\cd\BIB.TXT" />
+    <None Include="iso\cd\CPY.TXT" />
+    <Content Include="iso\cygwin1.dll" />
+    <None Include="iso\mkisofs.exe" />
+    <None Include="iso\msys-1.0.dll" />
     <Content Include="satiator.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
