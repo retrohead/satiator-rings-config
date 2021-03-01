@@ -99,6 +99,7 @@
             // btnApply
             // 
             this.btnApply.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApply.Enabled = false;
             this.btnApply.Location = new System.Drawing.Point(401, 175);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(100, 27);
@@ -156,6 +157,8 @@
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.txtDir);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(649, 567);
+            this.MinimumSize = new System.Drawing.Size(649, 567);
             this.Name = "frmMain";
             this.Text = "Satiator Rings Configuation";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

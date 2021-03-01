@@ -28,6 +28,7 @@ namespace SatiatorRingsConfig
 
         private void BtnBrowse_Click(object sender, EventArgs e)
         {
+            btnApply.Enabled = false;
             treeView1.Nodes.Clear();
             using (var fbd = new FolderBrowserDialog())
             {
@@ -76,6 +77,7 @@ namespace SatiatorRingsConfig
             T = new TGA(path);
             pictureBox1.Image =(Bitmap)T;
             pictureBox1.Visible = true;
+            btnApply.Enabled = true;
         }
 
         private void BtnBuild_Click(object sender, EventArgs e)
