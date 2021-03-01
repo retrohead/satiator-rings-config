@@ -95,6 +95,20 @@ namespace SatiatorRingsConfig
             startInfo.Arguments = "-quiet -sysid \"SEGA SATURN\" -volid \"SaturnApp\" -volset \"SaturnApp\" -sectype 2352 -publisher \"SEGA ENTERPRISES, LTD.\" -preparer \"SEGA ENTERPRISES, LTD.\" -appid \"SaturnApp\" -abstract \"./iso/cd/ABS.TXT\" -copyright \"./iso/cd/CPY.TXT\" -biblio \"./iso/cd/BIB.TXT\" -generic-boot \"./iso/IP.BIN\" -full-iso9660-filenames -o satiator-rings.iso ./iso/cd";
             process.StartInfo = startInfo;
             process.Start();
+            process.WaitForExit();
+
+
+            SaveFileDialog fd = new SaveFileDialog();
+            fd.Filter = "ISO (*.iso)|*.iso";
+            fd.FileName = "satiator-rings.iso";
+            fd.InitialDirectory = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                if (File.Exists(fd.FileName))
+                    File.Delete(fd.FileName);
+                File.Copy("satiator-rings.iso", fd.FileName);
+                MessageBox.Show("Completed, Enjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         int freeBoxartID()
@@ -143,7 +157,7 @@ namespace SatiatorRingsConfig
 
                     using (Bitmap original = new Bitmap("tmp.png"))
                     using (Bitmap clone = new Bitmap(original))
-                    using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format8bppIndexed))
+                    using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
                         T = (TGA)newbmp;
                     string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd", "BOX");
                     path = Path.Combine(path, id + "S.TGA");
