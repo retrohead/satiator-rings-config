@@ -58,7 +58,7 @@ namespace SatiatorRingsConfig
                         itemData data = new itemData();
                         data.fn = objs[j].path;
                         string fn = objs[j].path.Replace(txtDir.Text, "");
-                        if(fn.EndsWith("/"))
+                        if(fn.StartsWith("\\"))
                             fn = fn.Substring(1, fn.Length - 1);
                         data.imageId = -1;
                         if (fn.EndsWith("]"))
