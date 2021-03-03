@@ -20,6 +20,10 @@ namespace SatiatorRingsConfig
             public string fn;
             public int imageId;
         }
+        struct dir
+        {
+            public string path;
+        }
         TGA T;
         public frmMain()
         {
@@ -38,12 +42,22 @@ namespace SatiatorRingsConfig
                 {
                     txtDir.Text = fbd.SelectedPath;
                     string[] dirs = Directory.GetDirectories(fbd.SelectedPath);
+                    dir[] objs = new dir[dirs.Count()];
+                    int i = 0;
                     foreach (string dir in dirs)
+                    {
+                        objs[i] = new dir();
+                        objs[i].path = dir;
+                        i++;
+                    }
+                    Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
+
+                    for (int j=0;j<i;j++)
                     {
                         TreeNode node = new TreeNode();
                         nodeData data = new nodeData();
-                        data.fn = dir;
-                        string fn = dir.Replace(txtDir.Text, "");
+                        data.fn = objs[j].path;
+                        string fn = objs[j].path.Replace(txtDir.Text, "");
                         fn = fn.Substring(1, fn.Length - 1);
                         data.imageId = -1;
                         if (fn.EndsWith("]"))
@@ -71,8 +85,23 @@ namespace SatiatorRingsConfig
             txtImageID.Text = data.imageId.ToString();
 
             if (txtImageID.Text == "-1")
+            {
+                pictureBox1.Visible = false;
                 return;
-            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd", "BOX");
+            }
+            int id = int.Parse(txtImageID.Text);
+            int boxId = 0;
+            while(id >= 100)
+            {
+                id--;
+                boxId++;
+            }
+            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
+            if(boxId > 0)
+                path = Path.Combine(path, "BOX" + boxId);
+            else
+                path = Path.Combine(path, "BOX");
+
             path = Path.Combine(path, txtImageID.Text + "S.TGA");
             if (!File.Exists(path))
             {
@@ -113,13 +142,20 @@ namespace SatiatorRingsConfig
 
         int freeBoxartID()
         {
-            for(int i=0;i<100;i++)
+            for (int j = 0; j < 100; j++)
             {
-                string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd", "BOX");
-                path = Path.Combine(path, i + "S.TGA");
-                if (!File.Exists(path))
+                for (int i = 0; i < 100; i++)
                 {
-                    return i;
+                    string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
+                    if(j!=0)
+                        path = Path.Combine(path, "BOX" + j);
+                    else
+                        path = Path.Combine(path, "BOX");
+                    path = Path.Combine(path, i + "S.TGA");
+                    if (!File.Exists(path))
+                    {
+                        return i + (j * 100);
+                    }
                 }
             }
             return -1;
@@ -128,6 +164,7 @@ namespace SatiatorRingsConfig
         private void BtnApply_Click(object sender, EventArgs e)
         {
             nodeData data = (nodeData)treeView1.SelectedNode.Tag;
+            int boxFolderId = 0;
             int id = freeBoxartID();
             if(id < 0)
             {
@@ -135,9 +172,19 @@ namespace SatiatorRingsConfig
                 return;
             }
             OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = "PNG (*.png)|*.png|JPG (*.jpg)|*.jpg";
+            fd.Filter = "Image FIles (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
             if (fd.ShowDialog() == DialogResult.OK)
             {
+                if (data.imageId != -1)
+                {
+                    if (MessageBox.Show("An image already exists with this ID, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        id = data.imageId;
+                }
+                while (id >= 100)
+                {
+                    id -= 100;
+                    boxFolderId++;
+                }
                 using (Image img = Image.FromFile(fd.FileName))
                 {
                     Image newimg;
@@ -159,18 +206,28 @@ namespace SatiatorRingsConfig
                     using (Bitmap clone = new Bitmap(original))
                     using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
                         T = (TGA)newbmp;
-                    string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd", "BOX");
+                    string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
+                    if (boxFolderId > 0)
+                        path = Path.Combine(path, "BOX" + boxFolderId);
+                    else
+                        path = Path.Combine(path, "BOX");
+
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+
+                    string newDirName = treeView1.SelectedNode.Text;
+                    if (newDirName.LastIndexOf('/') > -1)
+                    {
+                        newDirName = newDirName.Substring(0, newDirName.LastIndexOf(" ["));
+                    }
                     path = Path.Combine(path, id + "S.TGA");
+                    if (File.Exists(path))
+                        File.Delete(path);
                     T.Save(path);
                     File.Delete("tmp.png");
                     pictureBox1.Image = (Bitmap)T;
                     pictureBox1.Visible = true;
 
-                    string newDirName = treeView1.SelectedNode.Text;
-                    if(newDirName.LastIndexOf('/') > -1)
-                    {
-                        newDirName = newDirName.Substring(0, newDirName.LastIndexOf(" ["));
-                    }
                     newDirName  = newDirName + " [" + id + "]";
                     newDirName = Path.Combine(Path.GetDirectoryName(data.fn), newDirName);
                     treeView1.SelectedNode.Tag = data;

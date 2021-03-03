@@ -66,13 +66,13 @@
             // 
             this.treeView1.Location = new System.Drawing.Point(11, 37);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(316, 483);
+            this.treeView1.Size = new System.Drawing.Size(450, 483);
             this.treeView1.TabIndex = 2;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             // 
             // txtImageID
             // 
-            this.txtImageID.Location = new System.Drawing.Point(401, 37);
+            this.txtImageID.Location = new System.Drawing.Point(523, 37);
             this.txtImageID.Name = "txtImageID";
             this.txtImageID.ReadOnly = true;
             this.txtImageID.Size = new System.Drawing.Size(100, 20);
@@ -81,7 +81,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(345, 41);
+            this.label1.Location = new System.Drawing.Point(467, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 4;
@@ -90,7 +90,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(358, 69);
+            this.label2.Location = new System.Drawing.Point(480, 69);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 6;
@@ -100,7 +100,7 @@
             // 
             this.btnApply.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(401, 175);
+            this.btnApply.Location = new System.Drawing.Point(523, 175);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(100, 27);
             this.btnApply.TabIndex = 7;
@@ -112,9 +112,9 @@
             // 
             this.btnBuild.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBuild.Enabled = false;
-            this.btnBuild.Location = new System.Drawing.Point(401, 462);
+            this.btnBuild.Location = new System.Drawing.Point(471, 462);
             this.btnBuild.Name = "btnBuild";
-            this.btnBuild.Size = new System.Drawing.Size(222, 58);
+            this.btnBuild.Size = new System.Drawing.Size(152, 58);
             this.btnBuild.TabIndex = 8;
             this.btnBuild.Text = "Build ISO";
             this.btnBuild.UseVisualStyleBackColor = true;
@@ -134,7 +134,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(401, 69);
+            this.pictureBox1.Location = new System.Drawing.Point(523, 69);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(100, 100);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -160,7 +160,7 @@
             this.MaximumSize = new System.Drawing.Size(649, 567);
             this.MinimumSize = new System.Drawing.Size(649, 567);
             this.Name = "frmMain";
-            this.Text = "Satiator Rings Configuation";
+            this.Text = "Satiator Rings Configuation v0.2";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
