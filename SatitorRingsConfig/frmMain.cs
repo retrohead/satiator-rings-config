@@ -15,7 +15,7 @@ namespace SatiatorRingsConfig
 {
     public partial class frmMain : Form
     {
-        private class nodeData
+        private class itemData
         {
             public string fn;
             public int imageId;
@@ -33,7 +33,7 @@ namespace SatiatorRingsConfig
         private void BtnBrowse_Click(object sender, EventArgs e)
         {
             btnApply.Enabled = false;
-            treeView1.Nodes.Clear();
+            lstDir.Items.Clear();
             using (var fbd = new FolderBrowserDialog())
             {
                 DialogResult result = fbd.ShowDialog();
@@ -54,11 +54,12 @@ namespace SatiatorRingsConfig
 
                     for (int j=0;j<i;j++)
                     {
-                        TreeNode node = new TreeNode();
-                        nodeData data = new nodeData();
+                        ListViewItem item = new ListViewItem();
+                        itemData data = new itemData();
                         data.fn = objs[j].path;
                         string fn = objs[j].path.Replace(txtDir.Text, "");
-                        fn = fn.Substring(1, fn.Length - 1);
+                        if(fn.EndsWith("/"))
+                            fn = fn.Substring(1, fn.Length - 1);
                         data.imageId = -1;
                         if (fn.EndsWith("]"))
                         {
@@ -66,9 +67,9 @@ namespace SatiatorRingsConfig
                             data.imageId = int.Parse(idStr);
                             fn = fn.Substring(0, fn.LastIndexOf(" ["));
                         }
-                        node.Text = fn;
-                        node.Tag = data;
-                        treeView1.Nodes.Add(node);
+                        item.Text = fn;
+                        item.Tag = data;
+                        lstDir.Items.Add(item);
                     }
                     btnBuild.Enabled = true;
                 } else
@@ -76,41 +77,6 @@ namespace SatiatorRingsConfig
                     btnBuild.Enabled = false;
                 }
             }
-        }
-
-        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            btnApply.Enabled = true;
-            nodeData data = (nodeData)e.Node.Tag;
-            txtImageID.Text = data.imageId.ToString();
-
-            if (txtImageID.Text == "-1")
-            {
-                pictureBox1.Visible = false;
-                return;
-            }
-            int id = int.Parse(txtImageID.Text);
-            int boxId = 0;
-            while(id >= 100)
-            {
-                id--;
-                boxId++;
-            }
-            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-            if(boxId > 0)
-                path = Path.Combine(path, "BOX" + boxId);
-            else
-                path = Path.Combine(path, "BOX");
-
-            path = Path.Combine(path, txtImageID.Text + "S.TGA");
-            if (!File.Exists(path))
-            {
-                pictureBox1.Visible = false;
-                return;
-            }
-            T = new TGA(path);
-            pictureBox1.Image =(Bitmap)T;
-            pictureBox1.Visible = true;
         }
 
         private void BtnBuild_Click(object sender, EventArgs e)
@@ -163,7 +129,7 @@ namespace SatiatorRingsConfig
 
         private void BtnApply_Click(object sender, EventArgs e)
         {
-            nodeData data = (nodeData)treeView1.SelectedNode.Tag;
+            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
             int boxFolderId = 0;
             int id = freeBoxartID();
             if(id < 0)
@@ -215,7 +181,7 @@ namespace SatiatorRingsConfig
                     if (!Directory.Exists(path))
                         Directory.CreateDirectory(path);
 
-                    string newDirName = treeView1.SelectedNode.Text;
+                    string newDirName = lstDir.SelectedItems[0].Text;
                     if (newDirName.LastIndexOf('/') > -1)
                     {
                         newDirName = newDirName.Substring(0, newDirName.LastIndexOf(" ["));
@@ -230,7 +196,7 @@ namespace SatiatorRingsConfig
 
                     newDirName  = newDirName + " [" + id + "]";
                     newDirName = Path.Combine(Path.GetDirectoryName(data.fn), newDirName);
-                    treeView1.SelectedNode.Tag = data;
+                    lstDir.SelectedItems[0].Tag = data;
                     if(data.fn != newDirName)
                         Directory.Move(data.fn, newDirName);
                     data.fn = newDirName;
@@ -262,6 +228,43 @@ namespace SatiatorRingsConfig
             }
 
             return destImage;
+        }
+
+        private void lstDir_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstDir.SelectedItems.Count == 0)
+                return;
+            btnApply.Enabled = true;
+            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+            txtImageID.Text = data.imageId.ToString();
+
+            if (txtImageID.Text == "-1")
+            {
+                pictureBox1.Visible = false;
+                return;
+            }
+            int id = int.Parse(txtImageID.Text);
+            int boxId = 0;
+            while (id >= 100)
+            {
+                id--;
+                boxId++;
+            }
+            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
+            if (boxId > 0)
+                path = Path.Combine(path, "BOX" + boxId);
+            else
+                path = Path.Combine(path, "BOX");
+
+            path = Path.Combine(path, id + "S.TGA");
+            if (!File.Exists(path))
+            {
+                pictureBox1.Visible = false;
+                return;
+            }
+            T = new TGA(path);
+            pictureBox1.Image = (Bitmap)T;
+            pictureBox1.Visible = true;
         }
     }
 }

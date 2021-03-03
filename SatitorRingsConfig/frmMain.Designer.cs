@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtDir = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.txtImageID = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,6 +38,7 @@
             this.btnBuild = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lstDir = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -61,14 +61,6 @@
             this.btnBrowse.Text = "Open Folder";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.BtnBrowse_Click);
-            // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(11, 37);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(450, 483);
-            this.treeView1.TabIndex = 2;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             // 
             // txtImageID
             // 
@@ -141,11 +133,22 @@
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
+            // lstDir
+            // 
+            this.lstDir.Location = new System.Drawing.Point(11, 37);
+            this.lstDir.Name = "lstDir";
+            this.lstDir.Size = new System.Drawing.Size(454, 483);
+            this.lstDir.TabIndex = 10;
+            this.lstDir.UseCompatibleStateImageBehavior = false;
+            this.lstDir.View = System.Windows.Forms.View.List;
+            this.lstDir.SelectedIndexChanged += new System.EventHandler(this.lstDir_SelectedIndexChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(633, 528);
+            this.Controls.Add(this.lstDir);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.btnBuild);
             this.Controls.Add(this.btnApply);
@@ -153,14 +156,13 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtImageID);
-            this.Controls.Add(this.treeView1);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.txtDir);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(649, 567);
             this.MinimumSize = new System.Drawing.Size(649, 567);
             this.Name = "frmMain";
-            this.Text = "Satiator Rings Configuation v0.2";
+            this.Text = "Satiator Rings Configuation v0.3";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -172,7 +174,6 @@
 
         private System.Windows.Forms.TextBox txtDir;
         private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.TextBox txtImageID;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -180,6 +181,7 @@
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnBuild;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.ListView lstDir;
     }
 }
 
