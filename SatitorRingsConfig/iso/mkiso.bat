@@ -1,2 +1,0 @@
-mkisofs -quiet -sysid "SEGA SATURN" -volid "SaturnApp" -volset "SaturnApp" -sectype 2352 -publisher "SEGA ENTERPRISES, LTD." -preparer "SEGA ENTERPRISES, LTD." -appid "SaturnApp" -abstract "./cd/ABS.TXT" -copyright "./cd/CPY.TXT" -biblio "./cd/BIB.TXT" -generic-boot IP.BIN -full-iso9660-filenames -o satiator-rings.iso ./cd
-pause
