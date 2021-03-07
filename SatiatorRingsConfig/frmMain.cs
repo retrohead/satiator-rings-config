@@ -28,7 +28,7 @@ namespace SatiatorRingsConfig
         }
         public int selectedId;
         public bool firstInstall = false;
-        public string appVer = "0.5";
+        public string appVer = "0.6";
         public bool firstboot = true;
 
         TGA T;
@@ -111,6 +111,8 @@ namespace SatiatorRingsConfig
                             string idStr = fn.Substring(fn.LastIndexOf(" [") + 2, fn.Length - (fn.LastIndexOf(" [") + 2) - 1);
                             if (int.TryParse(idStr, out data.imageId))
                                 fn = fn.Substring(0, fn.LastIndexOf(" ["));
+                            else
+                                data.imageId = -1;
                         }
                         item.Text = fn;
                         item.Tag = data;
@@ -404,7 +406,7 @@ namespace SatiatorRingsConfig
                 int id = data.imageId;
                 string newDirName = data.fn;
                 string path = "";
-                if (data.fn.LastIndexOf(" [") > 0)
+                if (data.imageId >= 0)
                     newDirName = data.fn.Substring(0, data.fn.LastIndexOf(" ["));
                 if (id != -1)
                 {

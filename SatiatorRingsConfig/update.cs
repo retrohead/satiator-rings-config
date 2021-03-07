@@ -69,6 +69,11 @@ namespace SatiatorRingsConfig
                 MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 mainFrm.Close();
             }
+            if (!downloadRequiredFile("iso\\cd\\TEX\\SBOX.TGA", "The application will not start without this file.", 25644L))
+            {
+                MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                mainFrm.Close();
+            }
         }
 
         private static void bgwrk_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -148,21 +153,21 @@ namespace SatiatorRingsConfig
             {
                 if (!System.IO.File.Exists(Directory.GetCurrentDirectory() + "\\" + fn))
                 {
-                    if (MessageBox.Show(fn + " is a required file which is missing, corrupt or out of date.\n\nDo you want to download it now?\n\n" + reason, "Required File Missing or Corrupt", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (MessageBox.Show(Path.GetFileName(fn) + " is a required file which is missing, corrupt or out of date.\n\nDo you want to download it now?\n\n" + reason, "Required File Missing or Corrupt", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/" + fn, "data\\temp\\", fn))
+                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/" + Path.GetFileName(fn), "data\\temp\\", Path.GetFileName(fn)))
                         {
-                            FileStream fs = System.IO.File.OpenRead("data\\temp\\" + fn);
+                            FileStream fs = System.IO.File.OpenRead("data\\temp\\" + Path.GetFileName(fn));
                             long downloadSize = fs.Length;
                             fs.Close();
                             if (downloadSize != byteSize)
                             {
-                                MessageBox.Show(fn + " which was downloaded appears to be corrupt, please try again!", "Download Failure", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                MessageBox.Show(Path.GetFileName(fn) + " which was downloaded appears to be corrupt, please try again!", "Download Failure", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                             }
                             else
                             {
-                                System.IO.File.Copy("data\\temp\\" + fn, fn);
-                                MessageBox.Show(fn + " downloaded successfully.", "Download Success", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                                System.IO.File.Copy("data\\temp\\" + Path.GetFileName(fn), fn);
+                                MessageBox.Show(Path.GetFileName(fn) + " downloaded successfully.", "Download Success", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                                 flag1 = false;
                                 flag2 = true;
                             }
@@ -422,6 +427,8 @@ namespace SatiatorRingsConfig
             }
             if (saveas != "")
                 downloadedDataName = saveas;
+            if (File.Exists(dirdest + downloadedDataName))
+                File.Delete(dirdest + downloadedDataName);
             FileStream fileStream = new FileStream(dirdest + downloadedDataName, FileMode.Create);
             fileStream.Write(downloadedData, 0, downloadedData.Length);
             fileStream.Close();
