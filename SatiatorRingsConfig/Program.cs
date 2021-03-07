@@ -24,5 +24,6 @@ namespace SatiatorRingsConfig
                 Application.Run(form);
             }
         }
+
     }
 }

@@ -69,16 +69,6 @@ namespace SatiatorRingsConfig
                 MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 mainFrm.Close();
             }
-            if (!downloadRequiredFile("FolderZipper.dll", "The application will not start without this file.", 6144L))
-            {
-                MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                mainFrm.Close();
-            }
-            if (!downloadRequiredFile("ICSharpCode.SharpZipLib.dll", "The application will not start without this file.", 188416L))
-            {
-                MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                mainFrm.Close();
-            }
         }
 
         private static void bgwrk_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

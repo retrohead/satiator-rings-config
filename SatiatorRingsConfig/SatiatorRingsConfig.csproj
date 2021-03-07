@@ -63,10 +63,12 @@
     <Reference Include="FolderZipper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\FolderZipper.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -125,9 +127,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="iso\cd\0.bin" />
-    <None Include="iso\cd\BOX\0S.TGA" />
-    <None Include="iso\cd\BOX\1S.TGA" />
-    <None Include="iso\cd\BOX\2S.TGA" />
     <None Include="iso\cd\FONT.TGA" />
     <None Include="iso\cd\TEX\LOGO.TGA" />
     <None Include="iso\cd\TEX\S.TGA" />
@@ -158,9 +157,13 @@
     <Content Include="iso\cygwin1.dll" />
     <None Include="iso\mkisofs.exe" />
     <None Include="iso\msys-1.0.dll" />
-    <Content Include="lib\FolderZipper.dll" />
+    <EmbeddedResource Include="lib\FolderZipper.dll" />
     <None Include="Resources\open1.png" />
+    <EmbeddedResource Include="lib\ICSharpCode.SharpZipLib.dll" />
     <Content Include="satiator.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="iso\cd\BOX\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
