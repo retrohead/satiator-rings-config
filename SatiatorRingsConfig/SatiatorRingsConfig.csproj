@@ -127,11 +127,27 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="iso\cd\0.bin" />
+    <None Include="iso\cd\BOX\RESERVED" />
     <None Include="iso\cd\FONT.TGA" />
+    <None Include="iso\cd\INTRO.PCM" />
+    <None Include="iso\cd\MOVE.PCM" />
+    <None Include="iso\cd\SANSH.PCM" />
+    <None Include="iso\cd\SELECT.PCM" />
+    <None Include="iso\cd\TEX\BG.TGA" />
+    <None Include="iso\cd\TEX\BLANK.TGA" />
+    <None Include="iso\cd\TEX\CONSOLE.TGA" />
+    <None Include="iso\cd\TEX\GAME.TGA" />
     <None Include="iso\cd\TEX\LOGO.TGA" />
+    <None Include="iso\cd\TEX\MENU.TGA" />
+    <None Include="iso\cd\TEX\OPTION.TGA" />
     <None Include="iso\cd\TEX\S.TGA" />
     <None Include="iso\cd\TEX\S1.TGA" />
     <None Include="iso\cd\TEX\S2.TGA" />
+    <None Include="iso\cd\TEX\SBOX.TGA" />
+    <None Include="iso\cd\TEX\SELECT.TGA" />
+    <None Include="iso\cd\TEX\SHDW.TGA" />
+    <None Include="iso\cd\TEX\SIATOR.TGA" />
+    <None Include="iso\cd\THUD.PCM" />
     <None Include="iso\IP.BIN" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -162,8 +178,6 @@
     <EmbeddedResource Include="lib\ICSharpCode.SharpZipLib.dll" />
     <Content Include="satiator.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="iso\cd\BOX\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

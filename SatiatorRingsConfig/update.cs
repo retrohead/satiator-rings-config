@@ -67,12 +67,10 @@ namespace SatiatorRingsConfig
             if (!downloadRequiredFile("SatiatorRingsConfigUpdater.exe", "The application will not start without this file.", 6656L))
             {
                 MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                mainFrm.Close();
-            }
-            if (!downloadRequiredFile("iso\\cd\\TEX\\SBOX.TGA", "The application will not start without this file.", 25644L))
-            {
-                MessageBox.Show("The application will now close", "Application Closing", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                mainFrm.Close();
+                mainFrm.BeginInvoke(new voidDelegate(() =>
+                {
+                    mainFrm.Close();
+                }));
             }
         }
 
@@ -249,6 +247,7 @@ namespace SatiatorRingsConfig
                                             mainFrm.enableForm(true);
                                             break;
                                         }
+                                        mainFrm.updateProgressLabel("extracting zip file");
                                         ZipUtil.UnZipFiles("data/temp/" + str2 + " new.zip", "data/temp/", "", true);
                                         System.IO.File.Delete("data/" + str1);
                                         System.IO.File.Move("data/temp/" + str1, "data/" + str1);
@@ -281,7 +280,7 @@ namespace SatiatorRingsConfig
                     if (!mainFrm.firstboot)
                     {
                         MessageBox.Show("The latest version (" + newVersion + ") is already installed.", "Application is up to date", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                        return false;
+                        return true;
                     }
                 }
             }

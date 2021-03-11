@@ -28,7 +28,7 @@ namespace SatiatorRingsConfig
         }
         public int selectedId;
         public bool firstInstall = false;
-        public string appVer = "0.6";
+        public string appVer = "0.7";
         public bool firstboot = true;
 
         TGA T;
@@ -149,6 +149,8 @@ namespace SatiatorRingsConfig
                 process.Start();
                 process.WaitForExit();
 
+                if (File.Exists(fd.FileName))
+                    File.Delete(fd.FileName);
                 File.Copy("satiator-rings.iso", fd.FileName);
                 MessageBox.Show("Completed, Enjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
