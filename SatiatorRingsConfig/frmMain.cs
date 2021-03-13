@@ -28,7 +28,7 @@ namespace SatiatorRingsConfig
         }
         public int selectedId;
         public bool firstInstall = false;
-        public string appVer = "0.7";
+        public string appVer = "0.8";
         public bool firstboot = true;
 
         TGA T;

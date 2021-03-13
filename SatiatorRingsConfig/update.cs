@@ -292,6 +292,31 @@ namespace SatiatorRingsConfig
             return false;
         }
 
+        private static void moveDirectoryContents(string sourcedir, string dest)
+        {
+            string[] files = Directory.GetFiles(sourcedir);
+            foreach(string file in files)
+            {
+                string srcPath = Path.Combine(sourcedir, Path.GetFileName(file));
+                string destPath = Path.Combine(dest, Path.GetFileName(file));
+
+                if (File.Exists(destPath))
+                    File.Delete(destPath);
+                File.Move(srcPath, destPath);
+            }
+
+            files = Directory.GetDirectories(sourcedir);
+            foreach (string file in files)
+            {
+                string srcPath = Path.Combine(sourcedir, Path.GetFileName(file));
+                string destPath = Path.Combine(dest, Path.GetFileName(file));
+
+                if (!Directory.Exists(destPath))
+                    Directory.CreateDirectory(destPath);
+                moveDirectoryContents(srcPath, destPath);
+            }
+        }
+
         private static bool checkMenuUpdate(bool download)
         {
             string newVersion = "";
@@ -335,11 +360,21 @@ namespace SatiatorRingsConfig
                 {
                     if (download)
                     {
-                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/0.bin", "data\\temp\\", "Update Check"))
+                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/cd.zip", "data\\temp\\", "Update Check"))
                         {
-                            File.Delete(Path.Combine("iso", "cd", "0.bin"));
-                            File.Delete("data\\" + str1);
-                            File.Copy("data\\temp\\0.bin", Path.Combine("iso", "cd", "0.bin"));
+                            mainFrm.updateProgressLabel("extracting zip file");
+                            if(Directory.Exists("data/temp/cd"))
+                                Directory.Delete("data/temp/cd", true);
+                            Directory.CreateDirectory("data/temp/cd");
+                            ZipUtil.UnZipFiles("data/temp/cd.zip", "data/temp/cd", "", true);
+
+                            // scan through moving all the files and directories
+                            moveDirectoryContents("data\\temp\\cd", "iso\\cd");
+                            Directory.Delete("data\\temp\\cd", true);
+
+                            // update the version
+                            if(File.Exists("data\\" + str1))
+                                File.Delete("data\\" + str1);
                             File.Copy("data\\temp\\" + str1, "data\\" + str1);
                             mainFrm.BeginInvoke(new voidDelegate(() => {
                                 mainFrm.lblMenuVer.Text = "Menu v" + newVersion;
