@@ -28,7 +28,7 @@ namespace SatiatorRingsConfig
         }
         public int selectedId;
         public bool firstInstall = false;
-        public string appVer = "0.8";
+        public string appVer = "1.0";
         public bool firstboot = true;
 
         TGA T;
@@ -73,11 +73,9 @@ namespace SatiatorRingsConfig
 
         private void BtnBrowse_Click(object sender, EventArgs e)
         {
-            btnRemoveImage.Enabled = false;
+            btnRemoveIDTag.Visible = false;
             btnApply.Enabled = false;
-            btnExistingImage.Enabled = false;
             txtDir.Text = "";
-            txtImageID.Text = "";
             lstDir.Items.Clear();
             using (var fbd = new FolderBrowserDialog())
             {
@@ -114,6 +112,9 @@ namespace SatiatorRingsConfig
                             else
                                 data.imageId = -1;
                         }
+                        fn = objs[j].path.Replace(txtDir.Text, "");
+                        if (fn.StartsWith("\\"))
+                            fn = fn.Substring(1, fn.Length - 1);
                         item.Text = fn;
                         item.Tag = data;
                         lstDir.Items.Add(item);
@@ -128,7 +129,6 @@ namespace SatiatorRingsConfig
 
         private void BtnBuild_Click(object sender, EventArgs e)
         {
-            clearUnusedBoxarts();
             SaveFileDialog fd = new SaveFileDialog();
             fd.Filter = "ISO (*.iso)|*.iso";
             fd.FileName = "satiator-rings.iso";
@@ -137,109 +137,27 @@ namespace SatiatorRingsConfig
             {
                 if (File.Exists(fd.FileName))
                     File.Delete(fd.FileName);
-
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                if (File.Exists("satiator-rings.iso"))
-                    File.Delete("satiator-rings.iso");
-                startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                startInfo.FileName = @"iso\mkisofs.exe";
-                startInfo.Arguments = "-quiet -sysid \"SEGA SATURN\" -volid \"SaturnApp\" -volset \"SaturnApp\" -sectype 2352 -publisher \"SEGA ENTERPRISES, LTD.\" -preparer \"SEGA ENTERPRISES, LTD.\" -appid \"SaturnApp\" -abstract \"./iso/cd/ABS.TXT\" -copyright \"./iso/cd/CPY.TXT\" -biblio \"./iso/cd/BIB.TXT\" -generic-boot \"./iso/IP.BIN\" -full-iso9660-filenames -o satiator-rings.iso ./iso/cd";
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-
-                if (File.Exists(fd.FileName))
-                    File.Delete(fd.FileName);
-                File.Copy("satiator-rings.iso", fd.FileName);
+                if (!File.Exists(Path.Combine("data\\satiator-rings.iso")))
+                {
+                    MessageBox.Show("Could not find the menu iso file, try downloading it again via a menu update", "Menu ISO Mising", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                File.Copy(Path.Combine("data\\satiator-rings.iso"), fd.FileName);
                 MessageBox.Show("Completed, Enjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        int freeBoxartID()
-        {
-            for (int j = 0; j < 100; j++)
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-                    if(j!=0)
-                        path = Path.Combine(path, "BOX" + j);
-                    else
-                        path = Path.Combine(path, "BOX");
-                    path = Path.Combine(path, i + "S.TGA");
-                    if (!File.Exists(path))
-                    {
-                        return i + (j * 100);
-                    }
-                }
-            }
-            return -1;
-        }
-
-        void clearUnusedBoxarts()
-        {
-            List<string> boxes = new List<string>();
-            for (int j = 0; j < 100; j++)
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-                    if (j != 0)
-                        path = Path.Combine(path, "BOX" + j);
-                    else
-                        path = Path.Combine(path, "BOX");
-                    path = Path.Combine(path, i + "S.TGA");
-                    if (File.Exists(path))
-                    {
-                        boxes.Add(path);
-                        for(int k = 0; k< lstDir.Items.Count; k++)
-                        {
-                            itemData data = (itemData)lstDir.Items[k].Tag;
-                            if (data.imageId == i + (j * 100))
-                            {
-                                boxes.Remove(path);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            if(boxes.Count > 0)
-            {
-                if(MessageBox.Show("There are " + boxes.Count + " unused boxarts in the ISO folder. Do you want to remove them?", "Unused Images", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    for(int i=0;i< boxes.Count;i++)
-                    {
-                        File.Delete(boxes[i]);
-                    }
-                }
             }
         }
 
         private void BtnApply_Click(object sender, EventArgs e)
         {
             itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-            int boxFolderId = 0;
-            int id = freeBoxartID();
-            if(id < 0)
-            {
-                MessageBox.Show("Maximum boxarts reached", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
             OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = "Image FIles (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
+            fd.Filter = "Image Files (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
             if (fd.ShowDialog() == DialogResult.OK)
             {
-                if (data.imageId != -1)
+                if (File.Exists(Path.Combine(data.fn, "BOX.TGA")))
                 {
                     if (MessageBox.Show("An image already exists with this ID, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        id = data.imageId;
-                }
-                while (id >= 100)
-                {
-                    id -= 100;
-                    boxFolderId++;
+                        File.Delete(Path.Combine(data.fn, "BOX.TGA"));
                 }
                 using (Image img = Image.FromFile(fd.FileName))
                 {
@@ -262,32 +180,9 @@ namespace SatiatorRingsConfig
                     using (Bitmap clone = new Bitmap(original))
                     using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
                         T = (TGA)newbmp;
-                    string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-                    if (boxFolderId > 0)
-                        path = Path.Combine(path, "BOX" + boxFolderId);
-                    else
-                        path = Path.Combine(path, "BOX");
-
-                    if (!Directory.Exists(path))
-                        Directory.CreateDirectory(path);
-
-                    string newDirName = lstDir.SelectedItems[0].Text;
-                    path = Path.Combine(path, id + "S.TGA");
-                    if (File.Exists(path))
-                        File.Delete(path);
-                    T.Save(path);
-                    File.Delete("tmp.png");
+                    T.Save(Path.Combine(data.fn, "BOX.TGA"));
                     pictureBox1.Image = (Bitmap)T;
                     pictureBox1.Visible = true;
-
-                    newDirName  = newDirName + " [" + id + "]";
-                    newDirName = Path.Combine(Path.GetDirectoryName(data.fn), newDirName);
-                    lstDir.SelectedItems[0].Tag = data;
-                    if(data.fn != newDirName)
-                        Directory.Move(data.fn, newDirName);
-                    data.fn = newDirName;
-                    data.imageId = id;
-                    txtImageID.Text = data.imageId.ToString();
                 }
             }
         }
@@ -322,38 +217,19 @@ namespace SatiatorRingsConfig
             if (lstDir.SelectedItems.Count == 0)
             {
                 btnApply.Enabled = false;
-                btnRemoveImage.Enabled = false;
-                btnExistingImage.Enabled = false;
-                txtImageID.Text = "-1";
+                btnRemoveIDTag.Visible = false;
                 pictureBox1.Image = null;
                 return;
             }
             btnApply.Enabled = true;
-            btnExistingImage.Enabled = true;
             itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-            txtImageID.Text = data.imageId.ToString();
 
-            if (txtImageID.Text == "-1")
-            {
-                pictureBox1.Image = null;
-                btnRemoveImage.Enabled = false;
-                return;
-            }
-            btnRemoveImage.Enabled = true;
-            int id = int.Parse(txtImageID.Text);
-            int boxId = 0;
-            while (id >= 100)
-            {
-                id--;
-                boxId++;
-            }
-            string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-            if (boxId > 0)
-                path = Path.Combine(path, "BOX" + boxId);
+            if (data.imageId != -1)
+                btnRemoveIDTag.Visible = true;
             else
-                path = Path.Combine(path, "BOX");
+                btnRemoveIDTag.Visible = false;
 
-            path = Path.Combine(path, id + "S.TGA");
+            string path = Path.Combine(data.fn, "BOX.TGA");
             if (!File.Exists(path))
             {
                 pictureBox1.Image = null;
@@ -371,96 +247,11 @@ namespace SatiatorRingsConfig
                 // rename the folder taking the ID off
                 string newDirName = data.fn.Substring(0, data.fn.LastIndexOf(" ["));
                 Directory.Move(data.fn, newDirName);
-
-                int boxFolderId = 0;
-                int id = data.imageId;
-                while (id >= 100)
-                {
-                    id -= 100;
-                    boxFolderId++;
-                }
-                string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-                if (boxFolderId > 0)
-                    path = Path.Combine(path, "BOX" + boxFolderId);
-                else
-                    path = Path.Combine(path, "BOX");
-                if (File.Exists(Path.Combine(path, id + "S.TGA")))
-                {
-                    if(MessageBox.Show("Do you want to delete the image from the CD?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        File.Delete(Path.Combine(path, id + "S.TGA"));
-                }
                 data.fn = newDirName;
-                data.imageId = -1;
-                txtImageID.Text = data.imageId.ToString();
-                pictureBox1.Image = null;
+                lstDir.SelectedItems[0].Tag = data;
+                lstDir.SelectedItems[0].Text = Path.GetFileName(data.fn);
+                MessageBox.Show("All fixed :) Sorry about that", "Sorry!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        private void BtnExisitngImage_Click(object sender, EventArgs e)
-        {
-            frmExistingImages f = new frmExistingImages(this);
-            f.ShowDialog();
-
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-            if (selectedId != -1)
-            {
-                int boxFolderId = 0;
-                int id = data.imageId;
-                string newDirName = data.fn;
-                string path = "";
-                if (data.imageId >= 0)
-                    newDirName = data.fn.Substring(0, data.fn.LastIndexOf(" ["));
-                if (id != -1)
-                {
-                    // remove the existing image
-                    // rename the folder taking the ID off
-                    Directory.Move(data.fn, newDirName);
-
-                    while (id >= 100)
-                    {
-                        id -= 100;
-                        boxFolderId++;
-                    }
-                    path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-                    if (boxFolderId > 0)
-                        path = Path.Combine(path, "BOX" + boxFolderId);
-                    else
-                        path = Path.Combine(path, "BOX");
-                    if (File.Exists(Path.Combine(path, id + "S.TGA")))
-                    {
-                        if (MessageBox.Show("Do you want to delete the old image from the CD?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                            File.Delete(Path.Combine(path, id + "S.TGA"));
-                    }
-                    data.fn = newDirName;
-                    data.imageId = -1;
-                    txtImageID.Text = data.imageId.ToString();
-                    pictureBox1.Image = null;
-                }
-
-                // attach the image to the directory by renaming it
-                newDirName = data.fn + " [" + selectedId + "]";
-                txtImageID.Text = data.imageId.ToString();
-
-                id = selectedId;
-                while (id >= 100)
-                {
-                    id -= 100;
-                    boxFolderId++;
-                }
-                path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "iso", "cd");
-                if (boxFolderId > 0)
-                    path = Path.Combine(path, "BOX" + boxFolderId);
-                else
-                    path = Path.Combine(path, "BOX");
-                path = Path.Combine(path, id + "S.TGA");
-                T = new TGA(path);
-                pictureBox1.Image = (Bitmap)T;
-                Directory.Move(data.fn, newDirName);
-                data.fn = newDirName;
-                data.imageId = selectedId;
-                txtImageID.Text = data.imageId.ToString();
-            }
-
         }
 
         public void enableForm(bool enable)

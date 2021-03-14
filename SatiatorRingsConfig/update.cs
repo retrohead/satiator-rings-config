@@ -360,20 +360,13 @@ namespace SatiatorRingsConfig
                 {
                     if (download)
                     {
-                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/cd.zip", "data\\temp\\", "Update Check"))
+                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/satiator-rings.iso", "data\\temp\\", "Update Check"))
                         {
-                            mainFrm.updateProgressLabel("extracting zip file");
-                            if(Directory.Exists("data/temp/cd"))
-                                Directory.Delete("data/temp/cd", true);
-                            Directory.CreateDirectory("data/temp/cd");
-                            ZipUtil.UnZipFiles("data/temp/cd.zip", "data/temp/cd", "", true);
+                            if (File.Exists("data\\satiator-rings.iso"))
+                                File.Delete("data\\satiator-rings.iso");
+                            File.Copy("data\\temp\\satiator-rings.iso", "data\\satiator-rings.iso");
 
-                            // scan through moving all the files and directories
-                            moveDirectoryContents("data\\temp\\cd", "iso\\cd");
-                            Directory.Delete("data\\temp\\cd", true);
-
-                            // update the version
-                            if(File.Exists("data\\" + str1))
+                            // update the version                         if (File.Exists("data\\" + str1))
                                 File.Delete("data\\" + str1);
                             File.Copy("data\\temp\\" + str1, "data\\" + str1);
                             mainFrm.BeginInvoke(new voidDelegate(() => {

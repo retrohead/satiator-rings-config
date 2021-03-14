@@ -31,18 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtDir = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.txtImageID = new System.Windows.Forms.TextBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnBuild = new System.Windows.Forms.Button();
             this.lstDir = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnRemoveImage = new System.Windows.Forms.Button();
+            this.btnRemoveIDTag = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnExistingImage = new System.Windows.Forms.Button();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.lblMenuVer = new System.Windows.Forms.Label();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -50,6 +47,7 @@
             this.applicationUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblMenuVer = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.statusStrip1.SuspendLayout();
@@ -79,25 +77,16 @@
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.BtnBrowse_Click);
             // 
-            // txtImageID
-            // 
-            this.txtImageID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtImageID.Location = new System.Drawing.Point(526, 57);
-            this.txtImageID.Name = "txtImageID";
-            this.txtImageID.ReadOnly = true;
-            this.txtImageID.Size = new System.Drawing.Size(100, 20);
-            this.txtImageID.TabIndex = 3;
-            // 
             // btnApply
             // 
             this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnApply.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(526, 199);
+            this.btnApply.Location = new System.Drawing.Point(527, 171);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(100, 29);
             this.btnApply.TabIndex = 7;
-            this.btnApply.Text = "New Image";
+            this.btnApply.Text = "Add Image";
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.BtnApply_Click);
             // 
@@ -110,7 +99,7 @@
             this.btnBuild.Name = "btnBuild";
             this.btnBuild.Size = new System.Drawing.Size(100, 63);
             this.btnBuild.TabIndex = 8;
-            this.btnBuild.Text = "Build ISO";
+            this.btnBuild.Text = "Copy ISO";
             this.btnBuild.UseVisualStyleBackColor = true;
             this.btnBuild.Click += new System.EventHandler(this.BtnBuild_Click);
             // 
@@ -135,18 +124,18 @@
             // 
             this.columnHeader1.Width = 479;
             // 
-            // btnRemoveImage
+            // btnRemoveIDTag
             // 
-            this.btnRemoveImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemoveImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveImage.Enabled = false;
-            this.btnRemoveImage.Location = new System.Drawing.Point(526, 269);
-            this.btnRemoveImage.Name = "btnRemoveImage";
-            this.btnRemoveImage.Size = new System.Drawing.Size(100, 29);
-            this.btnRemoveImage.TabIndex = 11;
-            this.btnRemoveImage.Text = "Remove Image";
-            this.btnRemoveImage.UseVisualStyleBackColor = true;
-            this.btnRemoveImage.Click += new System.EventHandler(this.BtnRemoveImage_Click);
+            this.btnRemoveIDTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveIDTag.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRemoveIDTag.Location = new System.Drawing.Point(526, 206);
+            this.btnRemoveIDTag.Name = "btnRemoveIDTag";
+            this.btnRemoveIDTag.Size = new System.Drawing.Size(100, 29);
+            this.btnRemoveIDTag.TabIndex = 11;
+            this.btnRemoveIDTag.Text = "Remove ID Tag";
+            this.btnRemoveIDTag.UseVisualStyleBackColor = true;
+            this.btnRemoveIDTag.Visible = false;
+            this.btnRemoveIDTag.Click += new System.EventHandler(this.BtnRemoveImage_Click);
             // 
             // statusStrip1
             // 
@@ -171,19 +160,6 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(45, 20);
             this.toolStripStatusLabel1.Text = "ready...";
             // 
-            // btnExistingImage
-            // 
-            this.btnExistingImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExistingImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExistingImage.Enabled = false;
-            this.btnExistingImage.Location = new System.Drawing.Point(526, 234);
-            this.btnExistingImage.Name = "btnExistingImage";
-            this.btnExistingImage.Size = new System.Drawing.Size(100, 29);
-            this.btnExistingImage.TabIndex = 13;
-            this.btnExistingImage.Text = "Exisitng Image";
-            this.btnExistingImage.UseVisualStyleBackColor = true;
-            this.btnExistingImage.Click += new System.EventHandler(this.BtnExisitngImage_Click);
-            // 
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -194,17 +170,6 @@
             this.toolStrip1.Size = new System.Drawing.Size(634, 25);
             this.toolStrip1.TabIndex = 14;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // lblMenuVer
-            // 
-            this.lblMenuVer.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMenuVer.ForeColor = System.Drawing.Color.Red;
-            this.lblMenuVer.Location = new System.Drawing.Point(526, 477);
-            this.lblMenuVer.Name = "lblMenuVer";
-            this.lblMenuVer.Size = new System.Drawing.Size(100, 15);
-            this.lblMenuVer.TabIndex = 15;
-            this.lblMenuVer.Text = "Menu v";
-            this.lblMenuVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // toolStripDropDownButton1
             // 
@@ -258,6 +223,17 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
+            // lblMenuVer
+            // 
+            this.lblMenuVer.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMenuVer.ForeColor = System.Drawing.Color.Red;
+            this.lblMenuVer.Location = new System.Drawing.Point(526, 477);
+            this.lblMenuVer.Name = "lblMenuVer";
+            this.lblMenuVer.Size = new System.Drawing.Size(100, 15);
+            this.lblMenuVer.TabIndex = 15;
+            this.lblMenuVer.Text = "Menu v";
+            this.lblMenuVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -273,7 +249,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(525, 85);
+            this.pictureBox1.Location = new System.Drawing.Point(526, 57);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(100, 100);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -287,17 +263,15 @@
             this.ClientSize = new System.Drawing.Size(634, 611);
             this.Controls.Add(this.lblMenuVer);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.btnExistingImage);
             this.Controls.Add(this.txtDir);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.btnRemoveImage);
+            this.Controls.Add(this.btnRemoveIDTag);
             this.Controls.Add(this.lstDir);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.btnBuild);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.txtImageID);
             this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -321,18 +295,16 @@
 
         private System.Windows.Forms.TextBox txtDir;
         private System.Windows.Forms.Button btnBrowse;
-        private System.Windows.Forms.TextBox txtImageID;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnBuild;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ListView lstDir;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.Button btnRemoveImage;
+        private System.Windows.Forms.Button btnRemoveIDTag;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.Button btnExistingImage;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
