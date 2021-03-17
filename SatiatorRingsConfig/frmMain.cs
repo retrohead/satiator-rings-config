@@ -17,7 +17,7 @@ namespace SatiatorRingsConfig
 {
     public partial class frmMain : Form
     {
-        public string appVer = "2.0";
+        public string appVer = "2.1";
         private class itemData
         {
             public string fn;
@@ -128,9 +128,13 @@ namespace SatiatorRingsConfig
             string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
             path = Path.Combine(path, "satiator-rings", "themes");
             if (!Directory.Exists(path))
+            {
                 tabControl1.TabPages.Remove(tabPage2);
-            else if(tabControl1.TabPages.Count == 1)
+                return;
+            }
+            else if (tabControl1.TabPages.Count == 1)
                 tabControl1.TabPages.Add(tabPage2);
+            btnBuild.Text = "Update Satiator Rings";
             string[] dirs = Directory.GetDirectories(path);
             dir[] objs = new dir[dirs.Count()];
             int i = 0;
@@ -247,7 +251,7 @@ namespace SatiatorRingsConfig
         private void BtnApply_Click(object sender, EventArgs e)
         {
             itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-            addTGAtoDir(data.fn, "BOX.TGA", -1, -1);
+            addTGAtoDir("BOX.TGA", data.fn, -1, -1);
         }
 
         public static Bitmap ResizeImage(Image image, int width, int height)
@@ -606,6 +610,11 @@ namespace SatiatorRingsConfig
             item.Tag = data;
             lstThemes.Items.Add(item);
             update.moveDirectoryContents(@"data\sd\satiator-rings\themes\default", path, false);
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
     public delegate void voidDelegate();
