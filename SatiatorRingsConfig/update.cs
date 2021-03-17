@@ -1,7 +1,7 @@
-﻿using FolderZipper;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Forms;
 namespace SatiatorRingsConfig
 {
-
     public class update
     {
         private static frmMain mainFrm;
@@ -248,7 +247,8 @@ namespace SatiatorRingsConfig
                                             break;
                                         }
                                         mainFrm.updateProgressLabel("extracting zip file");
-                                        ZipUtil.UnZipFiles("data/temp/" + str2 + " new.zip", "data/temp/", "", true);
+                                        ZipFile.ExtractToDirectory("data/temp/" + str2 + " new.zip", "data/temp/");
+                                        System.IO.File.Delete("data/temp/" + str2 + " new.zip");
                                         System.IO.File.Delete("data/" + str1);
                                         System.IO.File.Move("data/temp/" + str1, "data/" + str1);
                                         System.IO.File.Delete("data/temp/" + str1);
@@ -292,8 +292,10 @@ namespace SatiatorRingsConfig
             return false;
         }
 
-        private static void moveDirectoryContents(string sourcedir, string dest)
+        public static void moveDirectoryContents(string sourcedir, string dest, bool deleteSource)
         {
+            if (!Directory.Exists(dest))
+                Directory.CreateDirectory(dest);
             string[] files = Directory.GetFiles(sourcedir);
             foreach(string file in files)
             {
@@ -302,7 +304,10 @@ namespace SatiatorRingsConfig
 
                 if (File.Exists(destPath))
                     File.Delete(destPath);
-                File.Move(srcPath, destPath);
+                if(deleteSource)
+                    File.Move(srcPath, destPath);
+                else
+                    File.Copy(srcPath, destPath);
             }
 
             files = Directory.GetDirectories(sourcedir);
@@ -313,7 +318,9 @@ namespace SatiatorRingsConfig
 
                 if (!Directory.Exists(destPath))
                     Directory.CreateDirectory(destPath);
-                moveDirectoryContents(srcPath, destPath);
+                moveDirectoryContents(srcPath, destPath, deleteSource);
+                if (deleteSource)
+                    Directory.Delete(srcPath, true);
             }
         }
 
@@ -353,20 +360,27 @@ namespace SatiatorRingsConfig
                 catch
                 {
                 }
-                mainFrm.BeginInvoke(new voidDelegate(()=> {
+                mainFrm.BeginInvoke(new voidDelegate(() => {
                     mainFrm.lblMenuVer.Text = "Menu v" + curVer;
                 }));
                 if (curVer != newVersion)
                 {
                     if (download)
                     {
-                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/satiator-rings.iso", "data\\temp\\", "Update Check"))
+                        if (downloadFile("http://files-ds-scene.net/retrohead/satiator/releases/satiator-rings_v" + newVersion + ".zip", "data\\temp\\", "satiator-rings_v" + newVersion + ".zip"))
                         {
-                            if (File.Exists("data\\satiator-rings.iso"))
-                                File.Delete("data\\satiator-rings.iso");
-                            File.Copy("data\\temp\\satiator-rings.iso", "data\\satiator-rings.iso");
+                            mainFrm.updateProgressLabel("extracting zip file");
+                            if (Directory.Exists("data/temp/sd"))
+                                Directory.Delete("data/temp/sd", true);
+                            Directory.CreateDirectory("data/temp/sd");
+                            ZipFile.ExtractToDirectory("data/temp/satiator-rings_v" + newVersion + ".zip", "data/temp/sd");
+                            File.Delete("data/temp/satiator-rings_v" + newVersion + ".zip");
+                            // scan through moving all the files and directories
 
-                            // update the version                         if (File.Exists("data\\" + str1))
+                            moveDirectoryContents("data\\temp\\sd", "data\\sd", true);
+                            Directory.Delete("data\\temp\\sd", true);
+                            // update the version
+                            if (File.Exists("data\\" + str1))
                                 File.Delete("data\\" + str1);
                             File.Copy("data\\temp\\" + str1, "data\\" + str1);
                             mainFrm.BeginInvoke(new voidDelegate(() => {
@@ -448,7 +462,7 @@ namespace SatiatorRingsConfig
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 allowDownload = true;
                 return false;
             }

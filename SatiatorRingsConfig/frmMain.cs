@@ -17,18 +17,33 @@ namespace SatiatorRingsConfig
 {
     public partial class frmMain : Form
     {
+        public string appVer = "2.0";
         private class itemData
         {
             public string fn;
             public int imageId;
         }
+        private class themeFileType
+        {
+            public int[] font = new int[3];
+            public int[] bg = new int[3];
+            public int[] selector = new int[3];
+
+            public TGA img_logo;
+            public TGA img_menu;
+            public TGA img_gamelist;
+            public TGA img_options;
+            public TGA img_console;
+            public TGA img_satiator;
+            public TGA img_theme;
+        }
+        themeFileType themeFile;
         struct dir
         {
             public string path;
         }
         public int selectedId;
         public bool firstInstall = false;
-        public string appVer = "1.0";
         public bool firstboot = true;
 
         TGA T;
@@ -70,6 +85,77 @@ namespace SatiatorRingsConfig
             Enabled = true;
             toolStripStatusLabel1.Text = "ready...";
         }
+        private void listGames()
+        {
+            string[] dirs = Directory.GetDirectories(txtDir.Text);
+            dir[] objs = new dir[dirs.Count()];
+            int i = 0;
+            foreach (string dir in dirs)
+            {
+                objs[i] = new dir();
+                objs[i].path = dir;
+                i++;
+            }
+            Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
+            lstDir.Items.Clear();
+            for (int j = 0; j < i; j++)
+            {
+                ListViewItem item = new ListViewItem();
+                itemData data = new itemData();
+                data.fn = objs[j].path;
+                string fn = objs[j].path.Replace(txtDir.Text, "");
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                data.imageId = -1;
+                if (fn.EndsWith("]"))
+                {
+                    string idStr = fn.Substring(fn.LastIndexOf(" [") + 2, fn.Length - (fn.LastIndexOf(" [") + 2) - 1);
+                    if (!int.TryParse(idStr, out data.imageId))
+                        data.imageId = -1;
+                }
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                item.Text = fn;
+                item.Tag = data;
+                lstDir.Items.Add(item);
+            }
+            if (lstDir.Items.Count > 0)
+                lstDir.Items[0].Selected = true;
+        }
+
+        private void listThemes()
+        {
+            string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            path = Path.Combine(path, "satiator-rings", "themes");
+            if (!Directory.Exists(path))
+                tabControl1.TabPages.Remove(tabPage2);
+            else if(tabControl1.TabPages.Count == 1)
+                tabControl1.TabPages.Add(tabPage2);
+            string[] dirs = Directory.GetDirectories(path);
+            dir[] objs = new dir[dirs.Count()];
+            int i = 0;
+            foreach (string dir in dirs)
+            {
+                objs[i] = new dir();
+                objs[i].path = dir;
+                i++;
+            }
+            Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
+            lstThemes.Items.Clear();
+            for (int j = 0; j < i; j++)
+            {
+                ListViewItem item = new ListViewItem();
+                itemData data = new itemData();
+                data.fn = objs[j].path;
+                string fn = objs[j].path.Replace(path, "");
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                item.Text = fn;
+                item.Tag = data;
+                if(fn != "default")
+                    lstThemes.Items.Add(item);
+            }
+        }
 
         private void BtnBrowse_Click(object sender, EventArgs e)
         {
@@ -84,94 +170,65 @@ namespace SatiatorRingsConfig
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     txtDir.Text = fbd.SelectedPath;
-                    string[] dirs = Directory.GetDirectories(fbd.SelectedPath);
-                    dir[] objs = new dir[dirs.Count()];
-                    int i = 0;
-                    foreach (string dir in dirs)
-                    {
-                        objs[i] = new dir();
-                        objs[i].path = dir;
-                        i++;
-                    }
-                    Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
-
-                    for (int j=0;j<i;j++)
-                    {
-                        ListViewItem item = new ListViewItem();
-                        itemData data = new itemData();
-                        data.fn = objs[j].path;
-                        string fn = objs[j].path.Replace(txtDir.Text, "");
-                        if(fn.StartsWith("\\"))
-                            fn = fn.Substring(1, fn.Length - 1);
-                        data.imageId = -1;
-                        if (fn.EndsWith("]"))
-                        {
-                            string idStr = fn.Substring(fn.LastIndexOf(" [") + 2, fn.Length - (fn.LastIndexOf(" [") + 2) - 1);
-                            if (int.TryParse(idStr, out data.imageId))
-                                fn = fn.Substring(0, fn.LastIndexOf(" ["));
-                            else
-                                data.imageId = -1;
-                        }
-                        fn = objs[j].path.Replace(txtDir.Text, "");
-                        if (fn.StartsWith("\\"))
-                            fn = fn.Substring(1, fn.Length - 1);
-                        item.Text = fn;
-                        item.Tag = data;
-                        lstDir.Items.Add(item);
-                    }
+                    listGames();
+                    listThemes();
                     btnBuild.Enabled = true;
+                    tabControl1.Enabled = true;
                 } else
                 {
                     btnBuild.Enabled = false;
+                    tabControl1.Enabled = false;
+                    tabControl1.SelectedIndex = 0;
                 }
             }
         }
 
         private void BtnBuild_Click(object sender, EventArgs e)
         {
-            SaveFileDialog fd = new SaveFileDialog();
-            fd.Filter = "ISO (*.iso)|*.iso";
-            fd.FileName = "satiator-rings.iso";
-            fd.InitialDirectory = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
-            if (fd.ShowDialog() == DialogResult.OK)
+            if (!Directory.Exists("data\\sd"))
             {
-                if (File.Exists(fd.FileName))
-                    File.Delete(fd.FileName);
-                if (!File.Exists(Path.Combine("data\\satiator-rings.iso")))
-                {
-                    MessageBox.Show("Could not find the menu iso file, try downloading it again via a menu update", "Menu ISO Mising", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                File.Copy(Path.Combine("data\\satiator-rings.iso"), fd.FileName);
-                MessageBox.Show("Completed, Enjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Menu files appear to be missing. Try updating the menu file the file menu", "Menu Files Missing", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
             }
+            if (MessageBox.Show("Are you sure you want to install Satiaor Rings to '" + txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")) + "'?", "Confirm Installation", MessageBoxButtons.OK, MessageBoxIcon.Question) != DialogResult.OK)
+                return;
+            update.moveDirectoryContents("data\\sd", txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")), false);
+            if(lstThemes.Items.Count == 0)
+                listThemes();
+            MessageBox.Show("The installation completed.\n\nLaunch the satiator-rings.iso from your Satiator.\n\nEnjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void BtnApply_Click(object sender, EventArgs e)
+        private void addTGAtoDir(string tgaName, string dir, int w, int h)
         {
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
             OpenFileDialog fd = new OpenFileDialog();
             fd.Filter = "Image Files (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
             if (fd.ShowDialog() == DialogResult.OK)
             {
-                if (File.Exists(Path.Combine(data.fn, "BOX.TGA")))
+                if (File.Exists(Path.Combine(dir, tgaName)))
                 {
-                    if (MessageBox.Show("An image already exists with this ID, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        File.Delete(Path.Combine(data.fn, "BOX.TGA"));
+                    if (MessageBox.Show("An image already exists in this directory, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        File.Delete(Path.Combine(dir, tgaName));
                 }
                 using (Image img = Image.FromFile(fd.FileName))
                 {
                     Image newimg;
-                    double imgratio = (double)img.Width / (double)img.Height;
-                    if (imgratio > 0.8)
+                    if (w < 0 || h < 0)
                     {
-                        // presume japanese
-                        newimg = ResizeImage(img, 80, 80);
-                    }
-                    else
+                        // presume boxart
+                        double imgratio = (double)img.Width / (double)img.Height;
+                        if (imgratio > 0.8)
+                        {
+                            // presume japanese
+                            newimg = ResizeImage(img, 80, 80);
+                        }
+                        else
+                        {
+                            // presume eur / usa
+                            newimg = ResizeImage(img, 64, 100);
+                        }
+                    } else
                     {
-                        // presume eur / usa
-                        newimg = ResizeImage(img, 64, 100);
+                        newimg = ResizeImage(img, w, h);
                     }
                     newimg.Save("tmp.png");
                     newimg.Dispose();
@@ -180,11 +237,17 @@ namespace SatiatorRingsConfig
                     using (Bitmap clone = new Bitmap(original))
                     using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
                         T = (TGA)newbmp;
-                    T.Save(Path.Combine(data.fn, "BOX.TGA"));
+                    T.Save(Path.Combine(dir, tgaName));
                     pictureBox1.Image = (Bitmap)T;
                     pictureBox1.Visible = true;
                 }
             }
+        }
+
+        private void BtnApply_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+            addTGAtoDir(data.fn, "BOX.TGA", -1, -1);
         }
 
         public static Bitmap ResizeImage(Image image, int width, int height)
@@ -248,6 +311,7 @@ namespace SatiatorRingsConfig
                 string newDirName = data.fn.Substring(0, data.fn.LastIndexOf(" ["));
                 Directory.Move(data.fn, newDirName);
                 data.fn = newDirName;
+                data.imageId = -1;
                 lstDir.SelectedItems[0].Tag = data;
                 lstDir.SelectedItems[0].Text = Path.GetFileName(data.fn);
                 MessageBox.Show("All fixed :) Sorry about that", "Sorry!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -316,6 +380,232 @@ namespace SatiatorRingsConfig
         {
             enableForm(false);
             update.checkForUpdate(update.updateTypes.application, true, this, updatesCompleted);
+        }
+
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if((tabControl1.SelectedIndex == 1) && (lstThemes.Items.Count > 0) && (lstThemes.SelectedItems.Count  == 0))
+                lstThemes.Items[0].Selected = true;
+        }
+
+        private void LstThemes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (lstThemes.SelectedItems.Count == 0)
+            {
+                pnlTheme.Visible = false;
+                return;
+            }
+            pnlTheme.Visible = true;
+            themeFile = new themeFileType();
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            string fn = Path.Combine(data.fn, "theme.ini");
+            if(!File.Exists(fn))
+            {
+                MessageBox.Show("There was an error opening the theme.ini file, make sure it exists.", "theme.ini missing", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            using (StreamReader sr = new StreamReader(fn))
+            {
+                string oneline = "";
+                while (oneline != "[START]")
+                    oneline = sr.ReadLine();
+
+                oneline = sr.ReadLine();
+                while (oneline != "[END]")
+                {
+                    string[] linedata;
+                    if (oneline.StartsWith("font="))
+                    {
+                        oneline = oneline.Substring("font=".Length, oneline.Length - "font=".Length);
+                        linedata = oneline.Split(',');
+                        themeFile.font[0] = int.Parse(linedata[0]);
+                        themeFile.font[1] = int.Parse(linedata[1]);
+                        themeFile.font[2] = int.Parse(linedata[2]);
+                    }
+                    if (oneline.StartsWith("bg="))
+                    {
+                        oneline = oneline.Substring("bg=".Length, oneline.Length - "bg=".Length);
+                        linedata = oneline.Split(',');
+                        themeFile.bg[0] = int.Parse(linedata[0]);
+                        themeFile.bg[1] = int.Parse(linedata[1]);
+                        themeFile.bg[2] = int.Parse(linedata[2]);
+                    }
+                    if (oneline.StartsWith("selector="))
+                    {
+                        oneline = oneline.Substring("selector=".Length, oneline.Length - "selector=".Length);
+                        linedata = oneline.Split(',');
+                        themeFile.selector[0] = int.Parse(linedata[0]);
+                        themeFile.selector[1] = int.Parse(linedata[1]);
+                        themeFile.selector[2] = int.Parse(linedata[2]);
+                    }
+                    oneline = sr.ReadLine();
+                }
+                sr.Close();
+            }
+            // create the TGA files
+            themeFile.img_logo = new TGA(Path.Combine(data.fn, "RINGS.TGA"));
+            picLogo.Image = (Bitmap)themeFile.img_logo;
+            themeFile.img_menu   = new TGA(Path.Combine(data.fn, "MENU.TGA"));
+            picMenu.Image = (Bitmap)themeFile.img_menu;
+            themeFile.img_gamelist = new TGA(Path.Combine(data.fn, "GAME.TGA"));
+            picGame.Image = (Bitmap)themeFile.img_gamelist;
+            themeFile.img_console = new TGA(Path.Combine(data.fn, "CONSOLE.TGA"));
+            picConsole.Image = (Bitmap)themeFile.img_console;
+            themeFile.img_satiator = new TGA(Path.Combine(data.fn, "SIATOR.TGA"));
+            picSatiator.Image = (Bitmap)themeFile.img_satiator;
+            themeFile.img_options = new TGA(Path.Combine(data.fn, "OPTION.TGA"));
+            picOptions.Image = (Bitmap)themeFile.img_options;
+            themeFile.img_theme = new TGA(Path.Combine(data.fn, "THEME.TGA"));
+            picTheme.Image = (Bitmap)themeFile.img_theme;
+
+            // apply the theme to the gui
+            txtThemeName.Text = Path.GetFileName(data.fn);
+            btnFont.BackColor = Color.FromArgb(themeFile.font[0], themeFile.font[1], themeFile.font[2]);
+            btnBg.BackColor = Color.FromArgb(themeFile.bg[0], themeFile.bg[1], themeFile.bg[2]);
+            btnSelection.BackColor = Color.FromArgb(themeFile.selector[0], themeFile.selector[1], themeFile.selector[2]);
+            udpateBgColours();
+        }
+
+        private void PicLogo_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("RINGS.TGA", data.fn, 128, 16);
+        }
+
+        private void PicGame_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("GAME.TGA", data.fn, 128, 16);
+        }
+
+        private void PicMenu_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("MENU.TGA", data.fn, 128, 16);
+        }
+
+        private void PicOptions_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("OPTION.TGA", data.fn, 128, 16);
+        }
+
+        private void PicConsole_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("CONSOLE.TGA", data.fn, 128, 16);
+        }
+
+        private void PicSatiator_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("SIATOR.TGA", data.fn, 128, 16);
+        }
+
+        private void PicTheme_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            addTGAtoDir("THEME.TGA", data.fn, 128, 16);
+        }
+
+        private void udpateBgColours()
+        {
+            picLogo.BackColor = btnBg.BackColor;
+            picGame.BackColor = btnBg.BackColor;
+            picMenu.BackColor = btnBg.BackColor;
+            picOptions.BackColor = btnBg.BackColor;
+            picConsole.BackColor = btnBg.BackColor;
+            picSatiator.BackColor = btnBg.BackColor;
+            picTheme.BackColor = btnBg.BackColor;
+        }
+        private void saveThemeIni()
+        {
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            StreamWriter sw = new StreamWriter(Path.Combine(data.fn, "theme.ini"));
+            sw.WriteLine("[START]");
+            sw.WriteLine("font=" + btnFont.BackColor.R + "," + btnFont.BackColor.G + "," + btnFont.BackColor.B);
+            sw.WriteLine("bg=" + btnBg.BackColor.R + "," + btnBg.BackColor.G + "," + btnBg.BackColor.B);
+            sw.WriteLine("selector=" + btnSelection.BackColor.R + "," + btnSelection.BackColor.G + "," + btnSelection.BackColor.B);
+            sw.WriteLine("[END]");
+            sw.Close();
+        }
+        private void BtnThemeColour_Click(object sender, EventArgs e)
+        {
+            colorDialog1.Color = ((Button)sender).BackColor;
+            colorDialog1.FullOpen = true;
+            colorDialog1.ShowDialog();
+            if (colorDialog1.Color != ((Button)sender).BackColor)
+            {
+                ((Button)sender).BackColor = colorDialog1.Color;
+                saveThemeIni();
+            }
+            udpateBgColours();
+        }
+
+        private void TextBox1_Leave(object sender, EventArgs e)
+        {
+            char[] chars = Path.GetInvalidPathChars();
+            foreach(char c in chars)
+            {
+                if(txtThemeName.Text.Contains(c))
+                {
+                    MessageBox.Show("The name cannot include any illegal path characters, please remove '" + c + "' from the name", "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+            }
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            if (txtThemeName.Text != lstThemes.SelectedItems[0].Text)
+            {
+                string newpath = Path.Combine(Path.GetDirectoryName(data.fn), txtThemeName.Text);
+                if(Directory.Exists(newpath))
+                {
+                    MessageBox.Show("A theme already exists with this name, please try again", "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                Directory.Move(data.fn, newpath);
+                data.fn = newpath;
+                lstThemes.SelectedItems[0].Text = txtThemeName.Text;
+                lstThemes.SelectedItems[0].Tag = data;
+            }
+        }
+
+        private void TextBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                TextBox1_Leave(sender, null);
+        }
+
+        private void BtnDeleteTheme_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to delete the selected theme?", "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            Directory.Delete(data.fn, true);
+            lstThemes.Items.Remove(lstThemes.SelectedItems[0]);
+        }
+
+        private void BtnNewTheme_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to create a new theme?", "Confirm Theme Creation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+
+            string path = Path.Combine(txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")), "satiator-rings", "themes", "new theme");
+            int num = 0;
+            while(Directory.Exists(path))
+            {
+                num++;
+                path = Path.Combine(txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")), "satiator-rings", "themes", "new theme (" + num +")");
+            }
+            Directory.CreateDirectory(path);
+            itemData data = new itemData();
+            data.fn = path;
+            data.imageId = -1;
+            ListViewItem item = new ListViewItem();
+            item.Text = Path.GetFileName(path);
+            item.Tag = data;
+            lstThemes.Items.Add(item);
+            update.moveDirectoryContents(@"data\sd\satiator-rings\themes\default", path, false);
         }
     }
     public delegate void voidDelegate();

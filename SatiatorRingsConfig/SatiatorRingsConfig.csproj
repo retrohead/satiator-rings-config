@@ -60,18 +60,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FolderZipper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\FolderZipper.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -126,29 +117,6 @@
       <DependentUpon>updateInfoForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="iso\cd\0.bin" />
-    <None Include="iso\cd\BOX\RESERVED" />
-    <None Include="iso\cd\FONT.TGA" />
-    <None Include="iso\cd\INTRO.PCM" />
-    <None Include="iso\cd\MOVE.PCM" />
-    <None Include="iso\cd\SANSH.PCM" />
-    <None Include="iso\cd\SELECT.PCM" />
-    <None Include="iso\cd\TEX\BG.TGA" />
-    <None Include="iso\cd\TEX\BLANK.TGA" />
-    <None Include="iso\cd\TEX\CONSOLE.TGA" />
-    <None Include="iso\cd\TEX\GAME.TGA" />
-    <None Include="iso\cd\TEX\LOGO.TGA" />
-    <None Include="iso\cd\TEX\MENU.TGA" />
-    <None Include="iso\cd\TEX\OPTION.TGA" />
-    <None Include="iso\cd\TEX\S.TGA" />
-    <None Include="iso\cd\TEX\S1.TGA" />
-    <None Include="iso\cd\TEX\S2.TGA" />
-    <None Include="iso\cd\TEX\SBOX.TGA" />
-    <None Include="iso\cd\TEX\SELECT.TGA" />
-    <None Include="iso\cd\TEX\SHDW.TGA" />
-    <None Include="iso\cd\TEX\SIATOR.TGA" />
-    <None Include="iso\cd\THUD.PCM" />
-    <None Include="iso\IP.BIN" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -167,12 +135,6 @@
     <None Include="Resources\satiator-logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="iso\cd\ABS.TXT" />
-    <None Include="iso\cd\BIB.TXT" />
-    <None Include="iso\cd\CPY.TXT" />
-    <Content Include="iso\cygwin1.dll" />
-    <None Include="iso\mkisofs.exe" />
-    <None Include="iso\msys-1.0.dll" />
     <EmbeddedResource Include="lib\FolderZipper.dll" />
     <None Include="Resources\open1.png" />
     <EmbeddedResource Include="lib\ICSharpCode.SharpZipLib.dll" />
