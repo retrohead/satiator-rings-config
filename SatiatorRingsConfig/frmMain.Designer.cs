@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtDir = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
-            this.btnApply = new System.Windows.Forms.Button();
+            this.btnAddImage = new System.Windows.Forms.Button();
             this.btnBuild = new System.Windows.Forms.Button();
             this.lstDir = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -40,20 +40,15 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuFileUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.applicationUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblMenuVer = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnNewTheme = new System.Windows.Forms.Button();
             this.pnlTheme = new System.Windows.Forms.Panel();
+            this.btnDeleteTheme = new System.Windows.Forms.Button();
+            this.txtThemeName = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.btnFont = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -66,29 +61,34 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnSelection = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.lstThemes = new System.Windows.Forms.ListView();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.btnGoogle = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.picGame = new System.Windows.Forms.PictureBox();
             this.picTheme = new System.Windows.Forms.PictureBox();
             this.picMenu = new System.Windows.Forms.PictureBox();
             this.picSatiator = new System.Windows.Forms.PictureBox();
             this.picOptions = new System.Windows.Forms.PictureBox();
             this.picConsole = new System.Windows.Forms.PictureBox();
-            this.lstThemes = new System.Windows.Forms.ListView();
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.label11 = new System.Windows.Forms.Label();
-            this.txtThemeName = new System.Windows.Forms.TextBox();
-            this.btnDeleteTheme = new System.Windows.Forms.Button();
-            this.btnNewTheme = new System.Windows.Forms.Button();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuFileUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.applicationUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.pnlTheme.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTheme)).BeginInit();
@@ -96,6 +96,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picSatiator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOptions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConsole)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // txtDir
@@ -119,18 +120,18 @@
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.BtnBrowse_Click);
             // 
-            // btnApply
+            // btnAddImage
             // 
-            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnApply.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnApply.Enabled = false;
-            this.btnApply.Location = new System.Drawing.Point(525, 112);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(100, 29);
-            this.btnApply.TabIndex = 7;
-            this.btnApply.Text = "Add Image";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.BtnApply_Click);
+            this.btnAddImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddImage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddImage.Enabled = false;
+            this.btnAddImage.Location = new System.Drawing.Point(525, 112);
+            this.btnAddImage.Name = "btnAddImage";
+            this.btnAddImage.Size = new System.Drawing.Size(100, 29);
+            this.btnAddImage.TabIndex = 7;
+            this.btnAddImage.Text = "Add Image";
+            this.btnAddImage.UseVisualStyleBackColor = true;
+            this.btnAddImage.Click += new System.EventHandler(this.btnAddImage_Click);
             // 
             // btnBuild
             // 
@@ -169,7 +170,7 @@
             // 
             this.btnRemoveIDTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRemoveIDTag.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveIDTag.Location = new System.Drawing.Point(525, 147);
+            this.btnRemoveIDTag.Location = new System.Drawing.Point(525, 182);
             this.btnRemoveIDTag.Name = "btnRemoveIDTag";
             this.btnRemoveIDTag.Size = new System.Drawing.Size(100, 29);
             this.btnRemoveIDTag.TabIndex = 11;
@@ -212,59 +213,6 @@
             this.toolStrip1.TabIndex = 14;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripDropDownButton1
-            // 
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.menuFileUpdateToolStripMenuItem,
-            this.applicationUpdateToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.exitToolStripMenuItem});
-            this.toolStripDropDownButton1.Image = global::SatiatorRingsConfig.Properties.Resources.open1;
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(54, 22);
-            this.toolStripDropDownButton1.Text = "File";
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(173, 6);
-            // 
-            // menuFileUpdateToolStripMenuItem
-            // 
-            this.menuFileUpdateToolStripMenuItem.Name = "menuFileUpdateToolStripMenuItem";
-            this.menuFileUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.menuFileUpdateToolStripMenuItem.Text = "Menu File Update";
-            this.menuFileUpdateToolStripMenuItem.Click += new System.EventHandler(this.MenuFileUpdateToolStripMenuItem_Click);
-            // 
-            // applicationUpdateToolStripMenuItem
-            // 
-            this.applicationUpdateToolStripMenuItem.Name = "applicationUpdateToolStripMenuItem";
-            this.applicationUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.applicationUpdateToolStripMenuItem.Text = "Application Update";
-            this.applicationUpdateToolStripMenuItem.Click += new System.EventHandler(this.ApplicationUpdateToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(173, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
             // lblMenuVer
             // 
             this.lblMenuVer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(30)))), ((int)(((byte)(39)))));
@@ -276,27 +224,6 @@
             this.lblMenuVer.TabIndex = 15;
             this.lblMenuVer.Text = "Menu v";
             this.lblMenuVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(12, 26);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(100, 76);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 9;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(525, 6);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
             // 
             // tabControl1
             // 
@@ -312,8 +239,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnGoogle);
             this.tabPage1.Controls.Add(this.lstDir);
-            this.tabPage1.Controls.Add(this.btnApply);
+            this.tabPage1.Controls.Add(this.btnAddImage);
             this.tabPage1.Controls.Add(this.btnRemoveIDTag);
             this.tabPage1.Controls.Add(this.txtDir);
             this.tabPage1.Controls.Add(this.pictureBox1);
@@ -337,6 +265,19 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Themes";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnNewTheme
+            // 
+            this.btnNewTheme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNewTheme.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewTheme.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewTheme.Location = new System.Drawing.Point(6, 513);
+            this.btnNewTheme.Name = "btnNewTheme";
+            this.btnNewTheme.Size = new System.Drawing.Size(127, 35);
+            this.btnNewTheme.TabIndex = 34;
+            this.btnNewTheme.Text = "Create New Theme";
+            this.btnNewTheme.UseVisualStyleBackColor = true;
+            this.btnNewTheme.Click += new System.EventHandler(this.BtnNewTheme_Click);
             // 
             // pnlTheme
             // 
@@ -367,6 +308,37 @@
             this.pnlTheme.Name = "pnlTheme";
             this.pnlTheme.Size = new System.Drawing.Size(259, 542);
             this.pnlTheme.TabIndex = 32;
+            // 
+            // btnDeleteTheme
+            // 
+            this.btnDeleteTheme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteTheme.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDeleteTheme.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteTheme.Location = new System.Drawing.Point(124, 283);
+            this.btnDeleteTheme.Name = "btnDeleteTheme";
+            this.btnDeleteTheme.Size = new System.Drawing.Size(128, 35);
+            this.btnDeleteTheme.TabIndex = 17;
+            this.btnDeleteTheme.Text = "Delete Theme";
+            this.btnDeleteTheme.UseVisualStyleBackColor = true;
+            this.btnDeleteTheme.Click += new System.EventHandler(this.BtnDeleteTheme_Click);
+            // 
+            // txtThemeName
+            // 
+            this.txtThemeName.Location = new System.Drawing.Point(125, 19);
+            this.txtThemeName.Name = "txtThemeName";
+            this.txtThemeName.Size = new System.Drawing.Size(127, 20);
+            this.txtThemeName.TabIndex = 33;
+            this.txtThemeName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBox1_KeyUp);
+            this.txtThemeName.Leave += new System.EventHandler(this.TextBox1_Leave);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(50, 22);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(69, 14);
+            this.label11.TabIndex = 32;
+            this.label11.Text = "Theme Name";
             // 
             // btnFont
             // 
@@ -488,6 +460,59 @@
             this.label5.TabIndex = 26;
             this.label5.Text = "Game List Sprite";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(57, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 14);
+            this.label4.TabIndex = 25;
+            this.label4.Text = "Logo Sprite";
+            // 
+            // lstThemes
+            // 
+            this.lstThemes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.lstThemes.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lstThemes.FullRowSelect = true;
+            this.lstThemes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lstThemes.HideSelection = false;
+            this.lstThemes.Location = new System.Drawing.Point(6, 6);
+            this.lstThemes.Name = "lstThemes";
+            this.lstThemes.Size = new System.Drawing.Size(361, 504);
+            this.lstThemes.TabIndex = 11;
+            this.lstThemes.UseCompatibleStateImageBehavior = false;
+            this.lstThemes.View = System.Windows.Forms.View.Details;
+            this.lstThemes.SelectedIndexChanged += new System.EventHandler(this.LstThemes_SelectedIndexChanged);
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Width = 200;
+            // 
+            // btnGoogle
+            // 
+            this.btnGoogle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGoogle.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGoogle.Enabled = false;
+            this.btnGoogle.Location = new System.Drawing.Point(525, 147);
+            this.btnGoogle.Name = "btnGoogle";
+            this.btnGoogle.Size = new System.Drawing.Size(100, 29);
+            this.btnGoogle.TabIndex = 12;
+            this.btnGoogle.Text = "Google";
+            this.btnGoogle.UseVisualStyleBackColor = true;
+            this.btnGoogle.Click += new System.EventHandler(this.BtnGoogle_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Black;
+            this.pictureBox1.Image = global::SatiatorRingsConfig.Properties.Resources.satiator_small;
+            this.pictureBox1.Location = new System.Drawing.Point(525, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(80, 80);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            // 
             // picLogo
             // 
             this.picLogo.BackColor = System.Drawing.Color.Black;
@@ -500,15 +525,6 @@
             this.picLogo.TabIndex = 18;
             this.picLogo.TabStop = false;
             this.picLogo.Click += new System.EventHandler(this.PicLogo_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(57, 129);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 14);
-            this.label4.TabIndex = 25;
-            this.label4.Text = "Logo Sprite";
             // 
             // picGame
             // 
@@ -588,69 +604,69 @@
             this.picConsole.TabStop = false;
             this.picConsole.Click += new System.EventHandler(this.PicConsole_Click);
             // 
-            // lstThemes
+            // toolStripDropDownButton1
             // 
-            this.lstThemes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2});
-            this.lstThemes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lstThemes.FullRowSelect = true;
-            this.lstThemes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lstThemes.HideSelection = false;
-            this.lstThemes.Location = new System.Drawing.Point(6, 6);
-            this.lstThemes.Name = "lstThemes";
-            this.lstThemes.Size = new System.Drawing.Size(361, 504);
-            this.lstThemes.TabIndex = 11;
-            this.lstThemes.UseCompatibleStateImageBehavior = false;
-            this.lstThemes.View = System.Windows.Forms.View.Details;
-            this.lstThemes.SelectedIndexChanged += new System.EventHandler(this.LstThemes_SelectedIndexChanged);
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.menuFileUpdateToolStripMenuItem,
+            this.applicationUpdateToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.exitToolStripMenuItem});
+            this.toolStripDropDownButton1.Image = global::SatiatorRingsConfig.Properties.Resources.open1;
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(54, 22);
+            this.toolStripDropDownButton1.Text = "File";
             // 
-            // columnHeader2
+            // openToolStripMenuItem
             // 
-            this.columnHeader2.Width = 200;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
-            // label11
+            // toolStripSeparator1
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(50, 22);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(69, 14);
-            this.label11.TabIndex = 32;
-            this.label11.Text = "Theme Name";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(173, 6);
             // 
-            // txtThemeName
+            // menuFileUpdateToolStripMenuItem
             // 
-            this.txtThemeName.Location = new System.Drawing.Point(125, 19);
-            this.txtThemeName.Name = "txtThemeName";
-            this.txtThemeName.Size = new System.Drawing.Size(127, 20);
-            this.txtThemeName.TabIndex = 33;
-            this.txtThemeName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBox1_KeyUp);
-            this.txtThemeName.Leave += new System.EventHandler(this.TextBox1_Leave);
+            this.menuFileUpdateToolStripMenuItem.Name = "menuFileUpdateToolStripMenuItem";
+            this.menuFileUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.menuFileUpdateToolStripMenuItem.Text = "Menu File Update";
+            this.menuFileUpdateToolStripMenuItem.Click += new System.EventHandler(this.MenuFileUpdateToolStripMenuItem_Click);
             // 
-            // btnDeleteTheme
+            // applicationUpdateToolStripMenuItem
             // 
-            this.btnDeleteTheme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteTheme.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteTheme.Location = new System.Drawing.Point(124, 283);
-            this.btnDeleteTheme.Name = "btnDeleteTheme";
-            this.btnDeleteTheme.Size = new System.Drawing.Size(128, 35);
-            this.btnDeleteTheme.TabIndex = 17;
-            this.btnDeleteTheme.Text = "Delete Theme";
-            this.btnDeleteTheme.UseVisualStyleBackColor = true;
-            this.btnDeleteTheme.Click += new System.EventHandler(this.BtnDeleteTheme_Click);
+            this.applicationUpdateToolStripMenuItem.Name = "applicationUpdateToolStripMenuItem";
+            this.applicationUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.applicationUpdateToolStripMenuItem.Text = "Application Update";
+            this.applicationUpdateToolStripMenuItem.Click += new System.EventHandler(this.ApplicationUpdateToolStripMenuItem_Click);
             // 
-            // btnNewTheme
+            // toolStripSeparator2
             // 
-            this.btnNewTheme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNewTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNewTheme.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNewTheme.Location = new System.Drawing.Point(6, 513);
-            this.btnNewTheme.Name = "btnNewTheme";
-            this.btnNewTheme.Size = new System.Drawing.Size(127, 35);
-            this.btnNewTheme.TabIndex = 34;
-            this.btnNewTheme.Text = "Create New Theme";
-            this.btnNewTheme.UseVisualStyleBackColor = true;
-            this.btnNewTheme.Click += new System.EventHandler(this.BtnNewTheme_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(173, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(12, 26);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(100, 76);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 9;
+            this.pictureBox2.TabStop = false;
             // 
             // frmMain
             // 
@@ -676,14 +692,13 @@
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.pnlTheme.ResumeLayout(false);
             this.pnlTheme.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTheme)).EndInit();
@@ -691,6 +706,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.picSatiator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOptions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConsole)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -701,7 +717,7 @@
         private System.Windows.Forms.TextBox txtDir;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnAddImage;
         private System.Windows.Forms.Button btnBuild;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ListView lstDir;
@@ -750,6 +766,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button btnNewTheme;
         private System.Windows.Forms.Button btnDeleteTheme;
+        private System.Windows.Forms.Button btnGoogle;
     }
 }
 

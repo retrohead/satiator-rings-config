@@ -63,6 +63,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,11 +75,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmExistingImages.cs">
+    <Compile Include="frmGoogleImages.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmExistingImages.Designer.cs">
-      <DependentUpon>frmExistingImages.cs</DependentUpon>
+    <Compile Include="frmGoogleImages.Designer.cs">
+      <DependentUpon>frmGoogleImages.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -97,8 +98,8 @@
     <Compile Include="updateInfoForm.designer.cs">
       <DependentUpon>updateInfoForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="frmExistingImages.resx">
-      <DependentUpon>frmExistingImages.cs</DependentUpon>
+    <EmbeddedResource Include="frmGoogleImages.resx">
+      <DependentUpon>frmGoogleImages.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -138,6 +139,8 @@
     <EmbeddedResource Include="lib\FolderZipper.dll" />
     <None Include="Resources\open1.png" />
     <EmbeddedResource Include="lib\ICSharpCode.SharpZipLib.dll" />
+    <None Include="Resources\satiator.png" />
+    <None Include="Resources\satiator_small.png" />
     <Content Include="satiator.ico" />
   </ItemGroup>
   <ItemGroup />
