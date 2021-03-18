@@ -82,6 +82,8 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnRename = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -170,7 +172,7 @@
             // 
             this.btnRemoveIDTag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRemoveIDTag.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveIDTag.Location = new System.Drawing.Point(525, 182);
+            this.btnRemoveIDTag.Location = new System.Drawing.Point(525, 251);
             this.btnRemoveIDTag.Name = "btnRemoveIDTag";
             this.btnRemoveIDTag.Size = new System.Drawing.Size(100, 29);
             this.btnRemoveIDTag.TabIndex = 11;
@@ -239,6 +241,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnRename);
+            this.tabPage1.Controls.Add(this.btnDelete);
             this.tabPage1.Controls.Add(this.btnGoogle);
             this.tabPage1.Controls.Add(this.lstDir);
             this.tabPage1.Controls.Add(this.btnAddImage);
@@ -498,7 +502,7 @@
             this.btnGoogle.Name = "btnGoogle";
             this.btnGoogle.Size = new System.Drawing.Size(100, 29);
             this.btnGoogle.TabIndex = 12;
-            this.btnGoogle.Text = "Google";
+            this.btnGoogle.Text = "Google Image";
             this.btnGoogle.UseVisualStyleBackColor = true;
             this.btnGoogle.Click += new System.EventHandler(this.BtnGoogle_Click);
             // 
@@ -668,6 +672,32 @@
             this.pictureBox2.TabIndex = 9;
             this.pictureBox2.TabStop = false;
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDelete.Enabled = false;
+            this.btnDelete.Location = new System.Drawing.Point(525, 216);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(100, 29);
+            this.btnDelete.TabIndex = 13;
+            this.btnDelete.Text = "Delete Game";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
+            // 
+            // btnRename
+            // 
+            this.btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRename.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRename.Enabled = false;
+            this.btnRename.Location = new System.Drawing.Point(525, 181);
+            this.btnRename.Name = "btnRename";
+            this.btnRename.Size = new System.Drawing.Size(100, 29);
+            this.btnRename.TabIndex = 14;
+            this.btnRename.Text = "Rename";
+            this.btnRename.UseVisualStyleBackColor = true;
+            this.btnRename.Click += new System.EventHandler(this.BtnRename_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -767,6 +797,8 @@
         private System.Windows.Forms.Button btnNewTheme;
         private System.Windows.Forms.Button btnDeleteTheme;
         private System.Windows.Forms.Button btnGoogle;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnRename;
     }
 }
 

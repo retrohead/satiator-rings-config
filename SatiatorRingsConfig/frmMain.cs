@@ -18,7 +18,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "3.0";
+        public string appVer = "3.1";
         private class itemData
         {
             public string fn;
@@ -167,6 +167,8 @@ namespace SatiatorRingsConfig
             btnRemoveIDTag.Visible = false;
             btnAddImage.Enabled = false;
             btnGoogle.Enabled = false;
+            btnDelete.Enabled = false;
+            btnRename.Enabled = false;
             txtDir.Text = "";
             lstDir.Items.Clear();
             using (var fbd = new FolderBrowserDialog())
@@ -197,7 +199,7 @@ namespace SatiatorRingsConfig
                 MessageBox.Show("Menu files appear to be missing. Try updating the menu file the file menu", "Menu Files Missing", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            if (MessageBox.Show("Are you sure you want to install Satiaor Rings to '" + txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")) + "'?", "Confirm Installation", MessageBoxButtons.OK, MessageBoxIcon.Question) != DialogResult.OK)
+            if (MessageBox.Show("Are you sure you want to install Satiator Rings to '" + txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")) + "'?", "Confirm Installation", MessageBoxButtons.OK, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
             update.moveDirectoryContents("data\\sd", txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")), false);
             if (lstThemes.Items.Count == 0)
@@ -289,12 +291,16 @@ namespace SatiatorRingsConfig
             {
                 btnAddImage.Enabled = false;
                 btnGoogle.Enabled = false;
+                btnDelete.Enabled = false;
+                btnRename.Enabled = false;
                 btnRemoveIDTag.Visible = false;
                 pictureBox1.Image = null;
                 return;
             }
             btnAddImage.Enabled = true;
             btnGoogle.Enabled = true;
+            btnDelete.Enabled = true;
+            btnRename.Enabled = true;
             itemData data = (itemData)lstDir.SelectedItems[0].Tag;
 
             if (data.imageId != -1)
@@ -626,15 +632,15 @@ namespace SatiatorRingsConfig
         private void BtnGoogle_Click(object sender, EventArgs e)
         {
             frmGoogleImages.SearchQuery query = new frmGoogleImages.SearchQuery();
-            query.Query = "Sega Saturn " + lstDir.SelectedItems[0].Text;
+            query.Query = "saturn cover " + lstDir.SelectedItems[0].Text;
             while (query.Query.LastIndexOf("(") > 0)
                 query.Query = query.Query.Substring(0, query.Query.LastIndexOf("(") - 1);
-            while (query.Query.LastIndexOf("-") > 0)
-                query.Query = query.Query.Substring(0, query.Query.LastIndexOf("-") - 1);
+            while (query.Query.LastIndexOf("[") > 0)
+                query.Query = query.Query.Substring(0, query.Query.LastIndexOf("[") - 1);
             query.AdditionalVariables = query.Query;
             using (frmGoogleImages googler = new frmGoogleImages(this, query))
             {
-                if (googler.ShowDialog() == DialogResult.OK)
+                if (googler.ShowDialog(this) == DialogResult.OK)
                 { 
                     //convert into a TGA
                     using (Image img = googler.result)
@@ -667,6 +673,40 @@ namespace SatiatorRingsConfig
                     }
                 }
             }
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to remove the selected game from your SD card?\n\n" + lstDir.SelectedItems[0].Text, "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+            Directory.Delete(data.fn, true);
+            lstDir.Items.Remove(lstDir.SelectedItems[0]);
+            MessageBox.Show("Item deleted successfully", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void BtnRename_Click(object sender, EventArgs e)
+        {
+            using (frmRename f = new frmRename(lstDir.SelectedItems[0].Text))
+            {
+                f.ShowDialog(this);
+                if (f.DialogResult == DialogResult.Cancel)
+                    return;
+                itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+                string newname = Path.Combine(Path.GetDirectoryName(data.fn), f.newname);
+                if (data.fn == newname)
+                    return;
+                if (Directory.Exists(newname))
+                {
+                    MessageBox.Show("A directory already exists with the name '" + newname + "'", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                Directory.Move(data.fn, newname);
+                data.fn = newname;
+                lstDir.SelectedItems[0].Tag = data;
+                lstDir.SelectedItems[0].Text = f.newname;
+            }
+
         }
     }
 }

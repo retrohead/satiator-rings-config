@@ -95,6 +95,7 @@
             this.Controls.Add(this.listView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmGoogleImages";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Satiator Rings Configuration - Images";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGoogleImages_FormClosing);
             this.Shown += new System.EventHandler(this.FrmGoogleImages_Shown);
