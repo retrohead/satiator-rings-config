@@ -18,8 +18,6 @@ namespace SatiatorRingsConfig
 {
     public partial class frmGoogleImages : Form
     {
-        TGA T;
-        frmMain mainFrm;
         public Image result;
         List<string> downloadedUrls = new List<string>();
 
@@ -112,9 +110,8 @@ namespace SatiatorRingsConfig
             return image;
         }
 
-        public frmGoogleImages(frmMain mainForm, SearchQuery query)
+        public frmGoogleImages(SearchQuery query)
         {
-            mainFrm = mainForm;
             currentQuery = query;
             this.DialogResult = DialogResult.Cancel;
             InitializeComponent();

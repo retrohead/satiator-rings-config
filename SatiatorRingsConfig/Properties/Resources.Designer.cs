@@ -89,5 +89,15 @@ namespace SatiatorRingsConfig.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SHDW {
+            get {
+                object obj = ResourceManager.GetObject("SHDW", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

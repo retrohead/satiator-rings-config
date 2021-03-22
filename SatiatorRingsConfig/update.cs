@@ -272,7 +272,8 @@ namespace SatiatorRingsConfig
                     }
                     else
                     {
-                        MessageBox.Show("There is a new version of the application available.\r\nChoose update from the the file menu to install v" + newVersion, "New version available", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                        mainFrm.disablemenuUpdate();
+                        MessageBox.Show("There is a new version of the application available.\r\nChoose update from the the file menu to install v" + newVersion + ".\n\nMenu file updates will be disbaled until you have updated the application as a new menu may require new files.", "New version available", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                     }
                 }
                 else
