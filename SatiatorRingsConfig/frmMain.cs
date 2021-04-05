@@ -379,7 +379,7 @@ namespace SatiatorRingsConfig
             update.moveDirectoryContents("data\\sd", txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")), false);
             if (lstThemes.Items.Count == 0)
                 listThemes();
-            MessageBox.Show("The installation completed.\n\nFlash the ar_patched-satiator-rings.bin on the root of your SD card to use A+B+C+Start for reset.\n\nEnjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("The installation completed, make sure you are using version 66 of the offical menu to enjoy Satiator Rings autoboot.\n\nFlash the ar_patched-satiator-rings.bin on the root of your SD card to use A+B+C+Start for reset.\n\nEnjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void addTGAtoDir(string tgaName, string dir, int w, int h, TGA tga, PictureBox picBox)
         {
