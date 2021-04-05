@@ -18,7 +18,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.0";
+        public string appVer = "4.1";
         private class itemData
         {
             public string fn;
@@ -379,7 +379,7 @@ namespace SatiatorRingsConfig
             update.moveDirectoryContents("data\\sd", txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\")), false);
             if (lstThemes.Items.Count == 0)
                 listThemes();
-            MessageBox.Show("The installation completed.\n\nFlash the ar_patched-satiator-rings.bin on the root of your SD card or launch the satiator-rings.iso with the satiator menu.\n\nEnjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("The installation completed.\n\nFlash the ar_patched-satiator-rings.bin on the root of your SD card to use A+B+C+Start for reset.\n\nEnjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void addTGAtoDir(string tgaName, string dir, int w, int h, TGA tga, PictureBox picBox)
         {

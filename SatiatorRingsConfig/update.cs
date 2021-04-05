@@ -378,6 +378,8 @@ namespace SatiatorRingsConfig
                             File.Delete("data/temp/satiator-rings_v" + newVersion + ".zip");
                             // scan through moving all the files and directories
 
+                            if (Directory.Exists("data\\sd"))
+                                Directory.Delete("data\\sd", true);
                             moveDirectoryContents("data\\temp\\sd", "data\\sd", true);
                             Directory.Delete("data\\temp\\sd", true);
                             // update the version
