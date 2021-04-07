@@ -18,7 +18,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.1";
+        public string appVer = "4.2";
         private class itemData
         {
             public string fn;
@@ -477,6 +477,83 @@ namespace SatiatorRingsConfig
             }
             T = new TGA(path);
             picBox.Image = (Bitmap)T;
+            loadGameInformation(data.fn);
+        }
+        private void loadGameInformation(string dir)
+        {
+            txtGameID.Text = "";
+            txtVersion.Text = "";
+            // scan the directory and see if there is an iso or cue file
+            string[] files = Directory.GetFiles(dir, "*.cue");
+            if(files.Length == 0)
+                files = Directory.GetFiles(dir, "*.iso");
+            if (files.Length == 1)
+            {
+                if(files[0].ToLower().EndsWith(".cue"))
+                {
+                    // open the cue and get the first file from it
+                    bool gotFile = false;
+                    using (StreamReader sr = new StreamReader(files[0]))
+                    {
+                        string oneline = "";
+                        while (true)
+                        {
+                            oneline = sr.ReadLine();
+                            if (sr.EndOfStream)
+                                break;
+                            if(oneline.Contains("FILE"))
+                            {
+                                try
+                                {
+                                    oneline = oneline.Substring(oneline.IndexOf("\"") + 1, oneline.Length - (oneline.IndexOf("\"") + 1));
+                                    oneline = oneline.Substring(0, oneline.IndexOf("\""));
+                                    files[0] = Path.Combine(Path.GetDirectoryName(files[0]), oneline);
+                                    gotFile = true;
+                                } catch
+                                {
+
+                                }
+                                break;
+                            }
+                        }
+                        sr.Close();
+                    }
+                    if(!gotFile)
+                    {
+                        MessageBox.Show("Cue file error, does not contain a FILE line!", "CUE Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+                // read the binary file
+                using (BinaryReader br = new BinaryReader(File.OpenRead(files[0])))
+                {
+                    byte[] bytes = br.ReadBytes(16);
+                    string text = System.Text.Encoding.Default.GetString(bytes);
+
+                    if (text != "SEGA SEGASATURN ")
+                    {
+                        bytes = br.ReadBytes(16);
+                        text = System.Text.Encoding.Default.GetString(bytes);
+                        if (text != "SEGA SEGASATURN ")
+                        {
+                            br.Close();
+                            MessageBox.Show("File error, does not contain the valid SEGA SATURN header", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+                    br.ReadBytes(16); // skip another 16 bytes
+
+                    bytes = br.ReadBytes(16);
+                    text = System.Text.Encoding.Default.GetString(bytes);
+                    br.Close();
+                    text = text.Trim();
+                    while (text.Contains("  "))
+                        text = text.Replace("  ", " ");
+
+                    txtGameID.Text = text.Split(' ')[0];
+                    txtVersion.Text = text.Split(' ')[1];
+                }
+            }
         }
         public void enableForm(bool enable)
         {

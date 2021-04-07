@@ -80,6 +80,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.btnBoxBg = new System.Windows.Forms.Button();
+            this.picCornerBg = new System.Windows.Forms.PictureBox();
             this.btnDeleteTheme = new System.Windows.Forms.Button();
             this.txtThemeName = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -116,7 +117,8 @@
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.picLogoImg = new System.Windows.Forms.PictureBox();
-            this.picCornerBg = new System.Windows.Forms.PictureBox();
+            this.txtGameID = new System.Windows.Forms.TextBox();
+            this.txtVersion = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -131,6 +133,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picShadow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCorner)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picCornerBg)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTheme)).BeginInit();
@@ -141,7 +144,6 @@
             this.contextMenuGames.SuspendLayout();
             this.contextMenuStripFavs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoImg)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picCornerBg)).BeginInit();
             this.SuspendLayout();
             // 
             // txtDir
@@ -335,6 +337,8 @@
             // 
             // tabGameList
             // 
+            this.tabGameList.Controls.Add(this.txtVersion);
+            this.tabGameList.Controls.Add(this.txtGameID);
             this.tabGameList.Controls.Add(this.btnGoogle);
             this.tabGameList.Controls.Add(this.lstDir);
             this.tabGameList.Controls.Add(this.btnAddImage);
@@ -711,6 +715,18 @@
             this.btnBoxBg.UseVisualStyleBackColor = false;
             this.btnBoxBg.Click += new System.EventHandler(this.BtnThemeColour_Click);
             // 
+            // picCornerBg
+            // 
+            this.picCornerBg.BackColor = System.Drawing.Color.Black;
+            this.picCornerBg.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picCornerBg.Location = new System.Drawing.Point(116, 55);
+            this.picCornerBg.Name = "picCornerBg";
+            this.picCornerBg.Size = new System.Drawing.Size(22, 22);
+            this.picCornerBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picCornerBg.TabIndex = 39;
+            this.picCornerBg.TabStop = false;
+            this.picCornerBg.Click += new System.EventHandler(this.PicCornerBg_Click);
+            // 
             // btnDeleteTheme
             // 
             this.btnDeleteTheme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1066,17 +1082,23 @@
             this.picLogoImg.TabIndex = 9;
             this.picLogoImg.TabStop = false;
             // 
-            // picCornerBg
+            // txtGameID
             // 
-            this.picCornerBg.BackColor = System.Drawing.Color.Black;
-            this.picCornerBg.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picCornerBg.Location = new System.Drawing.Point(116, 55);
-            this.picCornerBg.Name = "picCornerBg";
-            this.picCornerBg.Size = new System.Drawing.Size(22, 22);
-            this.picCornerBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picCornerBg.TabIndex = 39;
-            this.picCornerBg.TabStop = false;
-            this.picCornerBg.Click += new System.EventHandler(this.PicCornerBg_Click);
+            this.txtGameID.Location = new System.Drawing.Point(526, 183);
+            this.txtGameID.Name = "txtGameID";
+            this.txtGameID.ReadOnly = true;
+            this.txtGameID.Size = new System.Drawing.Size(99, 20);
+            this.txtGameID.TabIndex = 13;
+            this.txtGameID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtVersion
+            // 
+            this.txtVersion.Location = new System.Drawing.Point(526, 209);
+            this.txtVersion.Name = "txtVersion";
+            this.txtVersion.ReadOnly = true;
+            this.txtVersion.Size = new System.Drawing.Size(99, 20);
+            this.txtVersion.TabIndex = 14;
+            this.txtVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // frmMain
             // 
@@ -1120,6 +1142,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picShadow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCorner)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picCornerBg)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picGame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTheme)).EndInit();
@@ -1130,7 +1153,6 @@
             this.contextMenuGames.ResumeLayout(false);
             this.contextMenuStripFavs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogoImg)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picCornerBg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1225,6 +1247,8 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnBoxBg;
         private System.Windows.Forms.PictureBox picCornerBg;
+        private System.Windows.Forms.TextBox txtGameID;
+        private System.Windows.Forms.TextBox txtVersion;
     }
 }
 
