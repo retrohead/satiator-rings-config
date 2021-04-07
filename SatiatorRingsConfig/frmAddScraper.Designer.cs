@@ -1,6 +1,6 @@
 ﻿namespace SatiatorRingsConfig
 {
-    partial class frmRename
+    partial class frmAddScraper
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBoxartUpdate));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddScraper));
             this.txtName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
@@ -42,16 +42,16 @@
             this.txtName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TxtName_KeyUp);
             this.txtName.Leave += new System.EventHandler(this.TxtName_Leave);
             // 
-            // frmRename
+            // formAddScraper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(494, 43);
             this.Controls.Add(this.txtName);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "frmRename";
+            this.Name = "formAddScraper";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Satiator Rings Configuration - Rename Directory";
+            this.Text = "Satiator Rings Configuration - Add Scraper";
             this.ResumeLayout(false);
             this.PerformLayout();
 

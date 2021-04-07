@@ -18,12 +18,18 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.2";
-        private class itemData
+        public string appVer = "4.3";
+        public class itemData
         {
             public string fn;
             public int imageId;
         }
+        public class ipBinData
+        {
+            public string gameId;
+            public string gameVer;
+        }
+
         private class themeFileType
         {
             public int[] font = new int[3];
@@ -381,47 +387,57 @@ namespace SatiatorRingsConfig
                 listThemes();
             MessageBox.Show("The installation completed, make sure you are using v65 or higher of the official menu to enjoy Satiator Rings autoboot.\n\nFlash the ar_patched-satiator-rings.bin on the root of your SD card to use A+B+C+Start for reset.\n\nEnjoy :)", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private void addTGAtoDir(string tgaName, string dir, int w, int h, TGA tga, PictureBox picBox)
+        public static void addTGAtoDir(string tgaName, string dir, int w, int h, TGA tga, PictureBox picBox, string sourceFile = "")
         {
-            OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = "Image Files (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
-            if (fd.ShowDialog() == DialogResult.OK)
+            if(sourceFile == "")
             {
-                if (File.Exists(Path.Combine(dir, tgaName)))
+                OpenFileDialog fd = new OpenFileDialog();
+                fd.Filter = "Image Files (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
+                if (fd.ShowDialog() == DialogResult.OK)
                 {
-                    if (MessageBox.Show("An image already exists in this directory, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        File.Delete(Path.Combine(dir, tgaName));
-                }
-                using (Image img = Image.FromFile(fd.FileName))
-                {
-                    Image newimg;
-                    if (w < 0 || h < 0)
+                    if (File.Exists(Path.Combine(dir, tgaName)))
                     {
-                        // presume boxart
-                        double imgratio = (double)img.Width / (double)img.Height;
-                        if (imgratio > 0.8)
-                        {
-                            // presume japanese
-                            newimg = ResizeImage(img, 80, 80);
-                        }
-                        else
-                        {
-                            // presume eur / usa
-                            newimg = ResizeImage(img, 64, 100);
-                        }
+                        if (MessageBox.Show("An image already exists in this directory, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            return;
+                    }
+                }
+                sourceFile = fd.FileName;
+            }
+
+            using (Image img = Image.FromFile(sourceFile))
+            {
+                Image newimg;
+                if (w < 0 || h < 0)
+                {
+                    // presume boxart
+                    double imgratio = (double)img.Width / (double)img.Height;
+                    if (imgratio > 0.8)
+                    {
+                        // presume japanese
+                        newimg = ResizeImage(img, 80, 80);
                     }
                     else
                     {
-                        newimg = ResizeImage(img, w, h);
+                        // presume eur / usa
+                        newimg = ResizeImage(img, 64, 100);
                     }
-                    newimg.Save("tmp.png");
-                    newimg.Dispose();
+                }
+                else
+                {
+                    newimg = ResizeImage(img, w, h);
+                }
+                newimg.Save("tmp.png");
+                newimg.Dispose();
+                if (File.Exists(Path.Combine(dir, tgaName)))
+                    File.Delete(Path.Combine(dir, tgaName));
 
-                    using (Bitmap original = new Bitmap("tmp.png"))
-                    using (Bitmap clone = new Bitmap(original))
-                    using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
-                        tga = (TGA)newbmp;
-                    tga.Save(Path.Combine(dir, tgaName));
+                using (Bitmap original = new Bitmap("tmp.png"))
+                using (Bitmap clone = new Bitmap(original))
+                using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
+                    tga = (TGA)newbmp;
+                tga.Save(Path.Combine(dir, tgaName));
+                if (picBox != null)
+                {
                     picBox.Image = (Bitmap)tga;
                     picBox.Visible = true;
                 }
@@ -479,17 +495,19 @@ namespace SatiatorRingsConfig
             picBox.Image = (Bitmap)T;
             loadGameInformation(data.fn);
         }
-        private void loadGameInformation(string dir)
+
+        public static ipBinData loadGameIpBin(string dir)
         {
-            txtGameID.Text = "";
-            txtVersion.Text = "";
+            ipBinData ipBin = new ipBinData();
+            ipBin.gameId = "";
+            ipBin.gameVer = "";
             // scan the directory and see if there is an iso or cue file
             string[] files = Directory.GetFiles(dir, "*.cue");
-            if(files.Length == 0)
+            if (files.Length == 0)
                 files = Directory.GetFiles(dir, "*.iso");
             if (files.Length == 1)
             {
-                if(files[0].ToLower().EndsWith(".cue"))
+                if (files[0].ToLower().EndsWith(".cue"))
                 {
                     // open the cue and get the first file from it
                     bool gotFile = false;
@@ -501,7 +519,7 @@ namespace SatiatorRingsConfig
                             oneline = sr.ReadLine();
                             if (sr.EndOfStream)
                                 break;
-                            if(oneline.Contains("FILE"))
+                            if (oneline.Contains("FILE"))
                             {
                                 try
                                 {
@@ -509,7 +527,8 @@ namespace SatiatorRingsConfig
                                     oneline = oneline.Substring(0, oneline.IndexOf("\""));
                                     files[0] = Path.Combine(Path.GetDirectoryName(files[0]), oneline);
                                     gotFile = true;
-                                } catch
+                                }
+                                catch
                                 {
 
                                 }
@@ -518,10 +537,10 @@ namespace SatiatorRingsConfig
                         }
                         sr.Close();
                     }
-                    if(!gotFile)
+                    if (!gotFile)
                     {
                         MessageBox.Show("Cue file error, does not contain a FILE line!", "CUE Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
+                        return ipBin;
                     }
                 }
                 // read the binary file
@@ -538,7 +557,7 @@ namespace SatiatorRingsConfig
                         {
                             br.Close();
                             MessageBox.Show("File error, does not contain the valid SEGA SATURN header", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            return;
+                            return ipBin;
                         }
                     }
                     br.ReadBytes(16); // skip another 16 bytes
@@ -547,13 +566,17 @@ namespace SatiatorRingsConfig
                     text = System.Text.Encoding.Default.GetString(bytes);
                     br.Close();
                     text = text.Trim();
-                    while (text.Contains("  "))
-                        text = text.Replace("  ", " ");
-
-                    txtGameID.Text = text.Split(' ')[0];
-                    txtVersion.Text = text.Split(' ')[1];
+                    ipBin.gameId = text.Substring(0,text.Length - 6).Trim();
+                    ipBin.gameVer = text.Substring(text.Length - 6, 6).Trim();
                 }
             }
+            return ipBin;
+        }
+        private void loadGameInformation(string dir)
+        {
+            ipBinData ipBin = loadGameIpBin(dir);
+            txtGameID.Text = ipBin.gameId;
+            txtVersion.Text = ipBin.gameVer;
         }
         public void enableForm(bool enable)
         {
@@ -564,11 +587,6 @@ namespace SatiatorRingsConfig
         }
         public void updateProgressLabel(string txt)
         {
-            txt = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(txt);
-            txt = txt.Replace(" And ", " and ");
-            txt = txt.Replace(" Of ", " of ");
-            txt = txt.Replace(" For ", " for ");
-
             if ((txt != "") & (txt.Trim().ToLower() != "completed"))
             {
                 BeginInvoke(new voidDelegate(() =>
@@ -1201,6 +1219,35 @@ namespace SatiatorRingsConfig
         private void PicCornerBg_Click(object sender, EventArgs e)
         {
             PicCorner_Click(picCorner, e);
+        }
+
+        private void CoversdbToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lstDir.Items.Count == 0)
+            {
+                MessageBox.Show("There are no games loaded", "No Games Loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (MessageBox.Show("Do you want to update all boxarts from the scrapers now?\n\nWarning - Existing images will be overwritten.", "Confirm Boxart Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+            enableForm(false);
+
+            List<itemData> itemsData = new List<itemData>();
+            for (int i = 0; i < lstDir.Items.Count - 1; i++)
+            {
+                itemData item = (itemData)lstDir.Items[i].Tag;
+                itemsData.Add(item);
+            }
+            frmBoxartUpdate frm = new frmBoxartUpdate(itemsData);
+            frm.ShowDialog();
+            enableForm(true);
+            updateProgressLabel("ready...");
+        }
+
+        private void ConfigureScrapersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmScrapers frm = new frmScrapers();
+            frm.ShowDialog();
         }
     }
 }

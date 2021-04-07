@@ -48,9 +48,14 @@
             this.applicationUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.coversdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureScrapersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblMenuVer = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabGameList = new System.Windows.Forms.TabPage();
+            this.txtVersion = new System.Windows.Forms.TextBox();
+            this.txtGameID = new System.Windows.Forms.TextBox();
             this.btnGoogle = new System.Windows.Forms.Button();
             this.picBox = new System.Windows.Forms.PictureBox();
             this.tabFavourites = new System.Windows.Forms.TabPage();
@@ -117,8 +122,7 @@
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.picLogoImg = new System.Windows.Forms.PictureBox();
-            this.txtGameID = new System.Windows.Forms.TextBox();
-            this.txtVersion = new System.Windows.Forms.TextBox();
+            this.bgWorkCoverArtUpdate = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -172,7 +176,7 @@
             this.btnAddImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddImage.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAddImage.Enabled = false;
-            this.btnAddImage.Location = new System.Drawing.Point(525, 112);
+            this.btnAddImage.Location = new System.Drawing.Point(525, 164);
             this.btnAddImage.Name = "btnAddImage";
             this.btnAddImage.Size = new System.Drawing.Size(100, 29);
             this.btnAddImage.TabIndex = 7;
@@ -249,7 +253,8 @@
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripDropDownButton1});
+            this.toolStripDropDownButton1,
+            this.toolStripDropDownButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(655, 25);
@@ -309,6 +314,33 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
+            // toolStripDropDownButton2
+            // 
+            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.coversdbToolStripMenuItem,
+            this.configureScrapersToolStripMenuItem});
+            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
+            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(100, 22);
+            this.toolStripDropDownButton2.Text = "Boxart Scrapers";
+            // 
+            // coversdbToolStripMenuItem
+            // 
+            this.coversdbToolStripMenuItem.Name = "coversdbToolStripMenuItem";
+            this.coversdbToolStripMenuItem.RightToLeftAutoMirrorImage = true;
+            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coversdbToolStripMenuItem.Text = "Download Boxarts";
+            this.coversdbToolStripMenuItem.Click += new System.EventHandler(this.CoversdbToolStripMenuItem_Click);
+            // 
+            // configureScrapersToolStripMenuItem
+            // 
+            this.configureScrapersToolStripMenuItem.Name = "configureScrapersToolStripMenuItem";
+            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configureScrapersToolStripMenuItem.Text = "Configure Scrapers";
+            this.configureScrapersToolStripMenuItem.Click += new System.EventHandler(this.ConfigureScrapersToolStripMenuItem_Click);
+            // 
             // lblMenuVer
             // 
             this.lblMenuVer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(30)))), ((int)(((byte)(39)))));
@@ -352,12 +384,30 @@
             this.tabGameList.Text = "Game List";
             this.tabGameList.UseVisualStyleBackColor = true;
             // 
+            // txtVersion
+            // 
+            this.txtVersion.Location = new System.Drawing.Point(525, 138);
+            this.txtVersion.Name = "txtVersion";
+            this.txtVersion.ReadOnly = true;
+            this.txtVersion.Size = new System.Drawing.Size(99, 20);
+            this.txtVersion.TabIndex = 14;
+            this.txtVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtGameID
+            // 
+            this.txtGameID.Location = new System.Drawing.Point(525, 112);
+            this.txtGameID.Name = "txtGameID";
+            this.txtGameID.ReadOnly = true;
+            this.txtGameID.Size = new System.Drawing.Size(99, 20);
+            this.txtGameID.TabIndex = 13;
+            this.txtGameID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // btnGoogle
             // 
             this.btnGoogle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGoogle.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGoogle.Enabled = false;
-            this.btnGoogle.Location = new System.Drawing.Point(525, 147);
+            this.btnGoogle.Location = new System.Drawing.Point(525, 199);
             this.btnGoogle.Name = "btnGoogle";
             this.btnGoogle.Size = new System.Drawing.Size(100, 29);
             this.btnGoogle.TabIndex = 12;
@@ -1082,24 +1132,6 @@
             this.picLogoImg.TabIndex = 9;
             this.picLogoImg.TabStop = false;
             // 
-            // txtGameID
-            // 
-            this.txtGameID.Location = new System.Drawing.Point(526, 183);
-            this.txtGameID.Name = "txtGameID";
-            this.txtGameID.ReadOnly = true;
-            this.txtGameID.Size = new System.Drawing.Size(99, 20);
-            this.txtGameID.TabIndex = 13;
-            this.txtGameID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtVersion
-            // 
-            this.txtVersion.Location = new System.Drawing.Point(526, 209);
-            this.txtVersion.Name = "txtVersion";
-            this.txtVersion.ReadOnly = true;
-            this.txtVersion.Size = new System.Drawing.Size(99, 20);
-            this.txtVersion.TabIndex = 14;
-            this.txtVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -1249,6 +1281,10 @@
         private System.Windows.Forms.PictureBox picCornerBg;
         private System.Windows.Forms.TextBox txtGameID;
         private System.Windows.Forms.TextBox txtVersion;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripMenuItem coversdbToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker bgWorkCoverArtUpdate;
+        private System.Windows.Forms.ToolStripMenuItem configureScrapersToolStripMenuItem;
     }
 }
 

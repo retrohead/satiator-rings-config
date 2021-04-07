@@ -415,7 +415,7 @@ namespace SatiatorRingsConfig
             }
             return true;
         }
-        public static bool downloadFile(string url, string dirdest, string progressTxt, string saveas = "")
+        public static bool downloadFile(string url, string dirdest, string progressTxt, string saveas = "", bool ignore404 = false)
         {
             if (!allowDownload)
             {
@@ -465,7 +465,8 @@ namespace SatiatorRingsConfig
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (!ignore404 || !ex.Message.Contains("404"))
+                    MessageBox.Show(ex.Message, "Download Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 allowDownload = true;
                 return false;
             }

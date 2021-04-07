@@ -22,5 +22,17 @@ namespace SatiatorRingsConfig.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://coversdb.org/sat/")]
+        public string scrapers {
+            get {
+                return ((string)(this["scrapers"]));
+            }
+            set {
+                this["scrapers"] = value;
+            }
+        }
     }
 }
