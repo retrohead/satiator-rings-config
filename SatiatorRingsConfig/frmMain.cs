@@ -18,7 +18,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.3";
+        public string appVer = "4.4";
         public class itemData
         {
             public string fn;
@@ -400,8 +400,11 @@ namespace SatiatorRingsConfig
                         if (MessageBox.Show("An image already exists in this directory, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                             return;
                     }
+                    sourceFile = fd.FileName;
+                } else
+                {
+                    return;
                 }
-                sourceFile = fd.FileName;
             }
 
             using (Image img = Image.FromFile(sourceFile))
