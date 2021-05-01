@@ -34,8 +34,6 @@
             this.btnBrowse = new System.Windows.Forms.Button();
             this.btnAddImage = new System.Windows.Forms.Button();
             this.btnBuild = new System.Windows.Forms.Button();
-            this.lstDir = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -123,6 +121,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.picLogoImg = new System.Windows.Forms.PictureBox();
             this.bgWorkCoverArtUpdate = new System.ComponentModel.BackgroundWorker();
+            this.treeDirs = new System.Windows.Forms.TreeView();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -196,35 +195,13 @@
             this.btnBuild.UseVisualStyleBackColor = true;
             this.btnBuild.Click += new System.EventHandler(this.BtnBuild_Click);
             // 
-            // lstDir
-            // 
-            this.lstDir.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.lstDir.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lstDir.FullRowSelect = true;
-            this.lstDir.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lstDir.HideSelection = false;
-            this.lstDir.Location = new System.Drawing.Point(6, 6);
-            this.lstDir.MinimumSize = new System.Drawing.Size(454, 493);
-            this.lstDir.Name = "lstDir";
-            this.lstDir.Size = new System.Drawing.Size(513, 516);
-            this.lstDir.SmallImageList = this.imageList1;
-            this.lstDir.TabIndex = 10;
-            this.lstDir.UseCompatibleStateImageBehavior = false;
-            this.lstDir.View = System.Windows.Forms.View.Details;
-            this.lstDir.SelectedIndexChanged += new System.EventHandler(this.lstDir_SelectedIndexChanged);
-            this.lstDir.MouseClick += new System.Windows.Forms.MouseEventHandler(this.LstDir_MouseClick);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Width = 479;
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "primary.png");
             this.imageList1.Images.SetKeyName(1, "exclamation.png");
+            this.imageList1.Images.SetKeyName(2, "blank.png");
             // 
             // statusStrip1
             // 
@@ -330,14 +307,14 @@
             // 
             this.coversdbToolStripMenuItem.Name = "coversdbToolStripMenuItem";
             this.coversdbToolStripMenuItem.RightToLeftAutoMirrorImage = true;
-            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.coversdbToolStripMenuItem.Text = "Download Boxarts";
             this.coversdbToolStripMenuItem.Click += new System.EventHandler(this.CoversdbToolStripMenuItem_Click);
             // 
             // configureScrapersToolStripMenuItem
             // 
             this.configureScrapersToolStripMenuItem.Name = "configureScrapersToolStripMenuItem";
-            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.configureScrapersToolStripMenuItem.Text = "Configure Scrapers";
             this.configureScrapersToolStripMenuItem.Click += new System.EventHandler(this.ConfigureScrapersToolStripMenuItem_Click);
             // 
@@ -369,10 +346,10 @@
             // 
             // tabGameList
             // 
+            this.tabGameList.Controls.Add(this.treeDirs);
             this.tabGameList.Controls.Add(this.txtVersion);
             this.tabGameList.Controls.Add(this.txtGameID);
             this.tabGameList.Controls.Add(this.btnGoogle);
-            this.tabGameList.Controls.Add(this.lstDir);
             this.tabGameList.Controls.Add(this.btnAddImage);
             this.tabGameList.Controls.Add(this.txtDir);
             this.tabGameList.Controls.Add(this.picBox);
@@ -1132,6 +1109,18 @@
             this.picLogoImg.TabIndex = 9;
             this.picLogoImg.TabStop = false;
             // 
+            // treeDirs
+            // 
+            this.treeDirs.ImageIndex = 2;
+            this.treeDirs.ImageList = this.imageList1;
+            this.treeDirs.Location = new System.Drawing.Point(6, 6);
+            this.treeDirs.Name = "treeDirs";
+            this.treeDirs.SelectedImageIndex = 2;
+            this.treeDirs.Size = new System.Drawing.Size(513, 516);
+            this.treeDirs.TabIndex = 15;
+            this.treeDirs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeDirs_AfterSelect);
+            this.treeDirs.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TreeDirs_MouseClick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -1198,8 +1187,6 @@
         private System.Windows.Forms.Button btnAddImage;
         private System.Windows.Forms.Button btnBuild;
         private System.Windows.Forms.PictureBox picLogoImg;
-        private System.Windows.Forms.ListView lstDir;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
@@ -1285,6 +1272,7 @@
         private System.Windows.Forms.ToolStripMenuItem coversdbToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker bgWorkCoverArtUpdate;
         private System.Windows.Forms.ToolStripMenuItem configureScrapersToolStripMenuItem;
+        private System.Windows.Forms.TreeView treeDirs;
     }
 }
 

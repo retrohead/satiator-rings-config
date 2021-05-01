@@ -18,7 +18,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.4";
+        public string appVer = "4.5";
         public class itemData
         {
             public string fn;
@@ -108,15 +108,10 @@ namespace SatiatorRingsConfig
             Enabled = true;
             toolStripStatusLabel1.Text = "ready...";
         }
-        private void listGames()
+
+        private void listGamesDir(TreeNode node, string path)
         {
-            if(!Directory.Exists(txtDir.Text))
-            {
-                lstDir.Items.Clear();
-                MessageBox.Show("The selected directory does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            string[] dirs = Directory.GetDirectories(txtDir.Text);
+            string[] dirs = Directory.GetDirectories(path);
             dir[] objs = new dir[dirs.Count()];
             int i = 0;
             foreach (string dir in dirs)
@@ -126,10 +121,11 @@ namespace SatiatorRingsConfig
                 i++;
             }
             Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
-            lstDir.Items.Clear();
+            if (node != null)
+                node.Nodes.Clear();
             for (int j = 0; j < i; j++)
             {
-                ListViewItem item = new ListViewItem();
+                TreeNode item = new TreeNode();
                 itemData data = new itemData();
                 data.fn = objs[j].path;
                 string fn = objs[j].path.Replace(txtDir.Text, "");
@@ -144,8 +140,11 @@ namespace SatiatorRingsConfig
                 }
                 if (fn.StartsWith("\\"))
                     fn = fn.Substring(1, fn.Length - 1);
-                item.Text = fn;
+                item.Text = Path.GetFileName(fn);
                 item.Tag = data;
+
+                if ((item.Text == "satiator-rings") || (item.Text == "System Volume Information"))
+                    continue;
 
                 // check to see if the item is in favs
                 fn = data.fn;
@@ -154,12 +153,28 @@ namespace SatiatorRingsConfig
                 if (favs.Contains(fn))
                     item.ImageIndex = 0;
                 else
-                    item.ImageIndex = -1;
+                    item.ImageIndex = 2;
 
-                lstDir.Items.Add(item);
+                listGamesDir(item, data.fn);
+                if (node != null)
+                    node.Nodes.Add(item);
+                else
+                    treeDirs.Nodes.Add(item);
             }
-            if (lstDir.Items.Count > 0)
-                lstDir.Items[0].Selected = true;
+        }
+        private void listGames()
+        {
+            treeDirs.Nodes.Clear();
+            if (!Directory.Exists(txtDir.Text))
+            {
+                MessageBox.Show("The selected directory does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            listGamesDir(null, txtDir.Text);
+            if (treeDirs.Nodes.Count > 0)
+            {
+                treeDirs.SelectedNode = treeDirs.Nodes[0];
+            }
         }
         private void listThemes()
         {
@@ -348,7 +363,7 @@ namespace SatiatorRingsConfig
             btnAddImage.Enabled = false;
             btnGoogle.Enabled = false;
             txtDir.Text = "";
-            lstDir.Items.Clear();
+            treeDirs.Nodes.Clear();
             using (var fbd = new FolderBrowserDialog())
             {
                 DialogResult result = fbd.ShowDialog();
@@ -448,7 +463,7 @@ namespace SatiatorRingsConfig
         }
         private void btnAddImage_Click(object sender, EventArgs e)
         {
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+            itemData data = (itemData)treeDirs.SelectedNode.Tag;
             addTGAtoDir("BOX.TGA", data.fn, -1, -1, T, picBox);
         }
         public static Bitmap ResizeImage(Image image, int width, int height)
@@ -474,29 +489,6 @@ namespace SatiatorRingsConfig
             }
 
             return destImage;
-        }
-        private void lstDir_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstDir.SelectedItems.Count == 0)
-            {
-                btnAddImage.Enabled = false;
-                btnGoogle.Enabled = false;
-                picBox.Image = Properties.Resources.satiator_small;
-                return;
-            }
-            btnAddImage.Enabled = true;
-            btnGoogle.Enabled = true;
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-
-            string path = Path.Combine(data.fn, "BOX.TGA");
-            if (!File.Exists(path))
-            {
-                picBox.Image = Properties.Resources.satiator_small;
-                return;
-            }
-            T = new TGA(path);
-            picBox.Image = (Bitmap)T;
-            loadGameInformation(data.fn);
         }
 
         public static ipBinData loadGameIpBin(string dir)
@@ -527,6 +519,8 @@ namespace SatiatorRingsConfig
                                 try
                                 {
                                     oneline = oneline.Substring(oneline.IndexOf("\"") + 1, oneline.Length - (oneline.IndexOf("\"") + 1));
+                                    if (oneline.StartsWith("\\"))
+                                        oneline = oneline.Substring(1, oneline.Length - 1);
                                     oneline = oneline.Substring(0, oneline.IndexOf("\""));
                                     files[0] = Path.Combine(Path.GetDirectoryName(files[0]), oneline);
                                     gotFile = true;
@@ -569,7 +563,7 @@ namespace SatiatorRingsConfig
                     text = System.Text.Encoding.Default.GetString(bytes);
                     br.Close();
                     text = text.Trim();
-                    ipBin.gameId = text.Substring(0,text.Length - 6).Trim();
+                    ipBin.gameId = text.Substring(0, text.Length - 6).Trim();
                     ipBin.gameVer = text.Substring(text.Length - 6, 6).Trim();
                 }
             }
@@ -881,7 +875,7 @@ namespace SatiatorRingsConfig
         private void BtnGoogle_Click(object sender, EventArgs e)
         {
             frmGoogleImages.SearchQuery query = new frmGoogleImages.SearchQuery();
-            query.Query = "saturn cover " + lstDir.SelectedItems[0].Text;
+            query.Query = "saturn cover " + treeDirs.SelectedNode.Text;
             while (query.Query.LastIndexOf("(") > 0)
                 query.Query = query.Query.Substring(0, query.Query.LastIndexOf("(") - 1);
             while (query.Query.LastIndexOf("[") > 0)
@@ -913,7 +907,7 @@ namespace SatiatorRingsConfig
                         using (Bitmap clone = new Bitmap(original))
                         using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
                             T = (TGA)newbmp;
-                        itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+                        itemData data = (itemData)treeDirs.SelectedNode.Tag;
                         if (File.Exists(Path.Combine(data.fn, "BOX.TGA")))
                             File.Delete(Path.Combine(data.fn, "BOX.TGA"));
                         T.Save(Path.Combine(data.fn, "BOX.TGA"));
@@ -925,27 +919,15 @@ namespace SatiatorRingsConfig
         }
         private void LstDir_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Right)
-                return;
-
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-            string fn = data.fn;
-            fn = fn.Replace("\\", "/");
-            fn = fn.Substring(fn.IndexOf("/"), fn.Length - fn.IndexOf("/"));
-            if (favs.Contains(fn))
-                addToFavouritesToolStripMenuItem.Text = "Delete From Favourites";
-            else
-                addToFavouritesToolStripMenuItem.Text = "Add To Favourites";
-            this.contextMenuGames.Show((Control)this.lstDir, new Point(e.X, e.Y));
         }
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (frmRename f = new frmRename(lstDir.SelectedItems[0].Text))
+            using (frmRename f = new frmRename(treeDirs.SelectedNode.Text))
             {
                 f.ShowDialog(this);
                 if (f.DialogResult == DialogResult.Cancel)
                     return;
-                itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+                itemData data = (itemData)treeDirs.SelectedNode.Tag;
                 string newname = Path.Combine(Path.GetDirectoryName(data.fn), f.newname);
                 if (data.fn == newname)
                     return;
@@ -956,41 +938,41 @@ namespace SatiatorRingsConfig
                 }
                 Directory.Move(data.fn, newname);
                 data.fn = newname;
-                lstDir.SelectedItems[0].Tag = data;
-                lstDir.SelectedItems[0].Text = f.newname;
+                treeDirs.SelectedNode.Tag = data;
+                treeDirs.SelectedNode.Text = f.newname;
             }
         }
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to remove the selected game from your SD card?\n\n" + lstDir.SelectedItems[0].Text, "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+            if (MessageBox.Show("Are you sure you want to remove the selected game from your SD card?\n\n" + treeDirs.SelectedNode.Text, "Confirm Delete", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
                 return;
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+            itemData data = (itemData)treeDirs.SelectedNode.Tag;
             Directory.Delete(data.fn, true);
-            lstDir.Items.Remove(lstDir.SelectedItems[0]);
+            if(treeDirs.SelectedNode.Parent == null)
+                treeDirs.Nodes.Remove(treeDirs.SelectedNode);
+            else
+                treeDirs.SelectedNode.Parent.Nodes.Remove(treeDirs.SelectedNode);
             MessageBox.Show("Item deleted successfully", "Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void TrimBracketsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to trim the brackets on the seleted directories?", "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+            if (MessageBox.Show("Are you sure you want to trim the brackets on the seleted directory?", "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
                 return;
 
-            for (int i = 0; i < lstDir.SelectedItems.Count; i++)
-            {
-                itemData data = (itemData)lstDir.SelectedItems[0].Tag;
-                // rename the folder taking the ID off
-                string newDirName = data.fn;
-                if (newDirName.LastIndexOf(" [") > 0)
-                    newDirName = newDirName.Substring(0, data.fn.LastIndexOf(" ["));
-                if (newDirName.LastIndexOf(" (") > 0)
-                    newDirName = data.fn.Substring(0, data.fn.LastIndexOf(" ("));
-                if(data.fn == newDirName)
-                    continue;
-                Directory.Move(data.fn, newDirName);
-                data.fn = newDirName;
-                data.imageId = -1;
-                lstDir.SelectedItems[0].Tag = data;
-                lstDir.SelectedItems[0].Text = Path.GetFileName(data.fn);
-            }
+            itemData data = (itemData)treeDirs.SelectedNode.Tag;
+            // rename the folder taking the ID off
+            string newDirName = data.fn;
+            if (newDirName.LastIndexOf(" [") > 0)
+                newDirName = newDirName.Substring(0, data.fn.LastIndexOf(" ["));
+            if (newDirName.LastIndexOf(" (") > 0)
+                newDirName = data.fn.Substring(0, data.fn.LastIndexOf(" ("));
+            if (data.fn == newDirName)
+                return;
+            Directory.Move(data.fn, newDirName);
+            data.fn = newDirName;
+            data.imageId = -1;
+            treeDirs.SelectedNode.Tag = data;
+            treeDirs.SelectedNode.Text = Path.GetFileName(data.fn);
             MessageBox.Show("Brackets have been removed", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void TrackVolume_ValueChanged(object sender, EventArgs e)
@@ -1101,19 +1083,13 @@ namespace SatiatorRingsConfig
             }
 
             // refresh the games list
-            index = lstDir.SelectedItems[0].Index;
+            TreeNode node = treeDirs.SelectedNode;
             listGames();
-            lstDir.SelectedItems.Clear();
-            if (lstDir.Items.Count > index)
-            {
-                lstDir.Items[index].Selected = true;
-                lstDir.Items[index].EnsureVisible();
-            }
-            lstDir.SelectedItems[0].EnsureVisible();
+            treeDirs.SelectedNode = node;
         }
         private void AddToFavouritesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            itemData data = (itemData)lstDir.SelectedItems[0].Tag;
+            itemData data = (itemData)treeDirs.SelectedNode.Tag;
             string fn = data.fn;
             addRemoveFav(fn);
         }
@@ -1224,9 +1200,23 @@ namespace SatiatorRingsConfig
             PicCorner_Click(picCorner, e);
         }
 
+        private List<itemData> addDataToDownloadQueue(TreeNode node, List<itemData> itemsData)
+        {
+            dynamic obj = node;
+            if (node == null)
+                obj = treeDirs;
+
+            for (int i = 0; i < obj.Nodes.Count; i++)
+            {
+                itemData item = (itemData)obj.Nodes[i].Tag;
+                itemsData.Add(item);
+                itemsData = addDataToDownloadQueue(obj.Nodes[i], itemsData);
+            }
+            return itemsData;
+        }
         private void CoversdbToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (lstDir.Items.Count == 0)
+            if (treeDirs.Nodes.Count == 0)
             {
                 MessageBox.Show("There are no games loaded", "No Games Loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1236,11 +1226,7 @@ namespace SatiatorRingsConfig
             enableForm(false);
 
             List<itemData> itemsData = new List<itemData>();
-            for (int i = 0; i < lstDir.Items.Count - 1; i++)
-            {
-                itemData item = (itemData)lstDir.Items[i].Tag;
-                itemsData.Add(item);
-            }
+            itemsData = addDataToDownloadQueue(null, itemsData);
             frmBoxartUpdate frm = new frmBoxartUpdate(itemsData);
             frm.ShowDialog();
             enableForm(true);
@@ -1251,6 +1237,46 @@ namespace SatiatorRingsConfig
         {
             frmScrapers frm = new frmScrapers();
             frm.ShowDialog();
+        }
+
+        private void TreeDirs_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+
+            itemData data = (itemData)treeDirs.SelectedNode.Tag;
+            string fn = data.fn;
+            fn = fn.Replace("\\", "/");
+            fn = fn.Substring(fn.IndexOf("/"), fn.Length - fn.IndexOf("/"));
+            if (favs.Contains(fn))
+                addToFavouritesToolStripMenuItem.Text = "Delete From Favourites";
+            else
+                addToFavouritesToolStripMenuItem.Text = "Add To Favourites";
+            this.contextMenuGames.Show((Control)this.treeDirs, new Point(e.X, e.Y));
+        }
+
+        private void TreeDirs_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (treeDirs.SelectedNode == null)
+            {
+                btnAddImage.Enabled = false;
+                btnGoogle.Enabled = false;
+                picBox.Image = Properties.Resources.satiator_small;
+                return;
+            }
+            btnAddImage.Enabled = true;
+            btnGoogle.Enabled = true;
+            itemData data = (itemData)treeDirs.SelectedNode.Tag;
+
+            string path = Path.Combine(data.fn, "BOX.TGA");
+            if (!File.Exists(path))
+            {
+                picBox.Image = Properties.Resources.satiator_small;
+                return;
+            }
+            T = new TGA(path);
+            picBox.Image = (Bitmap)T;
+            loadGameInformation(data.fn);
         }
     }
 }
