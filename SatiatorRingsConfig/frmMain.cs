@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -18,7 +19,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.5";
+        public string appVer = "4.6";
         public class itemData
         {
             public string fn;
@@ -151,9 +152,15 @@ namespace SatiatorRingsConfig
                 fn = fn.Replace("\\", "/");
                 fn = fn.Substring(fn.IndexOf("/"), fn.Length - fn.IndexOf("/"));
                 if (favs.Contains(fn))
+                {
                     item.ImageIndex = 0;
+                    item.SelectedImageIndex = 0;
+                }
                 else
+                {
                     item.ImageIndex = 2;
+                    item.SelectedImageIndex = 2;
+                }
 
                 listGamesDir(item, data.fn);
                 if (node != null)
@@ -421,7 +428,14 @@ namespace SatiatorRingsConfig
                     return;
                 }
             }
-
+            string destPath = Path.Combine(dir, tgaName);
+            if (sourceFile.ToLower().EndsWith(".tga"))
+            {
+                if (File.Exists(destPath))
+                    File.Delete(destPath);
+                File.Copy(sourceFile, destPath);
+                return;
+            }
             using (Image img = Image.FromFile(sourceFile))
             {
                 Image newimg;
@@ -446,14 +460,14 @@ namespace SatiatorRingsConfig
                 }
                 newimg.Save("tmp.png");
                 newimg.Dispose();
-                if (File.Exists(Path.Combine(dir, tgaName)))
-                    File.Delete(Path.Combine(dir, tgaName));
+                if (File.Exists(destPath))
+                    File.Delete(destPath);
 
                 using (Bitmap original = new Bitmap("tmp.png"))
                 using (Bitmap clone = new Bitmap(original))
                 using (Bitmap newbmp = clone.Clone(new Rectangle(0, 0, clone.Width, clone.Height), PixelFormat.Format24bppRgb))
                     tga = (TGA)newbmp;
-                tga.Save(Path.Combine(dir, tgaName));
+                tga.Save(destPath);
                 if (picBox != null)
                 {
                     picBox.Image = (Bitmap)tga;
@@ -917,9 +931,6 @@ namespace SatiatorRingsConfig
                 }
             }
         }
-        private void LstDir_MouseClick(object sender, MouseEventArgs e)
-        {
-        }
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (frmRename f = new frmRename(treeDirs.SelectedNode.Text))
@@ -1200,7 +1211,7 @@ namespace SatiatorRingsConfig
             PicCorner_Click(picCorner, e);
         }
 
-        private List<itemData> addDataToDownloadQueue(TreeNode node, List<itemData> itemsData)
+        private List<itemData> addDataToDownloadQueue(TreeNode node, List<itemData> itemsData, bool ifMissing)
         {
             dynamic obj = node;
             if (node == null)
@@ -1209,28 +1220,11 @@ namespace SatiatorRingsConfig
             for (int i = 0; i < obj.Nodes.Count; i++)
             {
                 itemData item = (itemData)obj.Nodes[i].Tag;
-                itemsData.Add(item);
-                itemsData = addDataToDownloadQueue(obj.Nodes[i], itemsData);
+                if (!ifMissing || !File.Exists(Path.Combine(item.fn, "BOX.TGA")))
+                    itemsData.Add(item);
+                itemsData = addDataToDownloadQueue(obj.Nodes[i], itemsData, ifMissing);
             }
             return itemsData;
-        }
-        private void CoversdbToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (treeDirs.Nodes.Count == 0)
-            {
-                MessageBox.Show("There are no games loaded", "No Games Loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            if (MessageBox.Show("Do you want to update all boxarts from the scrapers now?\n\nWarning - Existing images will be overwritten.", "Confirm Boxart Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
-                return;
-            enableForm(false);
-
-            List<itemData> itemsData = new List<itemData>();
-            itemsData = addDataToDownloadQueue(null, itemsData);
-            frmBoxartUpdate frm = new frmBoxartUpdate(itemsData);
-            frm.ShowDialog();
-            enableForm(true);
-            updateProgressLabel("ready...");
         }
 
         private void ConfigureScrapersToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1277,6 +1271,122 @@ namespace SatiatorRingsConfig
             T = new TGA(path);
             picBox.Image = (Bitmap)T;
             loadGameInformation(data.fn);
+        }
+
+        private List<itemData> addDataToExportQueue(TreeNode node, List<itemData> itemsData)
+        {
+            dynamic obj = node;
+            if (node == null)
+                obj = treeDirs;
+            for (int i = 0; i < obj.Nodes.Count; i++)
+            {
+                itemData item = (itemData)obj.Nodes[i].Tag;
+                string fn = Path.Combine(item.fn, "BOX.TGA");
+                if (File.Exists(fn))
+                {
+                    itemsData.Add(item);
+                }
+                itemsData = addDataToExportQueue(obj.Nodes[i], itemsData);
+            }
+            return itemsData;
+        }
+
+        private void ToolStripDropDownButton3_Click(object sender, EventArgs e)
+        {
+
+            if (treeDirs.Nodes.Count == 0)
+            {
+                MessageBox.Show("There are no games loaded", "No Games Loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SaveFileDialog sd = new SaveFileDialog();
+            sd.Filter = "Zip Files (*.zip)|*.zip";
+            sd.FileName = "Satiator Rings Image Pack.zip";
+            if (sd.ShowDialog() == DialogResult.OK)
+            {
+                if(!sd.FileName.EndsWith(".zip"))
+                {
+                    sd.FileName += ".zip";
+                }
+
+                string dir = Path.Combine("data/ziptemp");
+                if (Directory.Exists(dir))
+                {
+                    Directory.Move(dir, dir + "2");
+                    System.Threading.Thread.Sleep(500);
+                    Directory.Delete(dir + "2", true);
+                }
+                Directory.CreateDirectory(dir);
+
+                enableForm(false);
+
+                List<itemData> itemsData = new List<itemData>();
+                itemsData = addDataToExportQueue(null, itemsData);
+                using (frmBoxartExport frm = new frmBoxartExport(itemsData, dir))
+                {
+                    frm.ShowDialog();
+                    if(frm.DialogResult == DialogResult.OK)
+                    {
+                        ZipFile.CreateFromDirectory(dir, sd.FileName);
+                    }
+                    Directory.Delete(dir, true);
+                    MessageBox.Show("The image pack was created successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                enableForm(true);
+                updateProgressLabel("ready...");
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void AllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeDirs.Nodes.Count == 0)
+            {
+                MessageBox.Show("There are no games loaded", "No Games Loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (MessageBox.Show("Do you want to update all boxarts from the scrapers now?\n\nWarning - Existing images will be overwritten.", "Confirm Boxart Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+
+            List<itemData> itemsData = new List<itemData>();
+            itemsData = addDataToDownloadQueue(null, itemsData, false);
+            if (itemsData.Count == 0)
+            {
+                MessageBox.Show("There are no folders with recogniesd game ID's", "No Game ID's", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            enableForm(false);
+            frmBoxartUpdate frm = new frmBoxartUpdate(itemsData);
+            frm.ShowDialog();
+            enableForm(true);
+            updateProgressLabel("ready...");
+        }
+
+        private void MissingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeDirs.Nodes.Count == 0)
+            {
+                MessageBox.Show("There are no games loaded", "No Games Loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (MessageBox.Show("Do you want to update all boxarts from the scrapers now?\n\nWarning - Existing images will be overwritten.", "Confirm Boxart Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+
+            List<itemData> itemsData = new List<itemData>();
+            itemsData = addDataToDownloadQueue(null, itemsData, true);
+            if (itemsData.Count == 0)
+            {
+                MessageBox.Show("There are no missing boxarts", "No Missing Boxarts", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            enableForm(false);
+            frmBoxartUpdate frm = new frmBoxartUpdate(itemsData);
+            frm.ShowDialog();
+            enableForm(true);
+            updateProgressLabel("ready...");
         }
     }
 }

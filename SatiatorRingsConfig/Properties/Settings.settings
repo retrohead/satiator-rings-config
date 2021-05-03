@@ -2,8 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SatiatorRingsConfig.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="scrapers" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://coversdb.org/sat/</Value>
+    <Setting Name="scraperUrls" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://coversdb.org/sat/|http://files-ds-scene.net/retrohead/satiator/box/2d/</Value>
+    </Setting>
+    <Setting Name="scraperFormats" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.jpg|.tga</Value>
     </Setting>
   </Settings>
 </SettingsFile>

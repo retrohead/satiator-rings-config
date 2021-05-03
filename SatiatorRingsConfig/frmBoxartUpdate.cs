@@ -16,7 +16,7 @@ namespace SatiatorRingsConfig
         int currentItem;
         int converted = 0;
         bool cancelled = false;
-        TGA T;
+        TGA T = null;
         List<frmMain.itemData> downloadBoxData;
         public frmBoxartUpdate(List<frmMain.itemData> itemData)
         {
@@ -62,27 +62,26 @@ namespace SatiatorRingsConfig
             updateProgress(currentItem, downloadBoxData.Count);
             updateProgressLabel("checking item " + (currentItem + 1) + " of " + downloadBoxData.Count);
 
-            string[] scraperUrls = Properties.Settings.Default.scrapers.Split('|');
+            frmMain.ipBinData ipBin = frmMain.loadGameIpBin(downloadBoxData[currentItem].fn);
+            if (ipBin.gameId == "")
+                return;
+            string[] scraperUrls = Properties.Settings.Default.scraperUrls.Split('|');
+            string[] scraperFormats = Properties.Settings.Default.scraperFormats.Split('|');
 
             for (int i = 0; i < scraperUrls.Length; i++)
             {
-                frmMain.ipBinData ipBin = frmMain.loadGameIpBin(downloadBoxData[currentItem].fn);
-                if (ipBin.gameId == "")
-                    break;
-                updateProgressLabel("trying JPG from " + scraperUrls[i]);
-                if (update.downloadFile(scraperUrls[i] + ipBin.gameId + ".jpg", "data/temp/", scraperUrls[i] + ipBin.gameId + ".jpg", "", true))
+                string format = ".jpg";
+                if (i < scraperFormats.Length)
+                    format = scraperFormats[i];
+                updateProgressLabel("trying " + format + " from " + scraperUrls[i]);
+                if (update.downloadFile(scraperUrls[i] + ipBin.gameId + format, "data/temp/", scraperUrls[i] + ipBin.gameId + format, "", true))
                 {
-                    processDownloadedImage("data/temp/" + ipBin.gameId + ".jpg", downloadBoxData[currentItem].fn);
+                    processDownloadedImage("data/temp/" + ipBin.gameId + format, downloadBoxData[currentItem].fn);
                     break;
-                }
-                else
+                } else if (update.downloadFile(scraperUrls[i] + ipBin.gameId + format.ToUpper(), "data/temp/", scraperUrls[i] + ipBin.gameId + format.ToUpper(), "", true))
                 {
-                    updateProgressLabel("trying PNG from " + scraperUrls[i]);
-                    if (update.downloadFile(scraperUrls[i] + ipBin.gameId + ".png", "data/temp/", scraperUrls[i] + ipBin.gameId + ".png", "", true))
-                    {
-                        processDownloadedImage("data/temp/" + ipBin.gameId + ".png", downloadBoxData[currentItem].fn);
-                        break;
-                    }
+                    processDownloadedImage("data/temp/" + ipBin.gameId + format.ToUpper(), downloadBoxData[currentItem].fn);
+                    break;
                 }
             }
         }

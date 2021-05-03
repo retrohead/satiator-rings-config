@@ -49,9 +49,11 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.coversdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configureScrapersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton3 = new System.Windows.Forms.ToolStripButton();
             this.lblMenuVer = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabGameList = new System.Windows.Forms.TabPage();
+            this.treeDirs = new System.Windows.Forms.TreeView();
             this.txtVersion = new System.Windows.Forms.TextBox();
             this.txtGameID = new System.Windows.Forms.TextBox();
             this.btnGoogle = new System.Windows.Forms.Button();
@@ -121,7 +123,8 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.picLogoImg = new System.Windows.Forms.PictureBox();
             this.bgWorkCoverArtUpdate = new System.ComponentModel.BackgroundWorker();
-            this.treeDirs = new System.Windows.Forms.TreeView();
+            this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.missingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -231,7 +234,8 @@
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripDropDownButton1,
-            this.toolStripDropDownButton2});
+            this.toolStripDropDownButton2,
+            this.toolStripDropDownButton3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(655, 25);
@@ -305,18 +309,30 @@
             // 
             // coversdbToolStripMenuItem
             // 
+            this.coversdbToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.allToolStripMenuItem,
+            this.missingToolStripMenuItem});
             this.coversdbToolStripMenuItem.Name = "coversdbToolStripMenuItem";
             this.coversdbToolStripMenuItem.RightToLeftAutoMirrorImage = true;
-            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.coversdbToolStripMenuItem.Text = "Download Boxarts";
-            this.coversdbToolStripMenuItem.Click += new System.EventHandler(this.CoversdbToolStripMenuItem_Click);
             // 
             // configureScrapersToolStripMenuItem
             // 
             this.configureScrapersToolStripMenuItem.Name = "configureScrapersToolStripMenuItem";
-            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.configureScrapersToolStripMenuItem.Text = "Configure Scrapers";
             this.configureScrapersToolStripMenuItem.Click += new System.EventHandler(this.ConfigureScrapersToolStripMenuItem_Click);
+            // 
+            // toolStripDropDownButton3
+            // 
+            this.toolStripDropDownButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton3.Image")));
+            this.toolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton3.Name = "toolStripDropDownButton3";
+            this.toolStripDropDownButton3.Size = new System.Drawing.Size(108, 22);
+            this.toolStripDropDownButton3.Text = "Export Image Pack";
+            this.toolStripDropDownButton3.Click += new System.EventHandler(this.ToolStripDropDownButton3_Click);
             // 
             // lblMenuVer
             // 
@@ -360,6 +376,18 @@
             this.tabGameList.TabIndex = 0;
             this.tabGameList.Text = "Game List";
             this.tabGameList.UseVisualStyleBackColor = true;
+            // 
+            // treeDirs
+            // 
+            this.treeDirs.ImageIndex = 2;
+            this.treeDirs.ImageList = this.imageList1;
+            this.treeDirs.Location = new System.Drawing.Point(6, 6);
+            this.treeDirs.Name = "treeDirs";
+            this.treeDirs.SelectedImageIndex = 2;
+            this.treeDirs.Size = new System.Drawing.Size(513, 516);
+            this.treeDirs.TabIndex = 15;
+            this.treeDirs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeDirs_AfterSelect);
+            this.treeDirs.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TreeDirs_MouseClick);
             // 
             // txtVersion
             // 
@@ -1109,17 +1137,19 @@
             this.picLogoImg.TabIndex = 9;
             this.picLogoImg.TabStop = false;
             // 
-            // treeDirs
+            // allToolStripMenuItem
             // 
-            this.treeDirs.ImageIndex = 2;
-            this.treeDirs.ImageList = this.imageList1;
-            this.treeDirs.Location = new System.Drawing.Point(6, 6);
-            this.treeDirs.Name = "treeDirs";
-            this.treeDirs.SelectedImageIndex = 2;
-            this.treeDirs.Size = new System.Drawing.Size(513, 516);
-            this.treeDirs.TabIndex = 15;
-            this.treeDirs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeDirs_AfterSelect);
-            this.treeDirs.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TreeDirs_MouseClick);
+            this.allToolStripMenuItem.Name = "allToolStripMenuItem";
+            this.allToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.allToolStripMenuItem.Text = "All";
+            this.allToolStripMenuItem.Click += new System.EventHandler(this.AllToolStripMenuItem_Click);
+            // 
+            // missingToolStripMenuItem
+            // 
+            this.missingToolStripMenuItem.Name = "missingToolStripMenuItem";
+            this.missingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.missingToolStripMenuItem.Text = "Missing";
+            this.missingToolStripMenuItem.Click += new System.EventHandler(this.MissingToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -1273,6 +1303,9 @@
         private System.ComponentModel.BackgroundWorker bgWorkCoverArtUpdate;
         private System.Windows.Forms.ToolStripMenuItem configureScrapersToolStripMenuItem;
         private System.Windows.Forms.TreeView treeDirs;
+        private System.Windows.Forms.ToolStripButton toolStripDropDownButton3;
+        private System.Windows.Forms.ToolStripMenuItem allToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem missingToolStripMenuItem;
     }
 }
 

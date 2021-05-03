@@ -16,28 +16,41 @@ namespace SatiatorRingsConfig
         public frmAddScraper(string name)
         {
             InitializeComponent();
+            string format = ".jpg";
+            if(name.Contains("|"))
+            {
+                format = name.Split('|')[1];
+                name = name.Split('|')[0];
+            }
             txtName.Text = name;
+            comboBox1.SelectedIndex = 0;
+            for (int i=0;i<comboBox1.Items.Count;i++)
+            {
+                if(comboBox1.Items[i].ToString() == format)
+                {
+                    comboBox1.SelectedIndex = i;
+                    break;
+                }
+            }
             txtName.Focus();
         }
-
-        private void TxtName_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Enter)
-            {
-                newname = txtName.Text;
-                DialogResult = DialogResult.OK;
-                Close();
-            }
-        }
-
         private void TxtName_Enter(object sender, EventArgs e)
         {
             txtName.SelectAll();
         }
 
-        private void TxtName_Leave(object sender, EventArgs e)
+        private void BtnAccept_Click(object sender, EventArgs e)
         {
-            txtName.Focus();
+            newname = txtName.Text + "|" + comboBox1.SelectedItem.ToString();
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            newname = "";
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

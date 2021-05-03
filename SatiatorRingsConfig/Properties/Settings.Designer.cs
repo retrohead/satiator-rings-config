@@ -25,13 +25,25 @@ namespace SatiatorRingsConfig.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://coversdb.org/sat/")]
-        public string scrapers {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://coversdb.org/sat/|http://files-ds-scene.net/retrohead/satiator/box/2d/")]
+        public string scraperUrls {
             get {
-                return ((string)(this["scrapers"]));
+                return ((string)(this["scraperUrls"]));
             }
             set {
-                this["scrapers"] = value;
+                this["scraperUrls"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".jpg|.tga")]
+        public string scraperFormats {
+            get {
+                return ((string)(this["scraperFormats"]));
+            }
+            set {
+                this["scraperFormats"] = value;
             }
         }
     }
