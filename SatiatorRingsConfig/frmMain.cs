@@ -19,7 +19,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.6";
+        public string appVer = "4.7";
         public class itemData
         {
             public string fn;
@@ -576,9 +576,11 @@ namespace SatiatorRingsConfig
                     bytes = br.ReadBytes(16);
                     text = System.Text.Encoding.Default.GetString(bytes);
                     br.Close();
-                    text = text.Trim();
-                    ipBin.gameId = text.Substring(0, text.Length - 6).Trim();
-                    ipBin.gameVer = text.Substring(text.Length - 6, 6).Trim();
+                    int pos = text.LastIndexOf(" ");
+                    if (pos == -1)
+                        pos = text.Length - 6;
+                    ipBin.gameId = text.Substring(0, pos).Trim();
+                    ipBin.gameVer = text.Substring(pos, text.Length - pos).Trim();
                 }
             }
             return ipBin;

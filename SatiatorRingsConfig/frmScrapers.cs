@@ -16,8 +16,8 @@ namespace SatiatorRingsConfig
         {
             InitializeComponent();
 
-            string[] scrapers = Properties.Settings.Default.scraperUrls.Split('|');
-            string[] formats = Properties.Settings.Default.scraperFormats.Split('|');
+            string[] scrapers = Properties.Settings.Default.boxartUrls.Split('|');
+            string[] formats = Properties.Settings.Default.boxartFormats.Split('|');
 
             for (int i = 0; i < scrapers.Length; i++)
             {
@@ -51,17 +51,17 @@ namespace SatiatorRingsConfig
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.scraperUrls = "";
-            Properties.Settings.Default.scraperFormats = "";
+            Properties.Settings.Default.boxartUrls = "";
+            Properties.Settings.Default.boxartFormats = "";
             for (int i =0;i< lstScrapers.Items.Count;i++)
             {
-                if (Properties.Settings.Default.scraperUrls != "")
+                if (Properties.Settings.Default.boxartUrls != "")
                 {
-                    Properties.Settings.Default.scraperUrls = Properties.Settings.Default.scraperUrls + "|";
-                    Properties.Settings.Default.scraperFormats = Properties.Settings.Default.scraperFormats + "|";
+                    Properties.Settings.Default.boxartUrls = Properties.Settings.Default.boxartUrls + "|";
+                    Properties.Settings.Default.boxartFormats = Properties.Settings.Default.boxartFormats + "|";
                 }
-                Properties.Settings.Default.scraperUrls = Properties.Settings.Default.scraperUrls + lstScrapers.Items[i].Text;
-                Properties.Settings.Default.scraperFormats = Properties.Settings.Default.scraperFormats + lstScrapers.Items[i].SubItems[1].Text;
+                Properties.Settings.Default.boxartUrls = Properties.Settings.Default.boxartUrls + lstScrapers.Items[i].Text;
+                Properties.Settings.Default.boxartFormats = Properties.Settings.Default.boxartFormats + lstScrapers.Items[i].SubItems[1].Text;
             }
             Properties.Settings.Default.Save();
             Close();

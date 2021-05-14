@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SatiatorRingsConfig.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="scraperUrls" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://coversdb.org/sat/|http://files-ds-scene.net/retrohead/satiator/box/2d/</Value>
+    <Setting Name="boxartUrls" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://files-ds-scene.net/retrohead/satiator/box/2d/jpg/|http://files-ds-scene.net/retrohead/satiator/box/2d/|http://files-ds-scene.net/retrohead/satiator/box/3d/</Value>
     </Setting>
-    <Setting Name="scraperFormats" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.jpg|.tga</Value>
+    <Setting Name="boxartFormats" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.jpg|.tga|.tga</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -65,8 +65,8 @@ namespace SatiatorRingsConfig
             frmMain.ipBinData ipBin = frmMain.loadGameIpBin(downloadBoxData[currentItem].fn);
             if (ipBin.gameId == "")
                 return;
-            string[] scraperUrls = Properties.Settings.Default.scraperUrls.Split('|');
-            string[] scraperFormats = Properties.Settings.Default.scraperFormats.Split('|');
+            string[] scraperUrls = Properties.Settings.Default.boxartUrls.Split('|');
+            string[] scraperFormats = Properties.Settings.Default.boxartFormats.Split('|');
 
             for (int i = 0; i < scraperUrls.Length; i++)
             {
