@@ -19,7 +19,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.7";
+        public string appVer = "4.7a";
         public class itemData
         {
             public string fn;
@@ -1268,6 +1268,7 @@ namespace SatiatorRingsConfig
             if (!File.Exists(path))
             {
                 picBox.Image = Properties.Resources.satiator_small;
+                loadGameInformation(data.fn);
                 return;
             }
             T = new TGA(path);
