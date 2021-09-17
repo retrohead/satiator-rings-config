@@ -19,7 +19,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.7a";
+        public string appVer = "4.8";
         public class itemData
         {
             public string fn;
@@ -63,6 +63,8 @@ namespace SatiatorRingsConfig
             OPTIONS_SOUND_VOLUME,
             OPTIONS_AUTO_PATCH,
             OPTIONS_DESC_CACHE,
+            OPTIONS_SKIP_SPLASH,
+            OPTIONS_PERGAME_SAVE,
             /* end */
             OPTIONS_COUNT
         };
@@ -144,7 +146,7 @@ namespace SatiatorRingsConfig
                 item.Text = Path.GetFileName(fn);
                 item.Tag = data;
 
-                if ((item.Text == "satiator-rings") || (item.Text == "System Volume Information"))
+                if ((item.Text == "satiator-rings") || (item.Text == "satiator-saves") || (item.Text == "System Volume Information"))
                     continue;
 
                 // check to see if the item is in favs
@@ -169,6 +171,7 @@ namespace SatiatorRingsConfig
                     treeDirs.Nodes.Add(item);
             }
         }
+
         private void listGames()
         {
             treeDirs.Nodes.Clear();
@@ -183,6 +186,102 @@ namespace SatiatorRingsConfig
                 treeDirs.SelectedNode = treeDirs.Nodes[0];
             }
         }
+
+        private void listSavesDir(TreeNode node, string path)
+        {
+            string[] dirs = Directory.GetDirectories(path);
+            dir[] objs = new dir[dirs.Count()];
+            int i = 0;
+            foreach (string dir in dirs)
+            {
+                objs[i] = new dir();
+                objs[i].path = dir;
+                i++;
+            }
+            Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
+            if (node != null)
+                node.Nodes.Clear();
+            for (int j = 0; j < i; j++)
+            {
+                TreeNode item = new TreeNode();
+                itemData data = new itemData();
+                data.fn = objs[j].path;
+                string fn = objs[j].path.Replace(txtDir.Text, "");
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                data.imageId = -1;
+                if (fn.EndsWith("]"))
+                {
+                    string idStr = fn.Substring(fn.LastIndexOf(" [") + 2, fn.Length - (fn.LastIndexOf(" [") + 2) - 1);
+                    if (!int.TryParse(idStr, out data.imageId))
+                        data.imageId = -1;
+                }
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                item.Text = Path.GetFileName(fn);
+                item.Tag = data;
+                item.ImageIndex = 2;
+                item.SelectedImageIndex = 2;
+
+                listSavesDir(item, data.fn);
+                if (node != null)
+                    node.Nodes.Add(item);
+                else
+                    treeView1.Nodes.Add(item);
+            }
+
+
+            dirs = Directory.GetFiles(path, "*.bup");
+            objs = new dir[dirs.Count()];
+            i = 0;
+            foreach (string dir in dirs)
+            {
+                objs[i] = new dir();
+                objs[i].path = dir;
+                i++;
+            }
+            Array.Sort(objs, (x, y) => String.Compare(x.path, y.path));
+
+            for (int j = 0; j < i; j++)
+            {
+                TreeNode item = new TreeNode();
+                itemData data = new itemData();
+                data.fn = objs[j].path;
+                string fn = objs[j].path.Replace(txtDir.Text, "");
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                data.imageId = -1;
+                if (fn.StartsWith("\\"))
+                    fn = fn.Substring(1, fn.Length - 1);
+                item.Text = Path.GetFileName(fn);
+                item.Tag = data;
+                item.ImageIndex = 2;
+                item.SelectedImageIndex = 2;
+                if (node != null)
+                    node.Nodes.Add(item);
+                else
+                    treeView1.Nodes.Add(item);
+            }
+        }
+
+        private void listSaves()
+        {
+            treeView1.Nodes.Clear();
+            if (!Directory.Exists(txtDir.Text))
+            {
+                MessageBox.Show("The selected directory does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            path = Path.Combine(path, "satiator-saves");
+
+            listSavesDir(null, path);
+            if (treeView1.Nodes.Count > 0)
+            {
+                treeView1.SelectedNode = treeView1.Nodes[0];
+            }
+        }
+
         private void listThemes()
         {
             string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
@@ -297,6 +396,8 @@ namespace SatiatorRingsConfig
             options[(int)optionsType.OPTIONS_LIST_CATEGORY] = 0;
             options[(int)optionsType.OPTIONS_SOUND_VOLUME] = 127;
             options[(int)optionsType.OPTIONS_DESC_CACHE] = 0;
+            options[(int)optionsType.OPTIONS_SKIP_SPLASH] = 0;
+            options[(int)optionsType.OPTIONS_PERGAME_SAVE] = 0;
 
             comboOptionFilter.Items.Clear();
             comboOptionFilter.Items.Add("Standard");
@@ -311,6 +412,9 @@ namespace SatiatorRingsConfig
 
             chkAutoPatch.Checked = false;
             chkDescCache.Checked = false;
+            chkSkipSplash.Checked = false;
+            chkPerGameSaves.Checked = false;
+
             trackVolume.Value = 127;
 
             // load the otions file
@@ -351,6 +455,10 @@ namespace SatiatorRingsConfig
                         options[(int)optionsType.OPTIONS_SOUND_VOLUME] = int.Parse(oneline.Substring("volume=".Length, oneline.Length - "volume=".Length));
                     if (oneline.StartsWith("desccache"))
                         options[(int)optionsType.OPTIONS_DESC_CACHE] = int.Parse(oneline.Substring("desccache=".Length, oneline.Length - "desccache=".Length));
+                    if (oneline.StartsWith("skipsplash"))
+                        options[(int)optionsType.OPTIONS_SKIP_SPLASH] = int.Parse(oneline.Substring("skipsplash=".Length, oneline.Length - "skipsplash=".Length));
+                    if (oneline.StartsWith("pergamesave"))
+                        options[(int)optionsType.OPTIONS_PERGAME_SAVE] = int.Parse(oneline.Substring("pergamesave=".Length, oneline.Length - "pergamesave=".Length));
                     oneline = sr.ReadLine();
                 }
                 sr.Close();
@@ -360,8 +468,12 @@ namespace SatiatorRingsConfig
             comboOptionList.SelectedIndex = options[(int)optionsType.OPTIONS_LIST_MODE];
             if (options[(int)optionsType.OPTIONS_AUTO_PATCH] == 1)
                 chkAutoPatch.Checked = true;
-            if(options[(int)optionsType.OPTIONS_DESC_CACHE] == 1)
+            if (options[(int)optionsType.OPTIONS_DESC_CACHE] == 1)
                 chkDescCache.Checked = true;
+            if (options[(int)optionsType.OPTIONS_SKIP_SPLASH] == 1)
+                chkSkipSplash.Checked = true;
+            if (options[(int)optionsType.OPTIONS_PERGAME_SAVE] == 1)
+                chkPerGameSaves.Checked = true;
             trackVolume.Value = options[(int)optionsType.OPTIONS_SOUND_VOLUME];
         }
         private void BtnBrowse_Click(object sender, EventArgs e)
@@ -382,6 +494,7 @@ namespace SatiatorRingsConfig
                     loadFavourites();
                     listGames();
                     listThemes();
+                    listSaves();
                     btnBuild.Enabled = true;
                     btnRefresh.Enabled = true;
                     tabControl1.Enabled = true;
@@ -739,6 +852,8 @@ namespace SatiatorRingsConfig
             themeFile.img_shadow = new TGA(Path.Combine(data.fn, "SHDW.TGA"));
             picShadow.Image = (Bitmap)themeFile.img_shadow;
 
+            setShadowColour();
+
             // apply the theme to the gui
             txtThemeName.Text = Path.GetFileName(data.fn);
             btnFont.BackColor = Color.FromArgb(themeFile.font[0], themeFile.font[1], themeFile.font[2]);
@@ -747,6 +862,20 @@ namespace SatiatorRingsConfig
             btnBoxBg.BackColor = Color.FromArgb(themeFile.boxbg[0], themeFile.boxbg[1], themeFile.boxbg[2]);
             udpateBgColours();
         }
+        private void setShadowColour()
+        {
+            byte[] colourData = themeFile.img_shadow.ImageOrColorMapArea.ImageData;
+            for (int i = 0; i < colourData.Length; i += 4)
+            {
+                if ((colourData[i + 0] != 0) || (colourData[i + 1] != 0) || (colourData[i + 2] != 0) || (colourData[i + 3] != 0))
+                {
+                    // shadow
+                    btnShadow.BackColor = Color.FromArgb(colourData[i + 3], colourData[i + 2], colourData[i + 1], colourData[i + 0]);
+                    return;
+                }
+            }
+        }
+
         private void PicLogo_Click(object sender, EventArgs e)
         {
             itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
@@ -822,7 +951,74 @@ namespace SatiatorRingsConfig
                 saveThemeIni();
             }
             udpateBgColours();
+            updateCornerSprite();
+            updateShadowSprite();
         }
+
+        private void updateCornerSprite()
+        {
+            Color col = btnBoxBg.BackColor;
+            Color shdw = btnShadow.BackColor;
+            Color bg = btnBg.BackColor;
+
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+
+            // export a new corner sprite
+            File.WriteAllBytes(Path.Combine(data.fn, "CORNER.TGA"), Properties.Resources.CORNER);
+            themeFile.img_corner = TGA.FromFile(Path.Combine(data.fn, "CORNER.TGA"));
+
+            byte[] colourData = themeFile.img_corner.ImageOrColorMapArea.ImageData;
+
+            for(int i = 0;i< colourData.Length;i+=3)
+            {
+                if ((i == 144) || (i == 171))
+                {
+                    // shadow
+                    colourData[i + 0] = shdw.B;
+                    colourData[i + 1] = shdw.G;
+                    colourData[i + 2] = shdw.R;
+                }
+                else if (i == 168)
+                {
+                    // bg
+                    colourData[i + 0] = bg.B;
+                    colourData[i + 1] = bg.G;
+                    colourData[i + 2] = bg.R;
+                } else
+                {
+                    colourData[i + 0] = col.B;
+                    colourData[i + 1] = col.G;
+                    colourData[i + 2] = col.R;
+                }
+            }
+            themeFile.img_corner.ImageOrColorMapArea.ImageData = colourData;
+            themeFile.img_corner.Save(Path.Combine(data.fn, "CORNER.TGA"));
+            picCorner.Image = (Bitmap)themeFile.img_corner;
+        }
+        private void updateShadowSprite()
+        {
+            Color shdw = btnShadow.BackColor;
+            itemData data = (itemData)lstThemes.SelectedItems[0].Tag;
+            // export a new shadow sprite
+            File.WriteAllBytes(Path.Combine(data.fn, "SHDW.TGA"), Properties.Resources.SHDW);
+            themeFile.img_shadow = TGA.FromFile(Path.Combine(data.fn, "SHDW.TGA"));
+            byte[] colourData = themeFile.img_shadow.ImageOrColorMapArea.ImageData;
+            for (int i = 0; i < colourData.Length; i += 4)
+            {
+                if ((colourData[i + 0] != 0) || (colourData[i + 1] != 0) || (colourData[i + 2] != 0) || (colourData[i + 3] != 0))
+                {
+                    // shadow
+                    colourData[i + 0] = shdw.B;
+                    colourData[i + 1] = shdw.G;
+                    colourData[i + 2] = shdw.R;
+                    colourData[i + 3] = shdw.A;
+                }
+            }
+            themeFile.img_shadow.ImageOrColorMapArea.ImageData = colourData;
+            themeFile.img_shadow.Save(Path.Combine(data.fn, "SHDW.TGA"));
+            picShadow.Image = (Bitmap)themeFile.img_shadow;
+        }
+
         private void TextBox1_Leave(object sender, EventArgs e)
         {
             char[] chars = Path.GetInvalidPathChars();
@@ -1013,6 +1209,12 @@ namespace SatiatorRingsConfig
             options[(int)optionsType.OPTIONS_DESC_CACHE] = 0;
             if (chkDescCache.Checked)
                 options[(int)optionsType.OPTIONS_DESC_CACHE] = 1;
+            options[(int)optionsType.OPTIONS_SKIP_SPLASH] = 0;
+            if (chkSkipSplash.Checked)
+                options[(int)optionsType.OPTIONS_SKIP_SPLASH] = 1;
+            options[(int)optionsType.OPTIONS_PERGAME_SAVE] = 0;
+            if (chkPerGameSaves.Checked)
+                options[(int)optionsType.OPTIONS_PERGAME_SAVE] = 1;
 
 
             // write the options file
@@ -1028,6 +1230,8 @@ namespace SatiatorRingsConfig
             sw.WriteLine("listcat=" + options[(int)optionsType.OPTIONS_LIST_CATEGORY]);
             sw.WriteLine("volume=" + options[(int)optionsType.OPTIONS_SOUND_VOLUME]);
             sw.WriteLine("desccache=" + options[(int)optionsType.OPTIONS_DESC_CACHE]);
+            sw.WriteLine("skipsplash=" + options[(int)optionsType.OPTIONS_SKIP_SPLASH]);
+            sw.WriteLine("pergamesave=" + options[(int)optionsType.OPTIONS_PERGAME_SAVE]);
             sw.WriteLine("[END]");
             sw.Close();
 
@@ -1118,6 +1322,7 @@ namespace SatiatorRingsConfig
             loadFavourites();
             listGames();
             listThemes();
+            listSaves();
         }
         private void LstFavs_SelectedIndexChanged(object sender, EventArgs e)
         {
