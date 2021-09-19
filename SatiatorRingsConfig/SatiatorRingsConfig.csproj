@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bup.cs" />
     <Compile Include="frmBoxartExport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,6 +189,11 @@
     <EmbeddedResource Include="lib\ICSharpCode.SharpZipLib.dll" />
     <None Include="Resources\satiator.png" />
     <None Include="Resources\satiator_small.png" />
+    <None Include="Resources\primary.png" />
+    <None Include="Resources\item_rename.png" />
+    <None Include="Resources\icon_add.png" />
+    <Content Include="Resources\success.png" />
+    <Content Include="Resources\trash.gif" />
     <Content Include="satiator.ico" />
   </ItemGroup>
   <ItemGroup />

@@ -7,7 +7,7 @@ namespace SatiatorRingsConfig
 {
     public partial class updateInfoForm : Form
     {
-        private IContainer components;
+        private IContainer components = null;
         private Label txtApplicationNameNew;
         private RichTextBox txtChangelog;
         private Label txtApplicationName;

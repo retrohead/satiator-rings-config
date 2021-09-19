@@ -14,12 +14,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace SatiatorRingsConfig
 {
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "4.8";
+        public string appVer = "5.0";
+
+        static int SAVE_DATA_SLOTS = 20;
+
         public class itemData
         {
             public string fn;
@@ -56,6 +60,7 @@ namespace SatiatorRingsConfig
         public int selectedId;
         public bool firstInstall = false;
         public bool firstboot = true;
+
         enum optionsType
         {
             OPTIONS_LIST_MODE,
@@ -90,6 +95,25 @@ namespace SatiatorRingsConfig
             };
             InitializeComponent();
             Text = Text + " v" + appVer;
+
+            comboSaveSlot.Items.Add("Off");
+            for(int i=0;i< SAVE_DATA_SLOTS; i++)
+            {
+                comboSaveSlot.Items.Add("Slot #0" + i); ;
+                comboLoadedSaveSlot.Items.Add("Slot #0" + i);
+
+                ToolStripMenuItem item = new ToolStripMenuItem();
+                item.Text = "Slot #0" + i;
+                item.Tag = i;
+                item.Click += SaveSlotItem_Click;
+                saveDataToolStripMenuItem.DropDownItems.Add(item);
+            }
+            comboLoadedSaveSlot.SelectedIndex = 0;
+        }
+
+        private void SaveSlotItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void updatesCompleted(bool success)
@@ -207,6 +231,7 @@ namespace SatiatorRingsConfig
                 itemData data = new itemData();
                 data.fn = objs[j].path;
                 string fn = objs[j].path.Replace(txtDir.Text, "");
+
                 if (fn.StartsWith("\\"))
                     fn = fn.Substring(1, fn.Length - 1);
                 data.imageId = -1;
@@ -219,6 +244,8 @@ namespace SatiatorRingsConfig
                 if (fn.StartsWith("\\"))
                     fn = fn.Substring(1, fn.Length - 1);
                 item.Text = Path.GetFileName(fn);
+                if ((item.Text == "_BACKUP") || (item.Text.StartsWith("[SLOT") && item.Text.EndsWith("]")))
+                    continue;
                 item.Tag = data;
                 item.ImageIndex = 2;
                 item.SelectedImageIndex = 2;
@@ -227,7 +254,7 @@ namespace SatiatorRingsConfig
                 if (node != null)
                     node.Nodes.Add(item);
                 else
-                    treeView1.Nodes.Add(item);
+                    treeSaveData.Nodes.Add(item);
             }
 
 
@@ -260,31 +287,42 @@ namespace SatiatorRingsConfig
                 if (node != null)
                     node.Nodes.Add(item);
                 else
-                    treeView1.Nodes.Add(item);
+                    treeSaveData.Nodes.Add(item);
             }
         }
 
         private void listSaves()
         {
-            treeView1.Nodes.Clear();
+            treeSaveData.Nodes.Clear();
             if (!Directory.Exists(txtDir.Text))
             {
                 MessageBox.Show("The selected directory does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
             string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            if (path.EndsWith(":"))
+                path = path + "\\";
             path = Path.Combine(path, "satiator-saves");
-
-            listSavesDir(null, path);
-            if (treeView1.Nodes.Count > 0)
+            if (!Directory.Exists(path))
+                 Directory.CreateDirectory(path);
+            if(comboLoadedSaveSlot.SelectedIndex > 0)
             {
-                treeView1.SelectedNode = treeView1.Nodes[0];
+                path = Path.Combine(path, "[SLOT" + comboLoadedSaveSlot.SelectedIndex.ToString("00") + "]");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+            }
+            listSavesDir(null, path);
+            if (treeSaveData.Nodes.Count > 0)
+            {
+                treeSaveData.SelectedNode = treeSaveData.Nodes[0];
             }
         }
 
         private void listThemes()
         {
             string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            if(path.EndsWith(":"))
+                path = path + "\\";
             path = Path.Combine(path, "satiator-rings", "themes");
             if (!Directory.Exists(path))
             {
@@ -413,7 +451,7 @@ namespace SatiatorRingsConfig
             chkAutoPatch.Checked = false;
             chkDescCache.Checked = false;
             chkSkipSplash.Checked = false;
-            chkPerGameSaves.Checked = false;
+            comboSaveSlot.SelectedIndex = 0;
 
             trackVolume.Value = 127;
 
@@ -472,12 +510,18 @@ namespace SatiatorRingsConfig
                 chkDescCache.Checked = true;
             if (options[(int)optionsType.OPTIONS_SKIP_SPLASH] == 1)
                 chkSkipSplash.Checked = true;
-            if (options[(int)optionsType.OPTIONS_PERGAME_SAVE] == 1)
-                chkPerGameSaves.Checked = true;
+            if (options[(int)optionsType.OPTIONS_PERGAME_SAVE] > 10)
+                options[(int)optionsType.OPTIONS_PERGAME_SAVE] = 10;
+            comboSaveSlot.SelectedIndex = options[(int)optionsType.OPTIONS_PERGAME_SAVE];
+            comboLoadedSaveSlot.SelectedIndex = options[(int)optionsType.OPTIONS_PERGAME_SAVE] - 1;
             trackVolume.Value = options[(int)optionsType.OPTIONS_SOUND_VOLUME];
+            btnSaveOptions.Visible = false;
         }
         private void BtnBrowse_Click(object sender, EventArgs e)
         {
+            if (!checkForNoSave())
+                return;
+
             btnBuild.Text = "Install Satiator Rings";
             btnAddImage.Enabled = false;
             btnGoogle.Enabled = false;
@@ -704,6 +748,7 @@ namespace SatiatorRingsConfig
             txtGameID.Text = ipBin.gameId;
             txtVersion.Text = ipBin.gameVer;
         }
+
         public void enableForm(bool enable)
         {
             BeginInvoke(new voidDelegate(() =>
@@ -765,7 +810,13 @@ namespace SatiatorRingsConfig
             if ((tabControl1.SelectedTab == tabFavourites) && (lstFavs.Items.Count > 0) && (lstFavs.SelectedItems.Count == 0))
                 lstFavs.Items[0].Selected = true;
             if (tabControl1.SelectedTab == tabGameList)
+            {
                 picBox.Refresh();
+                treeDirs.Focus();
+            } else if (tabControl1.SelectedTab == tabPageSaveData)
+            {
+                treeSaveData.Focus();
+            }
         }
         private void LstThemes_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1212,9 +1263,7 @@ namespace SatiatorRingsConfig
             options[(int)optionsType.OPTIONS_SKIP_SPLASH] = 0;
             if (chkSkipSplash.Checked)
                 options[(int)optionsType.OPTIONS_SKIP_SPLASH] = 1;
-            options[(int)optionsType.OPTIONS_PERGAME_SAVE] = 0;
-            if (chkPerGameSaves.Checked)
-                options[(int)optionsType.OPTIONS_PERGAME_SAVE] = 1;
+            options[(int)optionsType.OPTIONS_PERGAME_SAVE] = comboSaveSlot.SelectedIndex;
 
 
             // write the options file
@@ -1235,6 +1284,7 @@ namespace SatiatorRingsConfig
             sw.WriteLine("[END]");
             sw.Close();
 
+            btnSaveOptions.Visible = false;
             MessageBox.Show("The options file was saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void LstFavs_MouseClick(object sender, MouseEventArgs e)
@@ -1318,6 +1368,9 @@ namespace SatiatorRingsConfig
         }
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
+            if (!checkForNoSave())
+                return;
+
             loadOptions();
             loadFavourites();
             listGames();
@@ -1453,7 +1506,79 @@ namespace SatiatorRingsConfig
                 addToFavouritesToolStripMenuItem.Text = "Delete From Favourites";
             else
                 addToFavouritesToolStripMenuItem.Text = "Add To Favourites";
+
+
+
+            // look to see if save data exists for this id
+            foreach (ToolStripMenuItem item in saveDataToolStripMenuItem.DropDownItems)
+                item.DropDownItems.Clear();
+            if (txtGameID.Text == "")
+                return;
+            for (int i = 0; i < SAVE_DATA_SLOTS; i++)
+            {
+                string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+                if (path.EndsWith(":"))
+                    path = path + "\\";
+                path = Path.Combine(path, "satiator-saves");
+                if (i > 0)
+                    path = Path.Combine(path, "[SLOT" + i.ToString("00") + "]");
+                path = Path.Combine(path, txtGameID.Text);
+                ToolStripMenuItem item = (ToolStripMenuItem)saveDataToolStripMenuItem.DropDownItems[i];
+                if (Directory.Exists(path))
+                {
+
+                    ToolStripMenuItem createItem = new ToolStripMenuItem();
+                    createItem.Text = "Add BUP Data";
+                    createItem.Tag = i;
+                    createItem.Click += AddSaveDataItem_Click;
+                    createItem.Image = Properties.Resources.icon_add;
+                    item.DropDownItems.Add(createItem);
+
+                    ToolStripMenuItem deleteItem = new ToolStripMenuItem();
+                    deleteItem.Text = "Delete Data";
+                    deleteItem.Tag = i;
+                    deleteItem.Click += DeleteSaveDataItem_Click;
+                    deleteItem.Image = Properties.Resources.trash;
+                    item.DropDownItems.Add(deleteItem);
+
+                    ToolStripMenuItem modifyItem = new ToolStripMenuItem();
+                    modifyItem.Text = "Modify Data";
+                    modifyItem.Tag = i;
+                    modifyItem.Click += ModifySaveDataItem_Click;
+                    modifyItem.Image = Properties.Resources.item_rename;
+                    item.DropDownItems.Add(modifyItem);
+
+                    item.Image = Properties.Resources.success;
+                }
+                else
+                {
+                    ToolStripMenuItem createItem = new ToolStripMenuItem();
+                    createItem.Text = "Create Data";
+                    createItem.Tag = i;
+                    createItem.Click += CreateSaveDataItem_Click;
+                    createItem.Image = Properties.Resources.icon_add;
+                    item.DropDownItems.Add(createItem);
+
+                    item.Image = null;
+                }
+            }
+
             this.contextMenuGames.Show((Control)this.treeDirs, new Point(e.X, e.Y));
+        }
+
+        private void AddSaveDataItem_Click(object sender, EventArgs e)
+        {
+            int slot = int.Parse(((ToolStripMenuItem)sender).Tag.ToString());
+            if (comboLoadedSaveSlot.SelectedIndex != slot)
+                comboLoadedSaveSlot.SelectedIndex = slot;
+            TreeNode t = findSaveDataTreeNode(txtGameID.Text);
+            if (t == null)
+            {
+                MessageBox.Show("Failed to find the tree node for this item", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            treeSaveData.SelectedNode = t;
+            AddFileToolStripMenuItem_Click(t, e);
         }
 
         private void TreeDirs_AfterSelect(object sender, TreeViewEventArgs e)
@@ -1479,6 +1604,9 @@ namespace SatiatorRingsConfig
             T = new TGA(path);
             picBox.Image = (Bitmap)T;
             loadGameInformation(data.fn);
+            TreeNode t = findSaveDataTreeNode(txtGameID.Text);
+            if (t != null)
+                treeSaveData.SelectedNode = t;
         }
 
         private List<itemData> addDataToExportQueue(TreeNode node, List<itemData> itemsData)
@@ -1595,6 +1723,299 @@ namespace SatiatorRingsConfig
             frm.ShowDialog();
             enableForm(true);
             updateProgressLabel("ready...");
+        }
+
+        private void treeSaveData_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // reset
+            txtBupFn.Text = "";
+            txtBupComment.Text = "";
+            txtBupLang.Text = "";
+            txtBupDate.Text = "";
+            txtBupDataSize.Text = "";
+            grupBUPData.Visible = false;
+            if (treeSaveData.SelectedNode == null)
+            {
+                return;
+            }
+            itemData data = (itemData)treeSaveData.SelectedNode.Tag;
+            TreeNode t = (TreeNode)treeSaveData.SelectedNode;
+            t.EnsureVisible();
+            if(data.fn.ToLower().EndsWith(".bup"))
+            {
+                bupData b = bupProcessor.parseFile(data.fn);
+                if(b == null)
+                {
+                    txtBupFn.Text = "BUP ERROR";
+                } else
+                {
+                    txtBupFn.Text = b.name;
+                    txtBupComment.Text = b.comment;
+                    txtBupLang.Text = bupProcessor.languageIdToString(b.lang);
+                    txtBupDate.Text = bupProcessor.dateToString(b.date).ToString("yyyy-MM-dd hh:mm");
+                    txtBupDataSize.Text = b.dataSize.ToString();
+                    grupBUPData.Visible = true;
+                }
+            }
+        }
+
+        private void treeSaveData_MouseClick(object sender, MouseEventArgs e)
+        {
+            if((e.Button != MouseButtons.Right) || (treeSaveData.SelectedNode == null))
+            {
+                return;
+            }
+            treeSaveData.SelectedNode = treeSaveData.GetNodeAt(e.X, e.Y);
+            ctxSaveData.Show(treeSaveData, new Point(e.X, e.Y));
+        }
+
+        private void DeleteToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)treeSaveData.SelectedNode.Tag;
+            if (data.fn.ToLower().EndsWith(".bup"))
+            {
+                if (MessageBox.Show("Are you sure you want to delete this save data file?", "Confirm Delete BUP File", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                    return;
+                File.Delete(data.fn);
+            } else
+            {
+                if (MessageBox.Show("Are you sure you want to delete this save data directory?", "Confirm Delete Save Directory", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                    return;
+                Directory.Delete(data.fn, true);
+            }
+            treeSaveData.Nodes.Remove(treeSaveData.SelectedNode);
+            MessageBox.Show("Save Data Deleted", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void AddFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            itemData data = (itemData)treeSaveData.SelectedNode.Tag;
+            string dir = data.fn;
+            TreeNode t = null;
+            if (data.fn.ToLower().EndsWith(".bup"))
+            {
+                t = treeSaveData.SelectedNode;
+                data = (itemData)t.Parent.Tag;
+            }
+
+
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.Filter = "Sega Saturn Save Files (*.bup)|*.bup";
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                // validate bup
+
+                bupData b = bupProcessor.parseFile(fd.FileName);
+                if(b == null)
+                {
+                    MessageBox.Show("Invalid BUP file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                // verify there is enough room in the directory
+                int dirSize = 0;
+                string[] files = Directory.GetFiles(data.fn, "*.bup");
+                if(files != null)
+                {
+                    
+                    foreach (string file in files)
+                    {
+                        bupData checkbup = bupProcessor.parseFile(file);
+                        if(checkbup != null)
+                        {
+                            dirSize += checkbup.dataSize;
+                        }
+                    }
+                }
+                if(dirSize + b.dataSize >= 32 * 1024)
+                {
+                    MessageBox.Show("Save directory is full, please make some space first or use another slot.", "Save Directory Full", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+
+                string dest = Path.Combine(data.fn, b.name.Replace("\0","") + ".BUP");
+                if (File.Exists(dest))
+                {
+                    if (MessageBox.Show("A file with the name '" + b.name + ".BUP' already exists in this directory, do you want to overwrite it?", "Confirm Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        return;
+                }
+                File.Copy(fd.FileName, dest);
+                listSaves();
+
+                string id = data.fn.Substring(data.fn.LastIndexOf('\\') + 1, data.fn.Length - (data.fn.LastIndexOf('\\') + 1));
+                t = findSaveDataTreeNode(id);
+                if(t != null)
+                {
+                    t.Expand();
+                    treeSaveData.SelectedNode = t;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public TreeNode findSaveDataTreeNode(string id)
+        {
+            if (id.Trim() == "")
+                return null;
+            foreach (TreeNode t in treeSaveData.Nodes)
+            {
+                itemData data = (itemData)t.Tag;
+                if (data.fn.EndsWith(id))
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        private void ModifySaveDataItem_Click(object sender, EventArgs e)
+        {
+            int slot = int.Parse(((ToolStripMenuItem)sender).Tag.ToString());
+            if(comboLoadedSaveSlot.SelectedIndex != slot)
+                comboLoadedSaveSlot.SelectedIndex = slot;
+            TreeNode t = findSaveDataTreeNode(txtGameID.Text);
+            if (t == null)
+            {
+                MessageBox.Show("Failed to find the tree node for this item", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            treeSaveData.SelectedNode = t;
+            tabControl1.SelectedTab = tabPageSaveData;
+        }
+
+        private void CreateSaveDataItem_Click(object sender, EventArgs e)
+        {
+            int slot = int.Parse(((ToolStripMenuItem)sender).Tag.ToString());
+            if (MessageBox.Show("Are you sure you want to create a save folder for this game in slot #" + slot + "?", "Confirm Create Save Data", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                return;
+
+            if (!Directory.Exists(txtDir.Text))
+            {
+                MessageBox.Show("The selected directory does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            if (path.EndsWith(":"))
+                path = path + "\\";
+            path = Path.Combine(path, "satiator-saves");
+            if(slot > 0)
+                path = Path.Combine(path, "[SLOT"+ slot.ToString("00") + "]");
+            path = Path.Combine(path, txtGameID.Text);
+            if (Directory.Exists(path))
+            {
+                MessageBox.Show("A save directory already exists for this item", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to create the save directory for this item\n\n" + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            listSaves();
+            ModifySaveDataItem_Click(sender, e);
+            AddFileToolStripMenuItem_Click(sender, e);
+        }
+
+        private void DeleteSaveDataItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to delete this save data file?", "Confirm Delete BUP File", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                    return;
+            int slot = int.Parse(((ToolStripMenuItem)sender).Tag.ToString());
+            if (comboLoadedSaveSlot.SelectedIndex != slot)
+                comboLoadedSaveSlot.SelectedIndex = slot;
+            TreeNode t = findSaveDataTreeNode(txtGameID.Text);
+            if (t == null)
+            {
+                MessageBox.Show("Failed to find the tree node for this item", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            treeSaveData.SelectedNode = t;
+
+            string path = txtDir.Text.Substring(0, txtDir.Text.IndexOf(@"\"));
+            if (path.EndsWith(":"))
+                path = path + "\\";
+            path = Path.Combine(path, "satiator-saves");
+            if (slot > 0)
+                path = Path.Combine(path, "[SLOT" + slot.ToString("00") + "]");
+            path = Path.Combine(path, txtGameID.Text);
+
+            Directory.Delete(path, true);
+            listSaves();
+            MessageBox.Show("Save Data Deleted", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void ComboOptionFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void ComboOptionList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void ComboSaveSlot_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void TrackVolume_Scroll(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void ChkAutoPatch_CheckedChanged(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void ChkDescCache_CheckedChanged(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void ChkSkipSplash_CheckedChanged(object sender, EventArgs e)
+        {
+            btnSaveOptions.Visible = true;
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!checkForNoSave())
+                e.Cancel = true;
+        }
+
+        private bool checkForNoSave()
+        {
+            if (btnSaveOptions.Visible)
+            {
+                if (MessageBox.Show("Options have been changed but have not been saved, are you sure you want to continue?", "Confirm Lose Changes", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.Cancel)
+                    return false;
+            }
+            return true;
+        }
+
+        private void ComboLoadedSaveSlot_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (txtDir.Text != "")
+            {
+                listSaves();
+
+                if (tabControl1.SelectedTab == tabPageSaveData)
+                {
+                    TreeNode t = findSaveDataTreeNode(txtGameID.Text);
+                    if (t != null)
+                        treeSaveData.Focus();
+                }
+            }
         }
     }
 }
