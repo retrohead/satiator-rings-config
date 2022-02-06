@@ -62,7 +62,7 @@ namespace SatiatorRingsConfig
                 }
             }));
         }
-
+        // Thanks Hackchi2CE
         public string[] GetImageUrls(string query, string additionalVariables = "")
         {
             updateProgressLabel("initialising");
@@ -82,16 +82,46 @@ namespace SatiatorRingsConfig
             //Trace.WriteLine("Web response: " + responseFromServer);
 
             var urls = new List<string>();
-            string search = @"\[""(?<url>https?:\/\/.*?\.(jpg|jpeg|png))\"",\d+,\d+\]";
+
+            string search = @"\""ou\""\:\""(?<url>.+?)\""";
             MatchCollection matches = Regex.Matches(responseFromServer, search);
             int i = 0;
             foreach (Match match in matches)
             {
-                updateProgressLabel("parsing urls");
+                updateProgressLabel("parsing url list 1");
                 updateProgress(i, matches.Count);
+                urls.Add(HttpUtility.UrlDecode(match.Groups[1].Value.Replace("\\u00", "%")));
                 i++;
-                urls.Add(match.Groups["url"].Value);
             }
+
+            // For some reason Google returns different data for different users (IPs?)
+            // This is an alternative method
+            search = @"imgurl=(.*?)&";
+            matches = Regex.Matches(responseFromServer, search);
+            i = 0;
+            foreach (Match match in matches)
+            {
+                // Not sure about it.
+                updateProgressLabel("parsing url list 2");
+                updateProgress(i, matches.Count);
+                urls.Add(HttpUtility.UrlDecode(match.Groups[1].Value.Replace("\\u00", "%")));
+                i++;
+            }
+
+            // For some reason Google returns different data for different users (IPs?)
+            // This is alternative method #2
+            search = "\\]\\n?,\\[\"([^\"]+)\",\\d+,\\d+]";
+            matches = Regex.Matches(responseFromServer, search);
+            i = 0;
+            foreach (Match match in matches)
+            {
+                // Not sure about it.
+                updateProgressLabel("parsing url list 3");
+                updateProgress(i, matches.Count);
+                urls.Add(HttpUtility.UrlDecode(match.Groups[1].Value.Replace("\\u00", "%")));
+                i++;
+            }
+
             return urls.ToArray();
         }
         public static Image DownloadImage(string url)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -56,14 +57,17 @@ namespace SatiatorRingsConfig
             updateProgress(currentItem, exportBoxData.Count);
             updateProgressLabel("checking item " + (currentItem + 1) + " of " + exportBoxData.Count);
 
-            frmMain.ipBinData ipBin = frmMain.loadGameIpBin(exportBoxData[currentItem].fn);
-            if (ipBin.gameId == "")
+            string hash = frmMain.getGameHashCheck(exportBoxData[currentItem].fn);
+            if (hash == "")
                 return;
-            string dest = Path.Combine(dir, ipBin.gameId + ".TGA");
+            string dest = Path.Combine(dir, hash + ".png");
             if (!File.Exists(dest))
             {
-                updateProgressLabel("exporting " + ipBin.gameId + ".TGA");
-                File.Copy(Path.Combine(exportBoxData[currentItem].fn, "BOX.TGA"), dest);
+                updateProgressLabel("exporting " + hash + ".TGA");
+
+                TGA t = new TGA(Path.Combine(exportBoxData[currentItem].fn, "BOX.TGA"));
+                Image img = (Bitmap)t;
+                img.Save(dest, ImageFormat.Png);
                 exported++;
             } else
             {

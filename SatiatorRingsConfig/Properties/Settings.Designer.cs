@@ -25,9 +25,9 @@ namespace SatiatorRingsConfig.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://files-ds-scene.net/retrohead/satiator/box/2d/jpg/|http://files-ds-scene.ne" +
-            "t/retrohead/satiator/box/2d/|http://files-ds-scene.net/retrohead/satiator/box/3d" +
-            "/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://files-ds-scene.net/retrohead/satiator/box/2d/png/|http://files-ds-scene.ne" +
+            "t/retrohead/satiator/box/2d/jpg/|http://files-ds-scene.net/retrohead/satiator/bo" +
+            "x/2d/|http://files-ds-scene.net/retrohead/satiator/box/3d/")]
         public string boxartUrls {
             get {
                 return ((string)(this["boxartUrls"]));
@@ -39,7 +39,7 @@ namespace SatiatorRingsConfig.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".jpg|.tga|.tga")]
+        [global::System.Configuration.DefaultSettingValueAttribute(".png|.jpg|.tga|.tga")]
         public string boxartFormats {
             get {
                 return ((string)(this["boxartFormats"]));

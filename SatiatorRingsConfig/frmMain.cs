@@ -20,7 +20,7 @@ namespace SatiatorRingsConfig
     public delegate void voidDelegate();
     public partial class frmMain : Form
     {
-        public string appVer = "5.0";
+        public string appVer = "5.1";
 
         static int SAVE_DATA_SLOTS = 20;
 
@@ -447,8 +447,7 @@ namespace SatiatorRingsConfig
             comboOptionList.Items.Add("Text / Image");
             comboOptionList.Items.Add("Text Only");
             comboOptionList.SelectedIndex = 0;
-
-            chkAutoPatch.Checked = false;
+            comboRegionPatch.SelectedIndex = 0;
             chkDescCache.Checked = false;
             chkSkipSplash.Checked = false;
             comboSaveSlot.SelectedIndex = 0;
@@ -504,8 +503,7 @@ namespace SatiatorRingsConfig
 
             comboOptionFilter.SelectedIndex = options[(int)optionsType.OPTIONS_LIST_CATEGORY];
             comboOptionList.SelectedIndex = options[(int)optionsType.OPTIONS_LIST_MODE];
-            if (options[(int)optionsType.OPTIONS_AUTO_PATCH] == 1)
-                chkAutoPatch.Checked = true;
+            comboRegionPatch.SelectedIndex = options[(int)optionsType.OPTIONS_AUTO_PATCH];
             if (options[(int)optionsType.OPTIONS_DESC_CACHE] == 1)
                 chkDescCache.Checked = true;
             if (options[(int)optionsType.OPTIONS_SKIP_SPLASH] == 1)
@@ -662,6 +660,102 @@ namespace SatiatorRingsConfig
             return destImage;
         }
 
+        public static string getGameHashCheck(string dir)
+        {
+            string hash = "";
+            // scan the directory and see if there is an iso or cue file
+            string[] files = Directory.GetFiles(dir, "*.cue");
+            if (files.Length == 0)
+                files = Directory.GetFiles(dir, "*.iso");
+            if (files.Length == 1)
+            {
+                if (files[0].ToLower().EndsWith(".cue"))
+                {
+                    // open the cue and get the first file from it
+                    bool gotFile = false;
+                    using (StreamReader sr = new StreamReader(files[0]))
+                    {
+                        string oneline = "";
+                        while (true)
+                        {
+                            oneline = sr.ReadLine();
+                            if (sr.EndOfStream)
+                                break;
+                            if (oneline.Contains("FILE"))
+                            {
+                                try
+                                {
+                                    oneline = oneline.Substring(oneline.IndexOf("\"") + 1, oneline.Length - (oneline.IndexOf("\"") + 1));
+                                    if (oneline.StartsWith("\\"))
+                                        oneline = oneline.Substring(1, oneline.Length - 1);
+                                    oneline = oneline.Substring(0, oneline.IndexOf("\""));
+                                    files[0] = Path.Combine(Path.GetDirectoryName(files[0]), oneline);
+                                    gotFile = true;
+                                }
+                                catch
+                                {
+
+                                }
+                                break;
+                            }
+                        }
+                        sr.Close();
+                    }
+                    if (!gotFile)
+                    {
+                        MessageBox.Show("Cue file error, does not contain a FILE line!", "CUE Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return hash;
+                    }
+                }
+                // read the binary file
+                using (BinaryReader br = new BinaryReader(File.OpenRead(files[0])))
+                {
+                    int bytesRead = 0x1000;
+                    byte[] bytes = br.ReadBytes(16);
+                    string text = System.Text.Encoding.Default.GetString(bytes);
+
+                    if (text != "SEGA SEGASATURN ")
+                    {
+                        bytes = br.ReadBytes(16);
+                        bytesRead += 16;
+                        text = System.Text.Encoding.Default.GetString(bytes);
+                        if (text != "SEGA SEGASATURN ")
+                        {
+                            br.Close();
+                            MessageBox.Show("File error, does not contain the valid SEGA SATURN header", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return hash;
+                        }
+                    }
+                    
+                    br.ReadBytes(0x1000 - 16); // skip the ip bin
+                    long remainBytes = br.BaseStream.Length - bytesRead;
+                    if (remainBytes < 0x50000)
+                        bytes = br.ReadBytes((int)remainBytes);
+                    else
+                        bytes = br.ReadBytes(0x50000);
+                    br.Close();
+                    using (var md5 = System.Security.Cryptography.MD5.Create())
+                    {
+                        md5.TransformFinalBlock(bytes, 0, bytes.Length);
+                        byte[] hashbytes = md5.Hash;
+
+                        // Create a New Stringbuilder to collect the bytes
+                        // And create a string.
+                        StringBuilder sBuilder = new StringBuilder();
+
+                        // Loop through each byte of the hashed data 
+                        // And format each one as a hexadecimal string.
+                        int j;
+                        for (j = 0; j < hashbytes.Length; j++)
+                            sBuilder.Append(hashbytes[j].ToString("x2"));
+                        // Return the hexadecimal string.
+                        hash = sBuilder.ToString();
+                        return hash;
+                    }
+                }
+            }
+            return hash;
+        }
         public static ipBinData loadGameIpBin(string dir)
         {
             ipBinData ipBin = new ipBinData();
@@ -1143,7 +1237,7 @@ namespace SatiatorRingsConfig
                 query.Query = query.Query.Substring(0, query.Query.LastIndexOf("(") - 1);
             while (query.Query.LastIndexOf("[") > 0)
                 query.Query = query.Query.Substring(0, query.Query.LastIndexOf("[") - 1);
-            query.AdditionalVariables = query.Query;
+            query.AdditionalVariables = txtGameID.Text;
             using (frmGoogleImages googler = new frmGoogleImages(query))
             {
                 if (googler.ShowDialog(this) == DialogResult.OK)
@@ -1252,8 +1346,7 @@ namespace SatiatorRingsConfig
 
             // update the options with the values from the form
             options[(int)optionsType.OPTIONS_AUTO_PATCH] = 0;
-            if(chkAutoPatch.Checked)
-                options[(int)optionsType.OPTIONS_AUTO_PATCH] = 1;
+            options[(int)optionsType.OPTIONS_AUTO_PATCH] = comboRegionPatch.SelectedIndex;
             options[(int)optionsType.OPTIONS_LIST_MODE] = comboOptionList.SelectedIndex;
             options[(int)optionsType.OPTIONS_LIST_CATEGORY] = comboOptionFilter.SelectedIndex;
             options[(int)optionsType.OPTIONS_SOUND_VOLUME] = trackVolume.Value;
@@ -1663,6 +1756,8 @@ namespace SatiatorRingsConfig
                     frm.ShowDialog();
                     if(frm.DialogResult == DialogResult.OK)
                     {
+                        if (File.Exists(sd.FileName))
+                            File.Delete(sd.FileName);
                         ZipFile.CreateFromDirectory(dir, sd.FileName);
                     }
                     Directory.Delete(dir, true);

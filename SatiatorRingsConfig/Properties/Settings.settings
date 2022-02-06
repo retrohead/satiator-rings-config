@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="boxartUrls" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://files-ds-scene.net/retrohead/satiator/box/2d/jpg/|http://files-ds-scene.net/retrohead/satiator/box/2d/|http://files-ds-scene.net/retrohead/satiator/box/3d/</Value>
+      <Value Profile="(Default)">http://files-ds-scene.net/retrohead/satiator/box/2d/png/|http://files-ds-scene.net/retrohead/satiator/box/2d/jpg/|http://files-ds-scene.net/retrohead/satiator/box/2d/|http://files-ds-scene.net/retrohead/satiator/box/3d/</Value>
     </Setting>
     <Setting Name="boxartFormats" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.jpg|.tga|.tga</Value>
+      <Value Profile="(Default)">.png|.jpg|.tga|.tga</Value>
     </Setting>
   </Settings>
 </SettingsFile>

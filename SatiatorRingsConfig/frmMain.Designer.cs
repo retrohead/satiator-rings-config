@@ -39,6 +39,19 @@
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuFileUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.applicationUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.coversdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.missingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureScrapersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton3 = new System.Windows.Forms.ToolStripButton();
             this.lblMenuVer = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabGameList = new System.Windows.Forms.TabPage();
@@ -46,11 +59,13 @@
             this.txtVersion = new System.Windows.Forms.TextBox();
             this.txtGameID = new System.Windows.Forms.TextBox();
             this.btnGoogle = new System.Windows.Forms.Button();
+            this.picBox = new System.Windows.Forms.PictureBox();
             this.tabFavourites = new System.Windows.Forms.TabPage();
             this.btnGoogleFavs = new System.Windows.Forms.Button();
             this.lstFavs = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnAddImageFavs = new System.Windows.Forms.Button();
+            this.picBoxFavs = new System.Windows.Forms.PictureBox();
             this.tabOptions = new System.Windows.Forms.TabPage();
             this.label24 = new System.Windows.Forms.Label();
             this.comboSaveSlot = new System.Windows.Forms.ComboBox();
@@ -58,7 +73,6 @@
             this.lblVolume = new System.Windows.Forms.Label();
             this.btnSaveOptions = new System.Windows.Forms.Button();
             this.chkDescCache = new System.Windows.Forms.CheckBox();
-            this.chkAutoPatch = new System.Windows.Forms.CheckBox();
             this.comboOptionFilter = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.comboOptionList = new System.Windows.Forms.ComboBox();
@@ -71,10 +85,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label18 = new System.Windows.Forms.Label();
             this.btnShadow = new System.Windows.Forms.Button();
+            this.picShadow = new System.Windows.Forms.PictureBox();
             this.label17 = new System.Windows.Forms.Label();
+            this.picCorner = new System.Windows.Forms.PictureBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.btnBoxBg = new System.Windows.Forms.Button();
+            this.picCornerBg = new System.Windows.Forms.PictureBox();
             this.btnDeleteTheme = new System.Windows.Forms.Button();
             this.txtThemeName = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -90,7 +107,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnSelection = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.picGame = new System.Windows.Forms.PictureBox();
+            this.picTheme = new System.Windows.Forms.PictureBox();
+            this.picMenu = new System.Windows.Forms.PictureBox();
+            this.picSatiator = new System.Windows.Forms.PictureBox();
+            this.picOptions = new System.Windows.Forms.PictureBox();
+            this.picConsole = new System.Windows.Forms.PictureBox();
             this.lstThemes = new System.Windows.Forms.ListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageSaveData = new System.Windows.Forms.TabPage();
@@ -110,62 +134,34 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.contextMenuGames = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.trimBracketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.addToFavouritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripFavs = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.bgWorkCoverArtUpdate = new System.ComponentModel.BackgroundWorker();
             this.ctxSaveData = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.saveDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.picBox = new System.Windows.Forms.PictureBox();
-            this.picBoxFavs = new System.Windows.Forms.PictureBox();
-            this.picShadow = new System.Windows.Forms.PictureBox();
-            this.picCorner = new System.Windows.Forms.PictureBox();
-            this.picCornerBg = new System.Windows.Forms.PictureBox();
-            this.picLogo = new System.Windows.Forms.PictureBox();
-            this.picGame = new System.Windows.Forms.PictureBox();
-            this.picTheme = new System.Windows.Forms.PictureBox();
-            this.picMenu = new System.Windows.Forms.PictureBox();
-            this.picSatiator = new System.Windows.Forms.PictureBox();
-            this.picOptions = new System.Windows.Forms.PictureBox();
-            this.picConsole = new System.Windows.Forms.PictureBox();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuFileUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.applicationUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.coversdbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.missingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configureScrapersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownButton3 = new System.Windows.Forms.ToolStripButton();
-            this.picLogoImg = new System.Windows.Forms.PictureBox();
-            this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addToFavouritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.addFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.picLogoImg = new System.Windows.Forms.PictureBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.comboRegionPatch = new System.Windows.Forms.ComboBox();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabGameList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
             this.tabFavourites.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picBoxFavs)).BeginInit();
             this.tabOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackVolume)).BeginInit();
             this.tabThemes.SuspendLayout();
             this.pnlTheme.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPageSaveData.SuspendLayout();
-            this.grupBUPData.SuspendLayout();
-            this.contextMenuGames.SuspendLayout();
-            this.contextMenuStripFavs.SuspendLayout();
-            this.ctxSaveData.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picBoxFavs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picShadow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCorner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCornerBg)).BeginInit();
@@ -176,6 +172,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.picSatiator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOptions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConsole)).BeginInit();
+            this.tabPageSaveData.SuspendLayout();
+            this.grupBUPData.SuspendLayout();
+            this.contextMenuGames.SuspendLayout();
+            this.contextMenuStripFavs.SuspendLayout();
+            this.ctxSaveData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoImg)).BeginInit();
             this.SuspendLayout();
             // 
@@ -269,6 +270,112 @@
             this.toolStrip1.TabIndex = 14;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.menuFileUpdateToolStripMenuItem,
+            this.applicationUpdateToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.exitToolStripMenuItem});
+            this.toolStripDropDownButton1.Image = global::SatiatorRingsConfig.Properties.Resources.open1;
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(54, 22);
+            this.toolStripDropDownButton1.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(173, 6);
+            // 
+            // menuFileUpdateToolStripMenuItem
+            // 
+            this.menuFileUpdateToolStripMenuItem.Name = "menuFileUpdateToolStripMenuItem";
+            this.menuFileUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.menuFileUpdateToolStripMenuItem.Text = "Menu File Update";
+            this.menuFileUpdateToolStripMenuItem.Click += new System.EventHandler(this.MenuFileUpdateToolStripMenuItem_Click);
+            // 
+            // applicationUpdateToolStripMenuItem
+            // 
+            this.applicationUpdateToolStripMenuItem.Name = "applicationUpdateToolStripMenuItem";
+            this.applicationUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.applicationUpdateToolStripMenuItem.Text = "Application Update";
+            this.applicationUpdateToolStripMenuItem.Click += new System.EventHandler(this.ApplicationUpdateToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(173, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
+            // toolStripDropDownButton2
+            // 
+            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.coversdbToolStripMenuItem,
+            this.configureScrapersToolStripMenuItem});
+            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
+            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(100, 22);
+            this.toolStripDropDownButton2.Text = "Boxart Scrapers";
+            // 
+            // coversdbToolStripMenuItem
+            // 
+            this.coversdbToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.allToolStripMenuItem,
+            this.missingToolStripMenuItem});
+            this.coversdbToolStripMenuItem.Name = "coversdbToolStripMenuItem";
+            this.coversdbToolStripMenuItem.RightToLeftAutoMirrorImage = true;
+            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.coversdbToolStripMenuItem.Text = "Download Boxarts";
+            // 
+            // allToolStripMenuItem
+            // 
+            this.allToolStripMenuItem.Name = "allToolStripMenuItem";
+            this.allToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.allToolStripMenuItem.Text = "All";
+            this.allToolStripMenuItem.Click += new System.EventHandler(this.AllToolStripMenuItem_Click);
+            // 
+            // missingToolStripMenuItem
+            // 
+            this.missingToolStripMenuItem.Name = "missingToolStripMenuItem";
+            this.missingToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.missingToolStripMenuItem.Text = "Missing";
+            this.missingToolStripMenuItem.Click += new System.EventHandler(this.MissingToolStripMenuItem_Click);
+            // 
+            // configureScrapersToolStripMenuItem
+            // 
+            this.configureScrapersToolStripMenuItem.Name = "configureScrapersToolStripMenuItem";
+            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.configureScrapersToolStripMenuItem.Text = "Configure Scrapers";
+            this.configureScrapersToolStripMenuItem.Click += new System.EventHandler(this.ConfigureScrapersToolStripMenuItem_Click);
+            // 
+            // toolStripDropDownButton3
+            // 
+            this.toolStripDropDownButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton3.Image")));
+            this.toolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton3.Name = "toolStripDropDownButton3";
+            this.toolStripDropDownButton3.Size = new System.Drawing.Size(108, 22);
+            this.toolStripDropDownButton3.Text = "Export Image Pack";
+            this.toolStripDropDownButton3.Click += new System.EventHandler(this.ToolStripDropDownButton3_Click);
+            // 
             // lblMenuVer
             // 
             this.lblMenuVer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(30)))), ((int)(((byte)(39)))));
@@ -356,6 +463,17 @@
             this.btnGoogle.UseVisualStyleBackColor = true;
             this.btnGoogle.Click += new System.EventHandler(this.BtnGoogle_Click);
             // 
+            // picBox
+            // 
+            this.picBox.BackColor = System.Drawing.Color.Black;
+            this.picBox.Image = global::SatiatorRingsConfig.Properties.Resources.satiator_small;
+            this.picBox.Location = new System.Drawing.Point(525, 6);
+            this.picBox.Name = "picBox";
+            this.picBox.Size = new System.Drawing.Size(80, 80);
+            this.picBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picBox.TabIndex = 5;
+            this.picBox.TabStop = false;
+            // 
             // tabFavourites
             // 
             this.tabFavourites.Controls.Add(this.btnGoogleFavs);
@@ -419,15 +537,27 @@
             this.btnAddImageFavs.UseVisualStyleBackColor = true;
             this.btnAddImageFavs.Click += new System.EventHandler(this.BtnAddImageFavs_Click);
             // 
+            // picBoxFavs
+            // 
+            this.picBoxFavs.BackColor = System.Drawing.Color.Black;
+            this.picBoxFavs.Image = global::SatiatorRingsConfig.Properties.Resources.satiator_small;
+            this.picBoxFavs.Location = new System.Drawing.Point(525, 6);
+            this.picBoxFavs.Name = "picBoxFavs";
+            this.picBoxFavs.Size = new System.Drawing.Size(80, 80);
+            this.picBoxFavs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.picBoxFavs.TabIndex = 13;
+            this.picBoxFavs.TabStop = false;
+            // 
             // tabOptions
             // 
+            this.tabOptions.Controls.Add(this.label25);
+            this.tabOptions.Controls.Add(this.comboRegionPatch);
             this.tabOptions.Controls.Add(this.label24);
             this.tabOptions.Controls.Add(this.comboSaveSlot);
             this.tabOptions.Controls.Add(this.chkSkipSplash);
             this.tabOptions.Controls.Add(this.lblVolume);
             this.tabOptions.Controls.Add(this.btnSaveOptions);
             this.tabOptions.Controls.Add(this.chkDescCache);
-            this.tabOptions.Controls.Add(this.chkAutoPatch);
             this.tabOptions.Controls.Add(this.comboOptionFilter);
             this.tabOptions.Controls.Add(this.label14);
             this.tabOptions.Controls.Add(this.comboOptionList);
@@ -465,7 +595,7 @@
             // 
             this.chkSkipSplash.AutoSize = true;
             this.chkSkipSplash.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chkSkipSplash.Location = new System.Drawing.Point(35, 289);
+            this.chkSkipSplash.Location = new System.Drawing.Point(35, 299);
             this.chkSkipSplash.Name = "chkSkipSplash";
             this.chkSkipSplash.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkSkipSplash.Size = new System.Drawing.Size(120, 18);
@@ -478,7 +608,7 @@
             // 
             this.lblVolume.AutoSize = true;
             this.lblVolume.ForeColor = System.Drawing.Color.Gray;
-            this.lblVolume.Location = new System.Drawing.Point(393, 192);
+            this.lblVolume.Location = new System.Drawing.Point(399, 227);
             this.lblVolume.Name = "lblVolume";
             this.lblVolume.Size = new System.Drawing.Size(25, 14);
             this.lblVolume.TabIndex = 43;
@@ -489,7 +619,7 @@
             this.btnSaveOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveOptions.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSaveOptions.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveOptions.Location = new System.Drawing.Point(140, 340);
+            this.btnSaveOptions.Location = new System.Drawing.Point(140, 350);
             this.btnSaveOptions.Name = "btnSaveOptions";
             this.btnSaveOptions.Size = new System.Drawing.Size(127, 36);
             this.btnSaveOptions.TabIndex = 17;
@@ -502,7 +632,7 @@
             // 
             this.chkDescCache.AutoSize = true;
             this.chkDescCache.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chkDescCache.Location = new System.Drawing.Point(51, 252);
+            this.chkDescCache.Location = new System.Drawing.Point(51, 262);
             this.chkDescCache.Name = "chkDescCache";
             this.chkDescCache.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDescCache.Size = new System.Drawing.Size(104, 18);
@@ -510,19 +640,6 @@
             this.chkDescCache.Text = "Desc File Cache";
             this.chkDescCache.UseVisualStyleBackColor = true;
             this.chkDescCache.CheckedChanged += new System.EventHandler(this.ChkDescCache_CheckedChanged);
-            // 
-            // chkAutoPatch
-            // 
-            this.chkAutoPatch.AutoSize = true;
-            this.chkAutoPatch.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chkAutoPatch.Location = new System.Drawing.Point(40, 216);
-            this.chkAutoPatch.Name = "chkAutoPatch";
-            this.chkAutoPatch.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkAutoPatch.Size = new System.Drawing.Size(115, 18);
-            this.chkAutoPatch.TabIndex = 36;
-            this.chkAutoPatch.Text = "Auto Region Patch";
-            this.chkAutoPatch.UseVisualStyleBackColor = true;
-            this.chkAutoPatch.CheckedChanged += new System.EventHandler(this.ChkAutoPatch_CheckedChanged);
             // 
             // comboOptionFilter
             // 
@@ -556,7 +673,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(93, 180);
+            this.label13.Location = new System.Drawing.Point(99, 211);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(42, 14);
             this.label13.TabIndex = 38;
@@ -567,7 +684,7 @@
             this.trackVolume.BackColor = System.Drawing.Color.White;
             this.trackVolume.Cursor = System.Windows.Forms.Cursors.Hand;
             this.trackVolume.LargeChange = 10;
-            this.trackVolume.Location = new System.Drawing.Point(134, 176);
+            this.trackVolume.Location = new System.Drawing.Point(140, 211);
             this.trackVolume.Maximum = 127;
             this.trackVolume.Name = "trackVolume";
             this.trackVolume.Size = new System.Drawing.Size(263, 45);
@@ -682,6 +799,19 @@
             this.btnShadow.UseVisualStyleBackColor = false;
             this.btnShadow.Click += new System.EventHandler(this.BtnThemeColour_Click);
             // 
+            // picShadow
+            // 
+            this.picShadow.BackColor = System.Drawing.Color.Black;
+            this.picShadow.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picShadow.Image = ((System.Drawing.Image)(resources.GetObject("picShadow.Image")));
+            this.picShadow.Location = new System.Drawing.Point(116, 161);
+            this.picShadow.Name = "picShadow";
+            this.picShadow.Size = new System.Drawing.Size(100, 16);
+            this.picShadow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picShadow.TabIndex = 37;
+            this.picShadow.TabStop = false;
+            this.picShadow.Click += new System.EventHandler(this.PicShadow_Click);
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -690,6 +820,19 @@
             this.label17.Size = new System.Drawing.Size(79, 14);
             this.label17.TabIndex = 38;
             this.label17.Text = "Shadow Sprite";
+            // 
+            // picCorner
+            // 
+            this.picCorner.BackColor = System.Drawing.Color.Black;
+            this.picCorner.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picCorner.Image = ((System.Drawing.Image)(resources.GetObject("picCorner.Image")));
+            this.picCorner.Location = new System.Drawing.Point(124, 144);
+            this.picCorner.Name = "picCorner";
+            this.picCorner.Size = new System.Drawing.Size(8, 8);
+            this.picCorner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picCorner.TabIndex = 35;
+            this.picCorner.TabStop = false;
+            this.picCorner.Click += new System.EventHandler(this.PicCorner_Click);
             // 
             // label16
             // 
@@ -722,6 +865,18 @@
             this.btnBoxBg.Text = "text";
             this.btnBoxBg.UseVisualStyleBackColor = false;
             this.btnBoxBg.Click += new System.EventHandler(this.BtnThemeColour_Click);
+            // 
+            // picCornerBg
+            // 
+            this.picCornerBg.BackColor = System.Drawing.Color.Black;
+            this.picCornerBg.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picCornerBg.Location = new System.Drawing.Point(116, 136);
+            this.picCornerBg.Name = "picCornerBg";
+            this.picCornerBg.Size = new System.Drawing.Size(22, 22);
+            this.picCornerBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picCornerBg.TabIndex = 39;
+            this.picCornerBg.TabStop = false;
+            this.picCornerBg.Click += new System.EventHandler(this.PicCornerBg_Click);
             // 
             // btnDeleteTheme
             // 
@@ -875,6 +1030,19 @@
             this.label5.TabIndex = 26;
             this.label5.Text = "Game List Sprite";
             // 
+            // picLogo
+            // 
+            this.picLogo.BackColor = System.Drawing.Color.Black;
+            this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picLogo.Image = ((System.Drawing.Image)(resources.GetObject("picLogo.Image")));
+            this.picLogo.Location = new System.Drawing.Point(125, 129);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(128, 16);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 18;
+            this.picLogo.TabStop = false;
+            this.picLogo.Click += new System.EventHandler(this.PicLogo_Click);
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -883,6 +1051,84 @@
             this.label4.Size = new System.Drawing.Size(62, 14);
             this.label4.TabIndex = 25;
             this.label4.Text = "Logo Sprite";
+            // 
+            // picGame
+            // 
+            this.picGame.BackColor = System.Drawing.Color.Black;
+            this.picGame.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picGame.Image = ((System.Drawing.Image)(resources.GetObject("picGame.Image")));
+            this.picGame.Location = new System.Drawing.Point(125, 151);
+            this.picGame.Name = "picGame";
+            this.picGame.Size = new System.Drawing.Size(128, 16);
+            this.picGame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picGame.TabIndex = 19;
+            this.picGame.TabStop = false;
+            this.picGame.Click += new System.EventHandler(this.PicGame_Click);
+            // 
+            // picTheme
+            // 
+            this.picTheme.BackColor = System.Drawing.Color.Black;
+            this.picTheme.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picTheme.Image = ((System.Drawing.Image)(resources.GetObject("picTheme.Image")));
+            this.picTheme.Location = new System.Drawing.Point(125, 261);
+            this.picTheme.Name = "picTheme";
+            this.picTheme.Size = new System.Drawing.Size(128, 16);
+            this.picTheme.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picTheme.TabIndex = 24;
+            this.picTheme.TabStop = false;
+            this.picTheme.Click += new System.EventHandler(this.PicTheme_Click);
+            // 
+            // picMenu
+            // 
+            this.picMenu.BackColor = System.Drawing.Color.Black;
+            this.picMenu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picMenu.Image = ((System.Drawing.Image)(resources.GetObject("picMenu.Image")));
+            this.picMenu.Location = new System.Drawing.Point(125, 173);
+            this.picMenu.Name = "picMenu";
+            this.picMenu.Size = new System.Drawing.Size(128, 16);
+            this.picMenu.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picMenu.TabIndex = 20;
+            this.picMenu.TabStop = false;
+            this.picMenu.Click += new System.EventHandler(this.PicMenu_Click);
+            // 
+            // picSatiator
+            // 
+            this.picSatiator.BackColor = System.Drawing.Color.Black;
+            this.picSatiator.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picSatiator.Image = ((System.Drawing.Image)(resources.GetObject("picSatiator.Image")));
+            this.picSatiator.Location = new System.Drawing.Point(125, 239);
+            this.picSatiator.Name = "picSatiator";
+            this.picSatiator.Size = new System.Drawing.Size(128, 16);
+            this.picSatiator.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picSatiator.TabIndex = 23;
+            this.picSatiator.TabStop = false;
+            this.picSatiator.Click += new System.EventHandler(this.PicSatiator_Click);
+            // 
+            // picOptions
+            // 
+            this.picOptions.BackColor = System.Drawing.Color.Black;
+            this.picOptions.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picOptions.Image = ((System.Drawing.Image)(resources.GetObject("picOptions.Image")));
+            this.picOptions.Location = new System.Drawing.Point(125, 195);
+            this.picOptions.Name = "picOptions";
+            this.picOptions.Size = new System.Drawing.Size(128, 16);
+            this.picOptions.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picOptions.TabIndex = 21;
+            this.picOptions.TabStop = false;
+            this.picOptions.Click += new System.EventHandler(this.PicOptions_Click);
+            // 
+            // picConsole
+            // 
+            this.picConsole.BackColor = System.Drawing.Color.Black;
+            this.picConsole.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picConsole.Image = ((System.Drawing.Image)(resources.GetObject("picConsole.Image")));
+            this.picConsole.Location = new System.Drawing.Point(125, 217);
+            this.picConsole.Name = "picConsole";
+            this.picConsole.Size = new System.Drawing.Size(128, 16);
+            this.picConsole.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picConsole.TabIndex = 22;
+            this.picConsole.TabStop = false;
+            this.picConsole.Click += new System.EventHandler(this.PicConsole_Click);
             // 
             // lstThemes
             // 
@@ -1064,10 +1310,45 @@
             this.trimBracketsToolStripMenuItem.Text = "Trim Brackets";
             this.trimBracketsToolStripMenuItem.Click += new System.EventHandler(this.TrimBracketsToolStripMenuItem_Click);
             // 
+            // renameToolStripMenuItem
+            // 
+            this.renameToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.item_rename;
+            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.renameToolStripMenuItem.Text = "Rename";
+            this.renameToolStripMenuItem.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.trash;
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(167, 6);
+            // 
+            // addToFavouritesToolStripMenuItem
+            // 
+            this.addToFavouritesToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.primary;
+            this.addToFavouritesToolStripMenuItem.Name = "addToFavouritesToolStripMenuItem";
+            this.addToFavouritesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.addToFavouritesToolStripMenuItem.Text = "Add To Favourites";
+            this.addToFavouritesToolStripMenuItem.Click += new System.EventHandler(this.AddToFavouritesToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(167, 6);
+            // 
+            // saveDataToolStripMenuItem
+            // 
+            this.saveDataToolStripMenuItem.Name = "saveDataToolStripMenuItem";
+            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.saveDataToolStripMenuItem.Text = "Save Data";
             // 
             // contextMenuStripFavs
             // 
@@ -1103,275 +1384,23 @@
             this.deleteToolStripMenuItem2,
             this.addFileToolStripMenuItem});
             this.ctxSaveData.Name = "ctxSaveData";
-            this.ctxSaveData.Size = new System.Drawing.Size(181, 70);
+            this.ctxSaveData.Size = new System.Drawing.Size(149, 48);
             // 
-            // toolStripSeparator4
+            // deleteToolStripMenuItem2
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(167, 6);
+            this.deleteToolStripMenuItem2.Image = global::SatiatorRingsConfig.Properties.Resources.trash;
+            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
+            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(148, 22);
+            this.deleteToolStripMenuItem2.Text = "Delete";
+            this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.DeleteToolStripMenuItem2_Click);
             // 
-            // saveDataToolStripMenuItem
+            // addFileToolStripMenuItem
             // 
-            this.saveDataToolStripMenuItem.Name = "saveDataToolStripMenuItem";
-            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.saveDataToolStripMenuItem.Text = "Save Data";
-            // 
-            // picBox
-            // 
-            this.picBox.BackColor = System.Drawing.Color.Black;
-            this.picBox.Image = global::SatiatorRingsConfig.Properties.Resources.satiator_small;
-            this.picBox.Location = new System.Drawing.Point(525, 6);
-            this.picBox.Name = "picBox";
-            this.picBox.Size = new System.Drawing.Size(80, 80);
-            this.picBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.picBox.TabIndex = 5;
-            this.picBox.TabStop = false;
-            // 
-            // picBoxFavs
-            // 
-            this.picBoxFavs.BackColor = System.Drawing.Color.Black;
-            this.picBoxFavs.Image = global::SatiatorRingsConfig.Properties.Resources.satiator_small;
-            this.picBoxFavs.Location = new System.Drawing.Point(525, 6);
-            this.picBoxFavs.Name = "picBoxFavs";
-            this.picBoxFavs.Size = new System.Drawing.Size(80, 80);
-            this.picBoxFavs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.picBoxFavs.TabIndex = 13;
-            this.picBoxFavs.TabStop = false;
-            // 
-            // picShadow
-            // 
-            this.picShadow.BackColor = System.Drawing.Color.Black;
-            this.picShadow.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picShadow.Image = ((System.Drawing.Image)(resources.GetObject("picShadow.Image")));
-            this.picShadow.Location = new System.Drawing.Point(116, 161);
-            this.picShadow.Name = "picShadow";
-            this.picShadow.Size = new System.Drawing.Size(100, 16);
-            this.picShadow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picShadow.TabIndex = 37;
-            this.picShadow.TabStop = false;
-            this.picShadow.Click += new System.EventHandler(this.PicShadow_Click);
-            // 
-            // picCorner
-            // 
-            this.picCorner.BackColor = System.Drawing.Color.Black;
-            this.picCorner.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picCorner.Image = ((System.Drawing.Image)(resources.GetObject("picCorner.Image")));
-            this.picCorner.Location = new System.Drawing.Point(124, 144);
-            this.picCorner.Name = "picCorner";
-            this.picCorner.Size = new System.Drawing.Size(8, 8);
-            this.picCorner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picCorner.TabIndex = 35;
-            this.picCorner.TabStop = false;
-            this.picCorner.Click += new System.EventHandler(this.PicCorner_Click);
-            // 
-            // picCornerBg
-            // 
-            this.picCornerBg.BackColor = System.Drawing.Color.Black;
-            this.picCornerBg.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picCornerBg.Location = new System.Drawing.Point(116, 136);
-            this.picCornerBg.Name = "picCornerBg";
-            this.picCornerBg.Size = new System.Drawing.Size(22, 22);
-            this.picCornerBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picCornerBg.TabIndex = 39;
-            this.picCornerBg.TabStop = false;
-            this.picCornerBg.Click += new System.EventHandler(this.PicCornerBg_Click);
-            // 
-            // picLogo
-            // 
-            this.picLogo.BackColor = System.Drawing.Color.Black;
-            this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picLogo.Image = ((System.Drawing.Image)(resources.GetObject("picLogo.Image")));
-            this.picLogo.Location = new System.Drawing.Point(125, 129);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(128, 16);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picLogo.TabIndex = 18;
-            this.picLogo.TabStop = false;
-            this.picLogo.Click += new System.EventHandler(this.PicLogo_Click);
-            // 
-            // picGame
-            // 
-            this.picGame.BackColor = System.Drawing.Color.Black;
-            this.picGame.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picGame.Image = ((System.Drawing.Image)(resources.GetObject("picGame.Image")));
-            this.picGame.Location = new System.Drawing.Point(125, 151);
-            this.picGame.Name = "picGame";
-            this.picGame.Size = new System.Drawing.Size(128, 16);
-            this.picGame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picGame.TabIndex = 19;
-            this.picGame.TabStop = false;
-            this.picGame.Click += new System.EventHandler(this.PicGame_Click);
-            // 
-            // picTheme
-            // 
-            this.picTheme.BackColor = System.Drawing.Color.Black;
-            this.picTheme.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picTheme.Image = ((System.Drawing.Image)(resources.GetObject("picTheme.Image")));
-            this.picTheme.Location = new System.Drawing.Point(125, 261);
-            this.picTheme.Name = "picTheme";
-            this.picTheme.Size = new System.Drawing.Size(128, 16);
-            this.picTheme.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picTheme.TabIndex = 24;
-            this.picTheme.TabStop = false;
-            this.picTheme.Click += new System.EventHandler(this.PicTheme_Click);
-            // 
-            // picMenu
-            // 
-            this.picMenu.BackColor = System.Drawing.Color.Black;
-            this.picMenu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picMenu.Image = ((System.Drawing.Image)(resources.GetObject("picMenu.Image")));
-            this.picMenu.Location = new System.Drawing.Point(125, 173);
-            this.picMenu.Name = "picMenu";
-            this.picMenu.Size = new System.Drawing.Size(128, 16);
-            this.picMenu.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picMenu.TabIndex = 20;
-            this.picMenu.TabStop = false;
-            this.picMenu.Click += new System.EventHandler(this.PicMenu_Click);
-            // 
-            // picSatiator
-            // 
-            this.picSatiator.BackColor = System.Drawing.Color.Black;
-            this.picSatiator.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picSatiator.Image = ((System.Drawing.Image)(resources.GetObject("picSatiator.Image")));
-            this.picSatiator.Location = new System.Drawing.Point(125, 239);
-            this.picSatiator.Name = "picSatiator";
-            this.picSatiator.Size = new System.Drawing.Size(128, 16);
-            this.picSatiator.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picSatiator.TabIndex = 23;
-            this.picSatiator.TabStop = false;
-            this.picSatiator.Click += new System.EventHandler(this.PicSatiator_Click);
-            // 
-            // picOptions
-            // 
-            this.picOptions.BackColor = System.Drawing.Color.Black;
-            this.picOptions.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picOptions.Image = ((System.Drawing.Image)(resources.GetObject("picOptions.Image")));
-            this.picOptions.Location = new System.Drawing.Point(125, 195);
-            this.picOptions.Name = "picOptions";
-            this.picOptions.Size = new System.Drawing.Size(128, 16);
-            this.picOptions.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picOptions.TabIndex = 21;
-            this.picOptions.TabStop = false;
-            this.picOptions.Click += new System.EventHandler(this.PicOptions_Click);
-            // 
-            // picConsole
-            // 
-            this.picConsole.BackColor = System.Drawing.Color.Black;
-            this.picConsole.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picConsole.Image = ((System.Drawing.Image)(resources.GetObject("picConsole.Image")));
-            this.picConsole.Location = new System.Drawing.Point(125, 217);
-            this.picConsole.Name = "picConsole";
-            this.picConsole.Size = new System.Drawing.Size(128, 16);
-            this.picConsole.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picConsole.TabIndex = 22;
-            this.picConsole.TabStop = false;
-            this.picConsole.Click += new System.EventHandler(this.PicConsole_Click);
-            // 
-            // toolStripDropDownButton1
-            // 
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.menuFileUpdateToolStripMenuItem,
-            this.applicationUpdateToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.exitToolStripMenuItem});
-            this.toolStripDropDownButton1.Image = global::SatiatorRingsConfig.Properties.Resources.open1;
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(54, 22);
-            this.toolStripDropDownButton1.Text = "File";
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(173, 6);
-            // 
-            // menuFileUpdateToolStripMenuItem
-            // 
-            this.menuFileUpdateToolStripMenuItem.Name = "menuFileUpdateToolStripMenuItem";
-            this.menuFileUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.menuFileUpdateToolStripMenuItem.Text = "Menu File Update";
-            this.menuFileUpdateToolStripMenuItem.Click += new System.EventHandler(this.MenuFileUpdateToolStripMenuItem_Click);
-            // 
-            // applicationUpdateToolStripMenuItem
-            // 
-            this.applicationUpdateToolStripMenuItem.Name = "applicationUpdateToolStripMenuItem";
-            this.applicationUpdateToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.applicationUpdateToolStripMenuItem.Text = "Application Update";
-            this.applicationUpdateToolStripMenuItem.Click += new System.EventHandler(this.ApplicationUpdateToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(173, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
-            // toolStripDropDownButton2
-            // 
-            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.coversdbToolStripMenuItem,
-            this.configureScrapersToolStripMenuItem});
-            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
-            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            this.toolStripDropDownButton2.Size = new System.Drawing.Size(100, 22);
-            this.toolStripDropDownButton2.Text = "Boxart Scrapers";
-            // 
-            // coversdbToolStripMenuItem
-            // 
-            this.coversdbToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.allToolStripMenuItem,
-            this.missingToolStripMenuItem});
-            this.coversdbToolStripMenuItem.Name = "coversdbToolStripMenuItem";
-            this.coversdbToolStripMenuItem.RightToLeftAutoMirrorImage = true;
-            this.coversdbToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.coversdbToolStripMenuItem.Text = "Download Boxarts";
-            // 
-            // allToolStripMenuItem
-            // 
-            this.allToolStripMenuItem.Name = "allToolStripMenuItem";
-            this.allToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-            this.allToolStripMenuItem.Text = "All";
-            this.allToolStripMenuItem.Click += new System.EventHandler(this.AllToolStripMenuItem_Click);
-            // 
-            // missingToolStripMenuItem
-            // 
-            this.missingToolStripMenuItem.Name = "missingToolStripMenuItem";
-            this.missingToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-            this.missingToolStripMenuItem.Text = "Missing";
-            this.missingToolStripMenuItem.Click += new System.EventHandler(this.MissingToolStripMenuItem_Click);
-            // 
-            // configureScrapersToolStripMenuItem
-            // 
-            this.configureScrapersToolStripMenuItem.Name = "configureScrapersToolStripMenuItem";
-            this.configureScrapersToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.configureScrapersToolStripMenuItem.Text = "Configure Scrapers";
-            this.configureScrapersToolStripMenuItem.Click += new System.EventHandler(this.ConfigureScrapersToolStripMenuItem_Click);
-            // 
-            // toolStripDropDownButton3
-            // 
-            this.toolStripDropDownButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton3.Image")));
-            this.toolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton3.Name = "toolStripDropDownButton3";
-            this.toolStripDropDownButton3.Size = new System.Drawing.Size(108, 22);
-            this.toolStripDropDownButton3.Text = "Export Image Pack";
-            this.toolStripDropDownButton3.Click += new System.EventHandler(this.ToolStripDropDownButton3_Click);
+            this.addFileToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.icon_add;
+            this.addFileToolStripMenuItem.Name = "addFileToolStripMenuItem";
+            this.addFileToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.addFileToolStripMenuItem.Text = "Add BUP Data";
+            this.addFileToolStripMenuItem.Click += new System.EventHandler(this.AddFileToolStripMenuItem_Click);
             // 
             // picLogoImg
             // 
@@ -1384,45 +1413,27 @@
             this.picLogoImg.TabIndex = 9;
             this.picLogoImg.TabStop = false;
             // 
-            // renameToolStripMenuItem
+            // label25
             // 
-            this.renameToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.item_rename;
-            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.renameToolStripMenuItem.Text = "Rename";
-            this.renameToolStripMenuItem.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(39, 176);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(96, 14);
+            this.label25.TabIndex = 49;
+            this.label25.Text = "Auto Region Patch";
             // 
-            // deleteToolStripMenuItem
+            // comboRegionPatch
             // 
-            this.deleteToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.trash;
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
-            // 
-            // addToFavouritesToolStripMenuItem
-            // 
-            this.addToFavouritesToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.primary;
-            this.addToFavouritesToolStripMenuItem.Name = "addToFavouritesToolStripMenuItem";
-            this.addToFavouritesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.addToFavouritesToolStripMenuItem.Text = "Add To Favourites";
-            this.addToFavouritesToolStripMenuItem.Click += new System.EventHandler(this.AddToFavouritesToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem2
-            // 
-            this.deleteToolStripMenuItem2.Image = global::SatiatorRingsConfig.Properties.Resources.trash;
-            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
-            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.deleteToolStripMenuItem2.Text = "Delete";
-            this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.DeleteToolStripMenuItem2_Click);
-            // 
-            // addFileToolStripMenuItem
-            // 
-            this.addFileToolStripMenuItem.Image = global::SatiatorRingsConfig.Properties.Resources.icon_add;
-            this.addFileToolStripMenuItem.Name = "addFileToolStripMenuItem";
-            this.addFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addFileToolStripMenuItem.Text = "Add BUP Data";
-            this.addFileToolStripMenuItem.Click += new System.EventHandler(this.AddFileToolStripMenuItem_Click);
+            this.comboRegionPatch.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.comboRegionPatch.FormattingEnabled = true;
+            this.comboRegionPatch.Items.AddRange(new object[] {
+            "Off",
+            "On",
+            "Emu"});
+            this.comboRegionPatch.Location = new System.Drawing.Point(140, 173);
+            this.comboRegionPatch.Name = "comboRegionPatch";
+            this.comboRegionPatch.Size = new System.Drawing.Size(249, 22);
+            this.comboRegionPatch.TabIndex = 48;
             // 
             // frmMain
             // 
@@ -1453,8 +1464,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabGameList.ResumeLayout(false);
             this.tabGameList.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picBox)).EndInit();
             this.tabFavourites.ResumeLayout(false);
             this.tabFavourites.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picBoxFavs)).EndInit();
             this.tabOptions.ResumeLayout(false);
             this.tabOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackVolume)).EndInit();
@@ -1463,14 +1476,6 @@
             this.pnlTheme.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPageSaveData.ResumeLayout(false);
-            this.grupBUPData.ResumeLayout(false);
-            this.grupBUPData.PerformLayout();
-            this.contextMenuGames.ResumeLayout(false);
-            this.contextMenuStripFavs.ResumeLayout(false);
-            this.ctxSaveData.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picBoxFavs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picShadow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCorner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCornerBg)).EndInit();
@@ -1481,6 +1486,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.picSatiator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOptions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConsole)).EndInit();
+            this.tabPageSaveData.ResumeLayout(false);
+            this.grupBUPData.ResumeLayout(false);
+            this.grupBUPData.PerformLayout();
+            this.contextMenuGames.ResumeLayout(false);
+            this.contextMenuStripFavs.ResumeLayout(false);
+            this.ctxSaveData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogoImg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1550,7 +1561,6 @@
         private System.Windows.Forms.ComboBox comboOptionList;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TrackBar trackVolume;
-        private System.Windows.Forms.CheckBox chkAutoPatch;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox chkDescCache;
         private System.Windows.Forms.ComboBox comboOptionFilter;
@@ -1608,6 +1618,8 @@
         private System.Windows.Forms.ComboBox comboLoadedSaveSlot;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem saveDataToolStripMenuItem;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.ComboBox comboRegionPatch;
     }
 }
 

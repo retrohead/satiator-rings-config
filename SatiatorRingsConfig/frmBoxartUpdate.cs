@@ -62,9 +62,10 @@ namespace SatiatorRingsConfig
             updateProgress(currentItem, downloadBoxData.Count);
             updateProgressLabel("checking item " + (currentItem + 1) + " of " + downloadBoxData.Count);
 
-            frmMain.ipBinData ipBin = frmMain.loadGameIpBin(downloadBoxData[currentItem].fn);
-            if (ipBin.gameId == "")
+            string hash = frmMain.getGameHashCheck(downloadBoxData[currentItem].fn);
+            if (hash == "")
                 return;
+
             string[] scraperUrls = Properties.Settings.Default.boxartUrls.Split('|');
             string[] scraperFormats = Properties.Settings.Default.boxartFormats.Split('|');
 
@@ -74,13 +75,16 @@ namespace SatiatorRingsConfig
                 if (i < scraperFormats.Length)
                     format = scraperFormats[i];
                 updateProgressLabel("trying " + format + " from " + scraperUrls[i]);
-                if (update.downloadFile(scraperUrls[i] + ipBin.gameId + format, "data/temp/", scraperUrls[i] + ipBin.gameId + format, "", true))
+                if (update.downloadFile(scraperUrls[i] + hash + format, "data/temp/", scraperUrls[i] + hash + format, "", true))
                 {
-                    processDownloadedImage("data/temp/" + ipBin.gameId + format, downloadBoxData[currentItem].fn);
+                    updateProgressLabel("success");
+                    processDownloadedImage("data/temp/" + hash + format, downloadBoxData[currentItem].fn);
                     break;
-                } else if (update.downloadFile(scraperUrls[i] + ipBin.gameId + format.ToUpper(), "data/temp/", scraperUrls[i] + ipBin.gameId + format.ToUpper(), "", true))
+                } else if (update.downloadFile(scraperUrls[i] + hash + format.ToUpper(), "data/temp/", scraperUrls[i] + hash + format.ToUpper(), "", true))
                 {
-                    processDownloadedImage("data/temp/" + ipBin.gameId + format.ToUpper(), downloadBoxData[currentItem].fn);
+                    updateProgressLabel("success");
+                    updateProgressLabel("trying " + format + " from " + scraperUrls[i]);
+                    processDownloadedImage("data/temp/" + hash + format.ToUpper(), downloadBoxData[currentItem].fn);
                     break;
                 }
             }
